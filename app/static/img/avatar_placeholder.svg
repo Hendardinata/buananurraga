@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="avatarBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A222D" />
+      <stop offset="100%" stop-color="#0E1318" />
+    </linearGradient>
+    <linearGradient id="avatarGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#AA771C" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="240" fill="url(#avatarBg)" />
+  <!-- Martial Silhouette Head with Headband / Udeng -->
+  <circle cx="100" cy="85" r="42" fill="#222C38" stroke="url(#avatarGold)" stroke-width="2" />
+  <!-- Martial Udeng / Headband Knot -->
+  <path d="M 58,75 Q 100,60 142,75 Q 100,82 58,75 Z" fill="url(#avatarGold)" />
+  <path d="M 135,72 L 155,62 L 148,82 Z" fill="url(#avatarGold)" />
+  <!-- Silat Gi / Shoulders & Collar -->
+  <path d="M 30,225 C 30,165 65,145 100,145 C 135,145 170,165 170,225 Z" fill="#1C242E" stroke="url(#avatarGold)" stroke-width="2" />
+  <!-- Gi Cross Collar (Krah Baju Silat) -->
+  <path d="M 75,145 L 100,195 L 125,145" fill="none" stroke="url(#avatarGold)" stroke-width="3" />
+  <!-- Center Medallion Mini -->
+  <circle cx="100" cy="195" r="8" fill="url(#avatarGold)" />
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sealGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="30%" stop-color="#D4AF37" />
+      <stop offset="60%" stop-color="#996515" />
+      <stop offset="85%" stop-color="#FFD54F" />
+      <stop offset="100%" stop-color="#66460B" />
+    </linearGradient>
+  </defs>
+
+  <!-- Serrated / Scalloped Edge Ring (36 Teeth) -->
+  <g transform="translate(150, 150)">
+    <circle cx="0" cy="0" r="142" fill="none" stroke="url(#sealGoldGrad)" stroke-width="4" stroke-dasharray="8, 4" opacity="0.85" />
+    <circle cx="0" cy="0" r="132" fill="#121212" stroke="url(#sealGoldGrad)" stroke-width="3" />
+    <circle cx="0" cy="0" r="124" fill="none" stroke="url(#sealGoldGrad)" stroke-width="1.5" stroke-dasharray="2, 3" />
+    <circle cx="0" cy="0" r="95" fill="#0C2411" stroke="url(#sealGoldGrad)" stroke-width="2.5" />
+
+    <!-- Circular Text Top -->
+    <path id="sealTextUpper" d="M -105,0 A 105,105 0 1,1 105,0" fill="none" />
+    <text font-family="'Cinzel', 'Georgia', serif" font-size="12" font-weight="bold" fill="url(#sealGoldGrad)" letter-spacing="2.5">
+      <textPath href="#sealTextUpper" startOffset="50%" text-anchor="middle">
+        ★ DEWAN PENDEKAR PUSAT ★
+      </textPath>
+    </text>
+
+    <!-- Circular Text Bottom -->
+    <path id="sealTextLower" d="M 105,0 A 105,105 0 0,1 -105,0" fill="none" />
+    <text font-family="'Cinzel', 'Georgia', serif" font-size="11" font-weight="bold" fill="url(#sealGoldGrad)" letter-spacing="2">
+      <textPath href="#sealTextLower" startOffset="50%" text-anchor="middle">
+        PENGURUS BESAR BUANA NURRAGA
+      </textPath>
+    </text>
+
+    <!-- Center Seal Content -->
+    <circle cx="0" cy="0" r="75" fill="none" stroke="url(#sealGoldGrad)" stroke-width="1.5" />
+    <polygon points="0,-48 12,-16 48,0 12,16 0,48 -12,16 -48,0 -12,-16" fill="none" stroke="url(#sealGoldGrad)" stroke-width="1.5" opacity="0.7"/>
+    <text x="0" y="-12" font-family="'Cinzel', serif" font-size="11" font-weight="bold" fill="url(#sealGoldGrad)" text-anchor="middle" letter-spacing="3">CAP RESMI</text>
+    <text x="0" y="8" font-family="'Cinzel', serif" font-size="16" font-weight="900" fill="url(#sealGoldGrad)" text-anchor="middle" letter-spacing="1">BN</text>
+    <text x="0" y="24" font-family="'Cinzel', serif" font-size="9" font-weight="bold" fill="url(#sealGoldGrad)" text-anchor="middle" letter-spacing="2">TERDAFTAR</text>
+    <line x1="-35" y1="28" x2="35" y2="28" stroke="url(#sealGoldGrad)" stroke-width="1" />
+    <text x="0" y="40" font-family="'Courier New', monospace" font-size="8" fill="url(#sealGoldGrad)" text-anchor="middle" letter-spacing="1">NTB - INDONESIA</text>
+  </g>
+</svg>

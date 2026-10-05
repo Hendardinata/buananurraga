@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}Kenaikan Tingkat Anggota - Buana Nurraga{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 style="margin: 0;">Kenaikan Tingkat Anggota (Lama)</h1>
+</div>
+
+<p style="color: var(--color-text-secondary); margin-bottom: 30px;">
+    Wizard ini digunakan untuk <b>Anggota yang sudah memiliki Nomor Induk</b> yang akan naik ke sabuk berikutnya. 
+    Proses ini akan mengupdate kolom SABUK di DATA PUSAT, mengisi tanggal di kolom sabuk baru, dan menambah riwayat ke ARSIP KENAIKAN TINGKAT.
+</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div style="background-color: var(--color-dark-surface); padding: 30px; border-radius: 8px; border: 1px solid var(--color-gold);">
+    <form method="POST" action="{{ url_for('promotion.upgrade') }}" id="upgradeForm">
+        
+        <h3 style="color: var(--color-gold); border-bottom: 1px solid var(--color-dark-elevated); padding-bottom: 10px; margin-bottom: 20px;">Informasi Perhelatan</h3>
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Tanggal Pengesahan</label>
+                <input type="date" name="event_date" class="form-control" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Desa Lokasi Acara</label>
+                <input type="text" name="desa" class="form-control" placeholder="Contoh: SELAGALAS" required>
+            </div>
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Kecamatan</label>
+                <input type="text" name="kecamatan" class="form-control" placeholder="Contoh: SANDUBAYA" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Kabupaten / Kota</label>
+                <input type="text" name="kabupaten" class="form-control" placeholder="Contoh: MATARAM" required>
+            </div>
+        </div>
+
+        <h3 style="color: var(--color-gold); border-bottom: 1px solid var(--color-dark-elevated); padding-bottom: 10px; margin-top: 30px; margin-bottom: 20px;">Pilih Anggota & Sabuk Tujuan</h3>
+        
+        <div style="background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+            
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Cari Anggota Berdasarkan Nama / Nomor Induk</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Ketik nama atau nomor induk..." onkeyup="filterMembers()" style="flex: 1; min-width: 200px;">
+                    <select id="memberSelect" class="form-control" style="flex: 2; min-width: 250px;">
+                        <option value="">-- Pilih Anggota --</option>
+                        {% for member in existing_members %}
+                        <option value="{{ member.get('NOMOR INDUK') }}" data-nama="{{ member.get('NAMA LENGKAP') }}" data-sabuk="{{ member.get('SABUK') }}" data-cabang="{{ member.get('CABANG') }}">
+                            {{ member.get('NOMOR INDUK') }} - {{ member.get('NAMA LENGKAP') }} (Sabuk Saat Ini: {{ member.get('SABUK') }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="btn btn-secondary" onclick="addSelectedMember()" style="background-color: white; color: black; border: none;">Tambah ke Daftar</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h4>Daftar Anggota Yang Akan Dinaikkan Tingkatnya:</h4>
+                <div id="selectedMembersContainer" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <!-- Javascript will append rows here -->
+                </div>
+                <p id="noMembersText" style="color: var(--color-text-secondary); font-style: italic;">Belum ada anggota yang ditambahkan.</p>
+            </div>
+
+        </div>
+
+        <div style="margin-top: 40px; display: flex; justify-content: flex-end; gap: 15px;">
+            <button type="button" onclick="submitForm()" class="btn btn-primary" style="background-color: var(--color-gold); color: black;">Proses Kenaikan Tingkat</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function filterMembers() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const select = document.getElementById('memberSelect');
+        const options = select.getElementsByTagName('option');
+        
+        for (let i = 1; i < options.length; i++) { // Skip the first option (-- Pilih --)
+            const text = options[i].text.toLowerCase();
+            if (text.includes(input)) {
+                options[i].style.display = '';
+            } else {
+                options[i].style.display = 'none';
+            }
+        }
+    }
+
+    const availableBelts = ["HIJAU", "BIRU", "COKELAT", "HITAM COKELAT", "HITAM ORANGE", "GURU", "GURU BESAR"];
+
+    function addSelectedMember() {
+        const select = document.getElementById('memberSelect');
+        if (select.selectedIndex <= 0) return;
+        
+        const option = select.options[select.selectedIndex];
+        const nomorInduk = option.value;
+        const namaLengkap = option.getAttribute('data-nama');
+        const sabukSaatIni = (option.getAttribute('data-sabuk') || 'HIJAU').toUpperCase();
+        
+        // Check if already added
+        if (document.getElementById('row-' + nomorInduk)) {
+            alert('Anggota ini sudah ada di daftar.');
+            return;
+        }
+
+        document.getElementById('noMembersText').style.display = 'none';
+        const container = document.getElementById('selectedMembersContainer');
+        
+        const row = document.createElement('div');
+        row.id = 'row-' + nomorInduk;
+        row.style.display = 'flex';
+        row.style.gap = '15px';
+        row.style.alignItems = 'center';
+        row.style.backgroundColor = 'rgba(255,255,255,0.05)';
+        row.style.padding = '10px';
+        row.style.borderRadius = '4px';
+        
+        let beltOptionsHtml = '';
+        let foundCurrent = false;
+        let defaultNext = availableBelts[availableBelts.length - 1]; // fallback
+
+        for (let i = 0; i < availableBelts.length; i++) {
+            if (foundCurrent) {
+                if (defaultNext === availableBelts[availableBelts.length - 1]) {
+                    defaultNext = availableBelts[i];
+                }
+            }
+            if (availableBelts[i] === sabukSaatIni) foundCurrent = true;
+            
+            beltOptionsHtml += `<option value="${availableBelts[i]}">${availableBelts[i]}</option>`;
+        }
+
+        row.innerHTML = `
+            <input type="text" name="nomor_induk[]" class="form-control" value="${nomorInduk}" readonly style="flex: 1.5;">
+            <input type="text" name="nama_lengkap[]" class="form-control" value="${namaLengkap}" readonly style="flex: 2;">
+            <div style="flex: 1.5;">
+                <span style="font-size: 0.8rem; color: var(--color-text-secondary); display: block; margin-bottom: 2px;">Sabuk Tujuan:</span>
+                <select name="target_belt[]" class="form-control">
+                    ${beltOptionsHtml}
+                </select>
+            </div>
+            <button type="button" class="btn btn-secondary" style="background-color: var(--color-danger); color: white;" onclick="this.parentElement.remove(); checkEmpty();">Hapus</button>
+        `;
+        
+        container.appendChild(row);
+        
+        const newlyAddedSelect = row.querySelector('select');
+        newlyAddedSelect.value = defaultNext;
+        
+        select.selectedIndex = 0;
+    }
+
+    function checkEmpty() {
+        const container = document.getElementById('selectedMembersContainer');
+        if (container.children.length === 0) {
+            document.getElementById('noMembersText').style.display = 'block';
+        }
+    }
+
+    function submitForm() {
+        const container = document.getElementById('selectedMembersContainer');
+        if (container.children.length === 0) {
+            alert('Tambahkan setidaknya satu anggota ke daftar sebelum memproses.');
+            return;
+        }
+        
+        if (confirm('Apakah Anda yakin ingin menaikkan tingkat anggota yang ada di daftar? Data di DATA PUSAT dan ARSIP akan diupdate.')) {
+            document.getElementById('upgradeForm').submit();
+        }
+    }
+</script>
+{% endblock %}

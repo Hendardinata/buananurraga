@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="chipPad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <linearGradient id="chipBorder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#805910" />
+      <stop offset="100%" stop-color="#3D2905" />
+    </linearGradient>
+  </defs>
+
+  <!-- Chip Base -->
+  <rect x="2" y="2" width="156" height="116" rx="16" fill="url(#chipPad)" stroke="url(#chipBorder)" stroke-width="3" />
+  
+  <!-- Circuit Insulation / Pin Lines -->
+  <!-- Center Horizontal Pin Separator -->
+  <path d="M 2,60 L 50,60 M 110,60 L 158,60" stroke="#7A520B" stroke-width="2.5" />
+  
+  <!-- Left Side Pin Cuts -->
+  <path d="M 50,2 L 50,118" stroke="#7A520B" stroke-width="2.5" />
+  <path d="M 2,32 L 50,32" stroke="#7A520B" stroke-width="2.5" />
+  <path d="M 2,88 L 50,88" stroke="#7A520B" stroke-width="2.5" />
+
+  <!-- Right Side Pin Cuts -->
+  <path d="M 110,2 L 110,118" stroke="#7A520B" stroke-width="2.5" />
+  <path d="M 110,32 L 158,32" stroke="#7A520B" stroke-width="2.5" />
+  <path d="M 110,88 L 158,88" stroke="#7A520B" stroke-width="2.5" />
+
+  <!-- Center Microcontroller Core Plate -->
+  <rect x="58" y="22" width="44" height="76" rx="8" fill="url(#chipPad)" stroke="#7A520B" stroke-width="2.5" />
+  <line x1="58" y1="46" x2="102" y2="46" stroke="#7A520B" stroke-width="2" />
+  <line x1="58" y1="74" x2="102" y2="74" stroke="#7A520B" stroke-width="2" />
+</svg>

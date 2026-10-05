@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}Laporan Anggaran | Buana Nurraga{% endblock %}
+{% block page_title %}Laporan Anggaran & Kas{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Laporan Anggaran & Kas</h1>
+        <p class="page-subtitle">Pencatatan kas masuk dan keluar perguruan secara transparan.</p>
+    </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Total Pemasukan</span>
+            <div class="stat-icon" style="background-color: var(--color-success-bg); color: var(--color-success);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-success);">
+            Rp {{ "{:,.0f}".format(total_pemasukan).replace(',', '.') }}
+        </div>
+        <div class="stat-meta">Akumulasi iuran & kas masuk</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Total Pengeluaran</span>
+            <div class="stat-icon" style="background-color: var(--color-danger-bg); color: var(--color-danger);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-danger);">
+            Rp {{ "{:,.0f}".format(total_pengeluaran).replace(',', '.') }}
+        </div>
+        <div class="stat-meta">Akumulasi biaya kegiatan & operasional</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Saldo Kas Akhir</span>
+            <div class="stat-icon" style="background-color: var(--color-primary-soft); color: var(--color-primary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-primary);">
+            Rp {{ "{:,.0f}".format(saldo_akhir).replace(',', '.') }}
+        </div>
+        <div class="stat-meta">Posisi dana kas saat ini</div>
+    </div>
+</div>
+
+<div class="budget-grid-layout">
+    <!-- Riwayat Transaksi Table Card with Pagination -->
+    <div class="table-card">
+        <div style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Riwayat Transaksi</h3>
+            <span class="badge badge-neutral">{{ total_items }} Total Catatan</span>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Keterangan</th>
+                        <th>Jenis</th>
+                        <th style="text-align: right;">Nominal</th>
+                        <th style="text-align: right;">Saldo</th>
+                        <th>Cabang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in budgets %}
+                    <tr>
+                        <td style="font-size: 0.8rem; color: var(--color-text-secondary); white-space: nowrap;">
+                            {{ b.get('TANGGAL') }}
+                        </td>
+                        <td style="font-weight: 600; color: var(--color-text-primary);">
+                            {{ b.get('KETERANGAN') }}
+                        </td>
+                        <td>
+                            {% if b.get('JENIS')|upper == 'PEMASUKAN' %}
+                                <span class="badge badge-success">+ MASUK</span>
+                            {% else %}
+                                <span class="badge badge-danger">- KELUAR</span>
+                            {% endif %}
+                        </td>
+                        <td class="{% if b.get('JENIS')|upper == 'PEMASUKAN' %}text-success{% else %}text-danger{% endif %}" style="text-align: right; font-weight: 700;">
+                            Rp {{ "{:,.0f}".format(b.get('NOMINAL', 0)|float).replace(',', '.') }}
+                        </td>
+                        <td style="text-align: right; font-weight: 700; color: var(--color-primary); font-family: monospace;">
+                            Rp {{ "{:,.0f}".format(b.get('SALDO', 0)|float).replace(',', '.') }}
+                        </td>
+                        <td style="font-size: 0.8rem; color: var(--color-text-secondary);">
+                            {{ b.get('CABANG') }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="padding: 40px; text-align: center; color: var(--color-text-muted);">
+                            Belum ada riwayat transaksi kas yang dicatat.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 10-Item Pagination -->
+        {% include '_pagination.html' %}
+    </div>
+
+    <!-- Form Catat Transaksi Card -->
+    <div class="card" style="margin-bottom: 0;">
+        <div class="card-header">
+            <h3 class="card-title">Catat Transaksi Baru</h3>
+            <span class="badge badge-belt-biru">Input Kas</span>
+        </div>
+
+        <form method="POST" action="{{ url_for('budget.add') }}">
+            <div class="form-group">
+                <label>Jenis Transaksi</label>
+                <select name="jenis" class="form-control" required>
+                    <option value="PEMASUKAN">PEMASUKAN (+)</option>
+                    <option value="PENGELUARAN">PENGELUARAN (-)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Keterangan Transaksi</label>
+                <input type="text" name="keterangan" class="form-control" placeholder="Contoh: Iuran Khataman Gelombang 1" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Nominal (Rupiah)</label>
+                <input type="number" name="nominal" class="form-control" placeholder="Contoh: 500000" required min="1">
+            </div>
+            
+            <div class="form-group">
+                <label>Cabang Terkait</label>
+                <input type="text" name="cabang" class="form-control" placeholder="PUSAT" value="PUSAT">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block" style="padding: 12px; margin-top: 10px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Simpan Catatan Kas
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

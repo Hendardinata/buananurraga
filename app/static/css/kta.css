@@ -1,0 +1,715 @@
+/* ==========================================================================
+   KTA DIGITAL MEGANG, ELEGAN & MEWAH - PERGURUAN SILAT BUANA NURRAGA
+   Standar ID-1 (85.60 mm x 53.98 mm, Rasio 1.586)
+   ========================================================================== */
+
+:root {
+  --kta-gold-gradient: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 30%, #AA771C 65%, #FDE08B 85%, #8B6508 100%);
+  --kta-gold-solid: #D4AF37;
+  --kta-gold-light: #FBF0B9;
+  --kta-dark-bg: #0D1117;
+  --kta-dark-surface: #141A23;
+  --kta-green-deep: #0B3314;
+  --kta-green-glow: rgba(46, 125, 50, 0.35);
+  --kta-border-radius: 18px;
+}
+
+/* Container & 3D Stage */
+.kta-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  perspective: 1400px;
+}
+
+.kta-card-wrapper {
+  position: relative;
+  width: 620px;
+  height: 391px; /* 620 / 1.586 = ~391px */
+  max-width: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.kta-card-wrapper.flipped {
+  transform: rotateY(180deg);
+}
+
+/* Common Card Face */
+.kta-card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--kta-border-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(212, 175, 55, 0.4),
+    0 0 25px rgba(212, 175, 55, 0.2);
+  background-color: var(--kta-dark-bg);
+  background-image: 
+    radial-gradient(ellipse at 85% 15%, rgba(46, 125, 50, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 15% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 55%),
+    url('/static/img/guilloche_bg.svg');
+  background-size: cover, cover, 100% 100%;
+  color: #FFFFFF;
+  box-sizing: border-box;
+}
+
+/* Luxury Multi-layer Gold Border */
+.kta-card-face::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border-radius: calc(var(--kta-border-radius) - 6px);
+  border: 2px solid transparent;
+  background: var(--kta-gold-gradient) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Subtle Hologram Sheen on Hover */
+.kta-card-face::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(212, 175, 55, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 65%
+  );
+  transform: rotate(25deg) translateY(-100%);
+  transition: transform 1.2s ease;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.kta-card-wrapper:hover .kta-card-face::after {
+  transform: rotate(25deg) translateY(100%);
+}
+
+/* Ornate Corner Accents */
+.kta-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--kta-gold-solid);
+  z-index: 7;
+  pointer-events: none;
+}
+.kta-corner.top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.kta-corner.top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.kta-corner.bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.kta-corner.bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+/* -------------------------------------------------------------
+   FRONT SIDE (SISI DEPAN)
+   ------------------------------------------------------------- */
+.kta-front {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+.kta-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  position: relative;
+  z-index: 2;
+}
+
+.kta-header-logo {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+  flex-shrink: 0;
+}
+
+.kta-header-text {
+  flex-grow: 1;
+}
+
+.kta-org-supertitle {
+  font-size: 8.5px;
+  letter-spacing: 2px;
+  color: var(--kta-gold-light);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0;
+}
+
+.kta-org-title {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin: 1px 0;
+  background: var(--kta-gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.kta-org-subtitle {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #B0BEC5;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.kta-header-badge {
+  background: rgba(46, 125, 50, 0.25);
+  border: 1px solid var(--kta-gold-solid);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--kta-gold-light);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Card Main Body */
+.kta-body {
+  display: grid;
+  grid-template-columns: 110px 1fr 105px;
+  gap: 16px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  margin: 4px 0;
+}
+
+/* Left Column: Photo & Chip */
+.kta-photo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.kta-photo-frame {
+  position: relative;
+  width: 95px;
+  height: 120px;
+  border-radius: 8px;
+  padding: 3px;
+  background: var(--kta-gold-gradient);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.kta-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  background-color: #0E1318;
+  display: block;
+}
+
+.kta-photo-stamp {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.kta-chip-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.kta-chip-img {
+  width: 42px;
+  height: 32px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Center Column: Member Details */
+.kta-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kta-name-title {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--kta-gold-solid);
+  font-weight: 600;
+  margin: 0;
+}
+
+.kta-name-val {
+  font-family: 'Cinzel', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.kta-id-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--kta-gold-light);
+  letter-spacing: 1px;
+  width: fit-content;
+  margin-bottom: 6px;
+  box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.15);
+}
+
+.kta-meta-grid {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  row-gap: 3px;
+  font-size: 10px;
+}
+
+.kta-meta-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.kta-meta-val {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.kta-belt-ribbon {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  width: fit-content;
+}
+
+/* Right Column: QR Code & Verification */
+.kta-qr-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.kta-qr-frame {
+  background: #FFFFFF;
+  padding: 5px;
+  border-radius: 8px;
+  border: 2px solid var(--kta-gold-solid);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kta-qr-img {
+  width: 82px;
+  height: 82px;
+  display: block;
+}
+
+.kta-qr-caption {
+  font-size: 7.5px;
+  color: var(--kta-gold-light);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Footer */
+.kta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+}
+
+.kta-footer-sec {
+  font-family: 'Courier New', monospace;
+  color: var(--kta-gold-light);
+}
+
+/* -------------------------------------------------------------
+   BACK SIDE (SISI BELAKANG)
+   ------------------------------------------------------------- */
+.kta-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Magnetic Stripe Simulation */
+.kta-magstripe {
+  height: 48px;
+  background: linear-gradient(180deg, #1C150A 0%, #302410 40%, #171107 100%);
+  border-top: 1px solid rgba(212, 175, 55, 0.4);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  color: var(--kta-gold-light);
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  opacity: 0.95;
+}
+
+.kta-back-content {
+  padding: 10px 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kta-rules-box h5 {
+  font-size: 9px;
+  color: var(--kta-gold-solid);
+  letter-spacing: 1.5px;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.kta-rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 8.5px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.kta-rules-list li {
+  margin-bottom: 2px;
+  position: relative;
+  padding-left: 12px;
+}
+
+.kta-rules-list li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--kta-gold-solid);
+  font-size: 7px;
+}
+
+/* Ikrar Box */
+.kta-ikrar-box {
+  background: rgba(14, 61, 19, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 4px 0;
+  font-size: 8px;
+  text-align: center;
+  color: #E0E0E0;
+  font-style: italic;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.kta-ikrar-box strong {
+  color: var(--kta-gold-light);
+  font-style: normal;
+  display: block;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+
+/* Signatures & Golden Stamp */
+.kta-signatures-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.kta-sign-col {
+  text-align: center;
+  width: 140px;
+  font-size: 8px;
+}
+
+.kta-sign-role {
+  color: var(--kta-gold-light);
+  margin-bottom: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.kta-sign-line {
+  border-bottom: 1px solid var(--kta-gold-solid);
+  margin-bottom: 2px;
+}
+
+.kta-sign-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 7.5px;
+}
+
+.kta-seal-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kta-seal-img {
+  width: 65px;
+  height: 65px;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+.kta-back-footer {
+  padding: 6px 24px 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 7.5px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* -------------------------------------------------------------
+   KTA CONTROL TOOLBAR (WEBSITE UI)
+   ------------------------------------------------------------- */
+.kta-actions-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn-kta-gold {
+  background: var(--kta-gold-gradient);
+  color: #121212;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-kta-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.5);
+  filter: brightness(1.1);
+  color: #000;
+}
+
+.btn-kta-dark {
+  background: var(--color-dark-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-dark-elevated);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-kta-dark:hover {
+  border-color: var(--kta-gold-solid);
+  color: var(--kta-gold-light);
+  transform: translateY(-2px);
+}
+
+.btn-kta-green {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: #FFFFFF;
+  border: 1px solid #4caf50;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-kta-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.5);
+  filter: brightness(1.1);
+}
+
+/* =============================================================
+   RESPONSIVE KTA 3D CARD SCALING (Mobile & Tablet)
+   ============================================================= */
+.kta-scale-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
+  transition: transform 0.25s ease;
+  width: 620px;
+  height: 391px;
+}
+
+@media (max-width: 700px) {
+  .kta-stage {
+    padding: 24px 4px;
+    overflow-x: hidden;
+  }
+  .kta-scale-box {
+    transform: scale(0.85);
+    margin: -25px 0;
+  }
+}
+
+@media (max-width: 580px) {
+  .kta-scale-box {
+    transform: scale(0.70);
+    margin: -50px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .kta-scale-box {
+    transform: scale(0.56);
+    margin: -80px 0;
+  }
+
+  .kta-actions-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kta-actions-toolbar .btn,
+  .kta-actions-toolbar .badge,
+  .kta-actions-toolbar form,
+  .kta-actions-toolbar form button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .kta-scale-box {
+    transform: scale(0.48);
+    margin: -100px 0;
+  }
+}
+
+/* -------------------------------------------------------------
+   PRINT STYLING (ID-1 EXACT SIZE 85.60 mm x 53.98 mm)
+   ------------------------------------------------------------- */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .sidebar, .topbar, .kta-actions-toolbar, .btn, nav {
+    display: none !important;
+  }
+
+  .kta-print-sheet, .kta-print-sheet * {
+    visibility: visible;
+  }
+
+  .kta-print-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10mm;
+    background: transparent !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 15mm;
+  }
+
+  /* Exact ID-1 standard dimensions */
+  .kta-print-card {
+    width: 85.60mm !important;
+    height: 53.98mm !important;
+    border-radius: 3.18mm !important;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+    border: 0.5pt solid #D4AF37 !important;
+  }
+}

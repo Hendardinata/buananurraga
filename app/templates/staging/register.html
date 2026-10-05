@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Pendaftaran Calon Anggota | Buana Nurraga{% endblock %}
+{% block page_title %}Pendaftaran Staging{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Pendaftaran Calon Anggota (Staging)</h1>
+        <p class="page-subtitle">Data pendaftar baru akan disimpan ke lembar "DATA MENTAH" sebagai calon peserta ujian sabuk hijau.</p>
+    </div>
+</div>
+
+<div class="card" style="max-width: 840px;">
+    <form method="POST" action="{{ url_for('staging.register') }}">
+        <!-- Step 1 -->
+        <div style="margin-bottom: 28px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">1</span>
+                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Cabang Pendaftar</h3>
+            </div>
+            
+            <div class="form-group">
+                <label>Pilih Cabang</label>
+                <select name="cabang" class="form-control" required {% if user.role == 'admin_cabang' %}readonly{% endif %}>
+                    {% for b in branches %}
+                        {% if user.role == 'admin_cabang' %}
+                            {% if user.branch_code == b.branch_code %}
+                                <option value="{{ b.branch_name|upper }}" selected>{{ b.branch_name }}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ b.branch_name|upper }}">{{ b.branch_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="margin-bottom: 28px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">2</span>
+                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Data Pribadi Calon Anggota</h3>
+            </div>
+
+            <div class="form-group">
+                <label>Nama Lengkap (Sesuai KTP / Ijazah)</label>
+                <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: AHMAD KODRI" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir" class="form-control" placeholder="Contoh: MATARAM" required>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Lahir</label>
+                    <input type="text" name="tanggal_lahir" class="form-control" placeholder="Contoh: 12 AGUSTUS 2005" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Jenis Kelamin</label>
+                <select name="jenis_kelamin" class="form-control" required>
+                    <option value="LAKI-LAKI">LAKI-LAKI</option>
+                    <option value="PEREMPUAN">PEREMPUAN</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div style="margin-bottom: 28px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">3</span>
+                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Alamat & Kontak</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Dusun / Lingkungan</label>
+                    <input type="text" name="dusun" class="form-control" placeholder="Contoh: DUSUN HIJRAH BARU" required>
+                </div>
+                <div class="form-group">
+                    <label>Desa / Kelurahan</label>
+                    <input type="text" name="desa" class="form-control" placeholder="Contoh: USAR MAPIN" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Kecamatan</label>
+                <input type="text" name="kecamatan" class="form-control" placeholder="Contoh: ALAS BARAT" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nomor WhatsApp Aktif</label>
+                    <input type="tel" name="whatsapp" class="form-control" placeholder="Contoh: 08123456789">
+                </div>
+                <div class="form-group">
+                    <label>Kontak Darurat (Wali / Keluarga)</label>
+                    <input type="tel" name="nomor_darurat" class="form-control" placeholder="Contoh: 08198765432">
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid var(--color-border);">
+            <a href="{{ url_for('member.index') }}" class="btn btn-secondary">
+                Batal
+            </a>
+            <button type="submit" class="btn btn-primary" style="padding: 11px 24px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Masukkan ke Data Mentah
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

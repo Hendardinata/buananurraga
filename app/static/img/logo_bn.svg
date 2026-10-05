@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Gold Metallic Gradients -->
+    <linearGradient id="goldMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE885" />
+      <stop offset="25%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#AA771C" />
+      <stop offset="75%" stop-color="#FDF0A6" />
+      <stop offset="100%" stop-color="#8B6508" />
+    </linearGradient>
+    <radialGradient id="greenCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1B5E20" />
+      <stop offset="70%" stop-color="#0E3D13" />
+      <stop offset="100%" stop-color="#061F09" />
+    </radialGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Outer Ring with Gold Bead Accents -->
+  <circle cx="250" cy="250" r="235" fill="none" stroke="url(#goldMetallic)" stroke-width="6" />
+  <circle cx="250" cy="250" r="222" fill="none" stroke="url(#goldMetallic)" stroke-width="2" stroke-dasharray="4,6" />
+
+  <!-- Outer Dark Background Ring -->
+  <circle cx="250" cy="250" r="215" fill="#121212" stroke="url(#goldMetallic)" stroke-width="4" />
+
+  <!-- Circular Text Path -->
+  <path id="textPathUpper" d="M 75,250 A 175,175 0 1,1 425,250" fill="none" />
+  <text font-family="'Cinzel', 'Georgia', serif" font-size="24" font-weight="bold" fill="url(#goldMetallic)" letter-spacing="3.5">
+    <textPath href="#textPathUpper" startOffset="50%" text-anchor="middle">
+      PERGURUAN SILAT BUANA NURRAGA
+    </textPath>
+  </text>
+
+  <path id="textPathLower" d="M 425,250 A 175,175 0 0,1 75,250" fill="none" />
+  <text font-family="'Cinzel', 'Georgia', serif" font-size="19" font-weight="bold" fill="url(#goldMetallic)" letter-spacing="4">
+    <textPath href="#textPathLower" startOffset="50%" text-anchor="middle">
+      ★ NUSA TENGGARA BARAT ★
+    </textPath>
+  </text>
+
+  <!-- Inner Deep Green Medallion -->
+  <circle cx="250" cy="250" r="140" fill="url(#greenCenter)" stroke="url(#goldMetallic)" stroke-width="5" filter="url(#goldGlow)" />
+  <circle cx="250" cy="250" r="130" fill="none" stroke="url(#goldMetallic)" stroke-width="1.5" stroke-dasharray="3,3" />
+
+  <!-- 8-Pointed Star (Asta Dala) Geometric Foundation -->
+  <g transform="translate(250, 250)">
+    <polygon points="0,-120 28,-38 120,0 28,38 0,120 -28,38 -120,0 -28,-38" fill="none" stroke="url(#goldMetallic)" stroke-width="2" opacity="0.6"/>
+    <polygon points="0,-120 28,-38 120,0 28,38 0,120 -28,38 -120,0 -28,-38" fill="none" stroke="url(#goldMetallic)" stroke-width="2" transform="rotate(45)" opacity="0.6"/>
+
+    <!-- Radiant Nur Beams -->
+    <circle cx="0" cy="0" r="30" fill="url(#goldMetallic)" opacity="0.25" filter="url(#goldGlow)" />
+
+    <!-- Twin Crossed Keris / Silat Blades -->
+    <!-- Keris 1 (Angled +45 deg) -->
+    <g transform="rotate(45)">
+      <!-- Blade with Luk (Waves) -->
+      <path d="M -3,-95 C -1,-80 -7,-65 -3,-50 C 1,-35 -5,-20 -2,-5 L 2,-5 C 5,-20 -1,-35 3,-50 C 7,-65 1,-80 3,-95 Z" fill="url(#goldMetallic)" />
+      <!-- Ganja (Base Guard) -->
+      <path d="M -12,-5 L 12,-5 L 8,0 L -8,0 Z" fill="url(#goldMetallic)" />
+      <!-- Handle (Hilt) -->
+      <path d="M -4,0 L 4,0 L 5,28 C 3,33 -3,33 -5,28 Z" fill="#D4AF37" />
+    </g>
+
+    <!-- Keris 2 (Angled -45 deg) -->
+    <g transform="rotate(-45)">
+      <path d="M -3,-95 C -1,-80 -7,-65 -3,-50 C 1,-35 -5,-20 -2,-5 L 2,-5 C 5,-20 -1,-35 3,-50 C 7,-65 1,-80 3,-95 Z" fill="url(#goldMetallic)" />
+      <path d="M -12,-5 L 12,-5 L 8,0 L -8,0 Z" fill="url(#goldMetallic)" />
+      <path d="M -4,0 L 4,0 L 5,28 C 3,33 -3,33 -5,28 Z" fill="#D4AF37" />
+    </g>
+
+    <!-- Center Globe Shield ("Buana") -->
+    <circle cx="0" cy="0" r="42" fill="#0A0D10" stroke="url(#goldMetallic)" stroke-width="3" />
+    <!-- Latitude & Longitude Lines (Globe / Universe) -->
+    <ellipse cx="0" cy="0" rx="38" ry="14" fill="none" stroke="url(#goldMetallic)" stroke-width="1.5" opacity="0.8" />
+    <ellipse cx="0" cy="0" rx="18" ry="38" fill="none" stroke="url(#goldMetallic)" stroke-width="1.5" opacity="0.8" />
+    <line x1="-38" y1="0" x2="38" y2="0" stroke="url(#goldMetallic)" stroke-width="1.5" opacity="0.8" />
+    <line x1="0" y1="-38" x2="0" y2="38" stroke="url(#goldMetallic)" stroke-width="1.5" opacity="0.8" />
+
+    <!-- Center Insignia Letters "BN" -->
+    <circle cx="0" cy="0" r="22" fill="#121212" stroke="url(#goldMetallic)" stroke-width="1.5" />
+    <text x="0" y="7" font-family="'Cinzel', 'Trajan Pro', serif" font-size="18" font-weight="900" fill="url(#goldMetallic)" text-anchor="middle" letter-spacing="1">BN</text>
+  </g>
+
+  <!-- Banner Ribbon at Bottom -->
+  <g transform="translate(0, 395)">
+    <path d="M 120,30 L 150,10 L 350,10 L 380,30 L 350,50 L 150,50 Z" fill="#0E3D13" stroke="url(#goldMetallic)" stroke-width="3" />
+    <text x="250" y="36" font-family="'Cinzel', 'Georgia', serif" font-size="16" font-weight="bold" fill="url(#goldMetallic)" text-anchor="middle" letter-spacing="2">
+      BUDI PEKERTI LUHUR
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Keabsahan Anggota - Perguruan Silat Buana Nurraga</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-tokens.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        body {
+            background-color: #0A0D12;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(46, 125, 50, 0.22) 0%, transparent 60%),
+                radial-gradient(circle at 10% 90%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                url('/static/img/guilloche_bg.svg');
+            background-size: cover, cover, cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+        }
+
+        .verify-card {
+            background: rgba(20, 26, 35, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.15);
+            width: 100%;
+            max-width: 580px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .verify-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #1B5E20, #D4AF37, #1B5E20);
+        }
+
+        .verify-header {
+            padding: 28px 24px 20px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .verify-logo {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
+        }
+
+        .verify-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--color-gold);
+            letter-spacing: 1.5px;
+            margin: 0 0 4px 0;
+        }
+
+        .verify-subtitle {
+            font-size: 0.8rem;
+            color: #B0BEC5;
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            margin: 18px auto 0 auto;
+            padding: 8px 18px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .status-badge.valid {
+            background: rgba(46, 125, 50, 0.25);
+            border: 1px solid #4CAF50;
+            color: #81C784;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .status-badge.invalid {
+            background: rgba(211, 47, 47, 0.25);
+            border: 1px solid #E57373;
+            color: #FF8A80;
+            box-shadow: 0 0 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .verify-body {
+            padding: 24px;
+        }
+
+        .member-profile-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .member-photo {
+            width: 80px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid var(--color-gold);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            background: #0E1318;
+            flex-shrink: 0;
+        }
+
+        .member-primary-info {
+            flex-grow: 1;
+        }
+
+        .member-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0 0 6px 0;
+        }
+
+        .member-id-pill {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--color-gold);
+            color: var(--color-gold-light);
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            font-size: 0.9rem;
+        }
+
+        .detail-table td {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-table td:first-child {
+            color: #B0BEC5;
+            width: 38%;
+            border-radius: 6px 0 0 6px;
+            border-left: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-table td:last-child {
+            color: #FFFFFF;
+            font-weight: 600;
+            border-radius: 0 6px 6px 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .privacy-box {
+            background: rgba(14, 61, 19, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #A5D6A7;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            line-height: 1.4;
+        }
+
+        .verify-footer {
+            padding: 18px 24px;
+            text-align: center;
+            background: rgba(10, 14, 20, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
+            color: #78909C;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="verify-card">
+        <!-- Header -->
+        <div class="verify-header">
+            <img src="{{ url_for('static', filename='img/logo_bn.svg') }}" alt="Logo Buana Nurraga" class="verify-logo">
+            <h1 class="verify-title">PERGURUAN SILAT BUANA NURRAGA</h1>
+            <p class="verify-subtitle">Sistem Verifikasi Integritas Keanggotaan Nasional</p>
+
+            {% if is_valid %}
+            <div class="status-badge valid">
+                <span style="font-size: 1.1rem;">✓</span> TERVERIFIKASI RESMI
+            </div>
+            {% else %}
+            <div class="status-badge invalid">
+                <span style="font-size: 1.1rem;">✗</span> DATA TIDAK DITEMUKAN / TIDAK VALID
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Body -->
+        <div class="verify-body">
+            {% if is_valid %}
+            <div class="member-profile-row">
+                <img src="{{ member_data.photo_url }}" alt="Foto Anggota" class="member-photo" onerror="this.src='/static/img/avatar_placeholder.svg'">
+                <div class="member-primary-info">
+                    <p style="color: var(--color-gold); font-size: 0.75rem; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 1px;">Nama Anggota:</p>
+                    <h2 class="member-name">{{ member_data.nama_lengkap }}</h2>
+                    <span class="member-id-pill">{{ member_data.nomor_induk }}</span>
+                </div>
+            </div>
+
+            <table class="detail-table">
+                <tr>
+                    <td>Tingkatan Sabuk</td>
+                    <td>
+                        <span style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-weight: bold; background: {{ member_data.belt_info.bg_gradient }}; color: #FFFFFF; font-size: 0.8rem;">
+                            {{ member_data.belt_info.label }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gelar / Jabatan</td>
+                    <td>{{ member_data.belt_info.level_name }}</td>
+                </tr>
+                <tr>
+                    <td>Cabang Latihan</td>
+                    <td>{{ member_data.cabang }}</td>
+                </tr>
+                <tr>
+                    <td>Kabupaten / Wilayah</td>
+                    <td>{{ member_data.kabupaten }}</td>
+                </tr>
+                <tr>
+                    <td>Tanggal Pengesahan</td>
+                    <td>{{ member_data.tanggal_sah }}</td>
+                </tr>
+                <tr>
+                    <td>Status Keanggotaan</td>
+                    <td><span style="color: #4CAF50;">● AKTIF & RESMI</span></td>
+                </tr>
+            </table>
+
+            <div class="privacy-box">
+                <span style="font-size: 1.4rem;">🛡️</span>
+                <div>
+                    <strong>Protokol Privasi Anggota:</strong> Data sensitif (NIK, rincian nomor kontak, dan alamat rumah lengkap) disamarkan untuk melindungi privasi anggota Perguruan Silat Buana Nurraga.
+                </div>
+            </div>
+
+            {% else %}
+            <div style="text-align: center; padding: 30px 10px;">
+                <p style="color: #FF8A80; font-size: 1rem; margin-bottom: 12px;">
+                    Nomor Induk <strong>{{ nomor_induk }}</strong> tidak tercatat dalam arsip master Perguruan Silat Buana Nurraga.
+                </p>
+                <p style="color: #B0BEC5; font-size: 0.85rem; line-height: 1.5;">
+                    Pastikan Anda memindai kode QR resmi yang tertera pada Kartu Tanda Anggota (KTA) fisik yang diterbitkan oleh Pengurus Pusat atau Sekretariat Cabang resmi.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div class="verify-footer">
+            <p style="margin: 0 0 4px 0;">© Perguruan Silat Buana Nurraga • Dewan Pimpinan Pusat</p>
+            <p style="margin: 0; font-family: monospace; font-size: 0.7rem;">Waktu Pengecekan Sistem: {{ checked_at }}</p>
+        </div>
+    </div>
+
+</body>
+</html>

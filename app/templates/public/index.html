@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguruan Silat Buana Nurraga</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-tokens.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-dark-bg);
+            color: var(--color-text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.9)), url('{{ url_for("static", filename="img/guilloche_bg.svg") }}');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            color: var(--color-gold);
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .btn-gold {
+            background-color: var(--color-gold);
+            color: var(--color-dark-bg);
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            background-color: var(--color-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        .section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .section-title {
+            color: var(--color-gold);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background-color: var(--color-dark-surface);
+            border: 1px solid var(--color-dark-elevated);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-gold);
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--color-dark-elevated);
+        }
+        .nav-links a {
+            color: var(--color-text-primary);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--color-gold);
+        }
+        footer {
+            background-color: var(--color-dark-elevated);
+            text-align: center;
+            padding: 30px;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 14px 18px;
+            }
+            .nav-links a {
+                margin-left: 14px;
+                font-size: 0.85rem;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+            .section {
+                padding: 50px 16px;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 38px; width: auto;">
+            <span style="color: var(--color-gold); font-size: 1.3rem; font-weight: bold; letter-spacing: 0.5px;">BUANA NURRAGA</span>
+        </div>
+        <div class="nav-links">
+            <a href="#profil">Profil</a>
+            <a href="#cabang">Cabang NTB</a>
+            <a href="{{ url_for('auth.login') }}" style="color: var(--color-gold);">Login Anggota</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Buana Nurraga" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">
+        <h1>Perguruan Silat<br>Buana Nurraga</h1>
+        <p>Membentuk karakter kesatria, memelihara tradisi luhur, dan membangun persaudaraan tanpa batas di penjuru Nusantara.</p>
+        <a href="#profil" class="btn-gold">Kenali Lebih Dalam</a>
+    </header>
+
+    <section id="profil" class="section">
+        <h2 class="section-title">Sejarah & Profil</h2>
+        <div style="background-color: var(--color-dark-surface); padding: 40px; border-radius: 12px; border-left: 4px solid var(--color-gold); line-height: 1.8; color: var(--color-text-secondary);">
+            <p style="font-size: 1.1rem; margin-top: 0;">Perguruan Silat Buana Nurraga didirikan dengan landasan kuat untuk melestarikan kebudayaan asli bangsa Indonesia, yaitu Pencak Silat. Berpusat di kawasan NTB, perguruan ini tidak sekadar mengajarkan bela diri, tetapi juga menanamkan nilai-nilai moral, spiritual, dan sosial (Budi Pekerti Luhur).</p>
+            <p style="font-size: 1.1rem;">Dengan sistem kurikulum sabuk mulai dari Sabuk Hijau hingga Guru Besar, Buana Nurraga telah melahirkan ribuan pendekar yang tersebar di berbagai wilayah NTB dan Indonesia.</p>
+        </div>
+    </section>
+
+    <section id="cabang" class="section">
+        <h2 class="section-title">Cabang Utama NTB</h2>
+        <div class="grid">
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🏛️</div>
+                <h3 style="color: var(--color-gold); margin-bottom: 10px;">Cabang Mataram</h3>
+                <p style="color: var(--color-text-secondary);">Pusat pelatihan utama di ibu kota dengan jumlah siswa terbesar.</p>
+            </div>
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 15px;">⛰️</div>
+                <h3 style="color: var(--color-gold); margin-bottom: 10px;">Cabang Lombok Tengah</h3>
+                <p style="color: var(--color-text-secondary);">Padepokan asri di pusat Pulau Lombok dengan fasilitas lengkap.</p>
+            </div>
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🌊</div>
+                <h3 style="color: var(--color-gold); margin-bottom: 10px;">Cabang Sumbawa</h3>
+                <p style="color: var(--color-text-secondary);">Cabang pesisir yang menjunjung tinggi tradisi maritim.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="text-align: center; padding-bottom: 100px;">
+        <h2 class="section-title">Cek Keaslian KTA</h2>
+        <p style="color: var(--color-text-secondary); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">Validasi nomor induk anggota secara realtime untuk memastikan keabsahan status keanggotaan.</p>
+        
+        <form onsubmit="event.preventDefault(); window.location.href = '/verify/' + document.getElementById('cekNomor').value;" style="display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: 0 auto;">
+            <input type="text" id="cekNomor" placeholder="Masukkan Nomor Induk" required style="flex: 1; padding: 15px; border-radius: 8px; border: 1px solid var(--color-dark-elevated); background-color: rgba(255,255,255,0.05); color: white; font-size: 1rem;">
+            <button type="submit" class="btn-gold" style="border: none; cursor: pointer;">Cek KTA</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Perguruan Silat Buana Nurraga. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
