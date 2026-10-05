@@ -3,4 +3,4 @@ __pycache__/
 *.pyc
 .env
 BN_upload.zip
-logo.png
+/logo.png
