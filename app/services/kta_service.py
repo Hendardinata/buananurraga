@@ -73,6 +73,36 @@ class KtaService:
             'rank_order': 1
         })
 
+    @staticmethod
+    def format_date_display(val: str) -> str:
+        if not val or not str(val).strip() or str(val).strip() == '-':
+            return '-'
+        val_str = str(val).strip()
+        months_id = ["", "JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"]
+        try:
+            if 'T' in val_str:
+                clean_dt = val_str.replace('Z', '+00:00')
+                from datetime import datetime
+                dt = datetime.fromisoformat(clean_dt)
+                return f"{dt.day:02d} {months_id[dt.month]} {dt.year}"
+            elif '-' in val_str and len(val_str.split('-')) == 3:
+                parts = val_str.split('-')
+                if len(parts[0]) == 4:
+                    from datetime import datetime
+                    dt = datetime.strptime(val_str[:10], "%Y-%m-%d")
+                    return f"{dt.day:02d} {months_id[dt.month]} {dt.year}"
+            elif '/' in val_str:
+                parts = val_str.split('/')
+                if len(parts) == 3:
+                    day = int(parts[0])
+                    month = int(parts[1])
+                    year = int(parts[2])
+                    if 1 <= month <= 12:
+                        return f"{day:02d} {months_id[month]} {year}"
+        except Exception:
+            pass
+        return val_str
+
     @classmethod
     def prepare_kta_payload(cls, member: dict, host_url: str) -> dict:
         """
@@ -95,6 +125,7 @@ class KtaService:
         if not tanggal_sah or str(tanggal_sah).strip() == '':
             # Fallback to Hijau or Tanggal Sah
             tanggal_sah = member.get('HIJAU') or member.get('TANGGAL') or '25/05/2025'
+        formatted_tanggal_sah = cls.format_date_display(tanggal_sah)
 
         # Format TTL and Address
         ttl = str(member.get('TEMPAT TANGGAL LAHIR', '-')).strip()
@@ -108,7 +139,7 @@ class KtaService:
             'sabuk': sabuk,
             'belt_info': belt_info,
             'cabang': cabang,
-            'tanggal_sah': str(tanggal_sah).strip(),
+            'tanggal_sah': formatted_tanggal_sah,
             'ttl': ttl,
             'jenis_kelamin': str(member.get('JENIS KELAMIN', '-')).strip(),
             'verification_url': verification_url,

@@ -4,142 +4,379 @@
 {% block page_title %}Wizard Khataman & Kenaikan Tingkat{% endblock %}
 
 {% block content %}
-<div class="page-header">
+<!-- Page Header (Matching Manajemen Pengguna Nuance) -->
+<div class="page-header" style="align-items: flex-start; margin-bottom: 24px;">
     <div>
-        <h1 class="page-title">Pengesahan Khataman & Kenaikan Tingkat</h1>
-        <p class="page-subtitle">Sinkronisasi otomatis peserta baru dan anggota lama yang naik tingkat ke 3 lembar kerja sekaligus.</p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+            <h1 class="page-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary);">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+                Pengesahan Khataman & Kenaikan Tingkat
+            </h1>
+            <span class="badge badge-belt-hitam-cokelat" style="font-size: 0.75rem; padding: 4px 10px;">
+                Sinkronisasi 3 Sheet
+            </span>
+        </div>
+        <p class="page-subtitle" style="margin: 0;">Sinkronisasi otomatis peserta baru dan anggota lama yang naik
+            tingkat ke 3 lembar kerja sekaligus.</p>
     </div>
 </div>
 
-<div class="alert alert-info">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-    <div>
-        Wizard ini memproses data dari <strong>DATA MENTAH</strong> (calon anggota baru akan otomatis diurutkan A-Z dan diberikan Nomor Induk permanen bersabuk Hijau), serta mencatat riwayat sabuk baru anggota lama ke <strong>ARSIP KENAIKAN TINGKAT</strong> dan <strong>LOKASI DAN JUMLAH PESERTA</strong>.
-    </div>
-</div>
 
-<div class="card">
-    <form method="POST" action="{{ url_for('promotion.wizard') }}">
-        
-        <!-- Section 1 -->
-        <div style="margin-bottom: 32px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
-                <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">1</span>
-                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Informasi Perhelatan / Acara</h3>
+<!-- Main Form -->
+<form method="POST" action="{{ url_for('promotion.wizard') }}" id="wizardForm">
+
+    <!-- Section 1: Informasi Perhelatan / Acara (Card Format) -->
+    <div class="card" style="margin-bottom: 24px; padding: 20px 24px;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div
+                    style="width: 34px; height: 34px; border-radius: var(--radius-md); background: var(--color-primary-soft); color: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">
+                        Informasi Perhelatan / Acara</h3>
+                    <span style="font-size: 0.8rem; color: var(--color-text-muted);">Tentukan tanggal resmi pengesahan
+                        dan wilayah pelaksanaan acara khataman</span>
+                </div>
             </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-                <div class="form-group">
-                    <label>Tanggal Pengesahan</label>
-                    <input type="date" name="event_date" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Desa Lokasi Acara</label>
-                    <input type="text" name="desa" class="form-control" placeholder="Contoh: SELAGALAS" required>
-                </div>
-                <div class="form-group">
-                    <label>Kecamatan</label>
-                    <input type="text" name="kecamatan" class="form-control" placeholder="Contoh: SANDUBAYA" required>
-                </div>
-                <div class="form-group">
-                    <label>Kabupaten / Kota</label>
-                    <input type="text" name="kabupaten" class="form-control" placeholder="Contoh: MATARAM" required>
-                </div>
+            <div>
+                <span class="badge badge-neutral" style="font-size: 0.8rem; padding: 5px 12px;">Wajib Dilengkapi</span>
             </div>
         </div>
 
-        <!-- Section 2 -->
-        <div style="margin-bottom: 32px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">2</span>
-                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Calon Anggota Baru (Dari Staging)</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin: 0;">
+                        Tanggal Pengesahan
+                    </label>
+                    <button type="button" onclick="setEventDateToday()"
+                        style="background: none; border: none; font-size: 0.75rem; font-weight: 700; color: var(--color-primary); cursor: pointer; padding: 0;">
+                        Hari Ini
+                    </button>
                 </div>
-                <span class="badge badge-belt-hijau">{{ staging_data|length }} Calon Sabuk Hijau</span>
+                <input type="date" name="event_date" id="eventDateInput" class="form-control" required
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();}">
             </div>
 
-            <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px;">
-                {% if staging_data|length == 0 %}
-                    <div style="text-align: center; padding: 24px 0; color: var(--color-text-muted);">
-                        <p style="margin: 0 0 6px 0; font-weight: 600; color: var(--color-text-secondary);">Belum ada calon anggota baru di staging (Data Mentah).</p>
-                        <a href="{{ url_for('staging.register') }}" class="btn btn-secondary btn-sm" style="margin-top: 8px;">+ Tambah ke Staging Sekarang</a>
-                    </div>
-                {% else %}
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        {% for d in staging_data %}
-                        <div class="staging-candidate-row">
-                            <div style="font-weight: 700; color: var(--color-text-primary); font-size: 0.9rem;">
-                                {{ d.get('NAMA LENGKAP') }}
-                            </div>
-                            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">
-                                Cabang: <strong>{{ d.get('CABANG') }}</strong>
-                            </div>
-                            <div>
-                                <span class="badge badge-belt-hijau">Tujuan: SABUK HIJAU</span>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Section 3 -->
-        <div style="margin-bottom: 32px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-light);">
-                <span style="width: 26px; height: 26px; border-radius: 50%; background-color: var(--color-primary-soft); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">3</span>
-                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">Pilih Anggota Lama & Sabuk Tujuan</h3>
-            </div>
-
-            <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
-                <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 8px;">
-                    Cari & Pilih Anggota yang Naik Tingkat
+            <div>
+                <label
+                    style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                    Desa Lokasi Acara
                 </label>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Ketik nama atau nomor induk..." onkeyup="filterMembers()" style="flex: 1; min-width: 200px;">
-                    <select id="memberSelect" class="form-control" style="flex: 2; min-width: 260px;">
+                <input type="text" name="desa" id="desaInput" class="form-control" placeholder="Contoh: SELAGALAS"
+                    required style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase();"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();}">
+            </div>
+
+            <div>
+                <label
+                    style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                    Kecamatan
+                </label>
+                <input type="text" name="kecamatan" id="kecamatanInput" class="form-control"
+                    placeholder="Contoh: SANDUBAYA" required style="text-transform: uppercase;"
+                    oninput="this.value = this.value.toUpperCase();"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();}">
+            </div>
+
+            <div>
+                <label
+                    style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                    Kabupaten / Kota
+                </label>
+                <input type="text" name="kabupaten" id="kabupatenInput" class="form-control"
+                    placeholder="Contoh: MATARAM" required style="text-transform: uppercase;"
+                    oninput="this.value = this.value.toUpperCase();"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();}">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Calon Anggota Baru (Data Mentah dari Staging) in Table-Card Format -->
+    <div class="table-card" style="margin-bottom: 24px;">
+        <div
+            style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #FFFFFF;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div
+                    style="width: 34px; height: 34px; border-radius: var(--radius-md); background: #ECFDF5; color: #047857; display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Calon
+                        Anggota Baru (Dari Staging)</h3>
+                    <span style="font-size: 0.8rem; color: var(--color-text-muted);">Calon anggota baru akan otomatis
+                        diurutkan A-Z dan diberikan Nomor Induk permanen bersabuk Hijau</span>
+                </div>
+            </div>
+            <div>
+                <span class="badge badge-belt-hijau" style="font-size: 0.8rem; padding: 5px 12px; font-weight: 700;">
+                    {{ staging_data|length }} Calon Sabuk Hijau
+                </span>
+            </div>
+        </div>
+
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px; text-align: center;">No</th>
+                        <th style="min-width: 200px;">Nama Lengkap</th>
+                        <th style="width: 170px;">Penempatan Cabang</th>
+                        <th style="min-width: 160px;">Desa / Kelurahan</th>
+                        <th style="width: 130px;">Jenis Kelamin</th>
+                        <th style="width: 160px; text-align: center;">Sabuk Tujuan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if staging_data|length == 0 %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 36px 16px; color: var(--color-text-muted);">
+                            <div style="font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px;">Belum
+                                ada calon anggota baru di staging (Data Mentah).</div>
+                            <a href="{{ url_for('staging.register') }}" class="btn btn-secondary btn-sm"
+                                style="margin-top: 8px;">+ Tambah ke Staging Sekarang</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    {% for d in staging_data %}
+                    <tr>
+                        <td
+                            style="text-align: center; color: var(--color-text-muted); font-size: 0.8rem; font-weight: 600;">
+                            #{{ loop.index }}
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: var(--radius-full); background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #047857;">
+                                    {{ (d.get('NAMA LENGKAP', 'U')|string)[0]|upper }}
+                                </div>
+                                <span style="font-weight: 700; color: var(--color-text-primary); font-size: 0.925rem;">
+                                    {{ d.get('NAMA LENGKAP') }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-neutral"
+                                style="font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                {{ d.get('CABANG') }}
+                            </span>
+                        </td>
+                        <td style="color: var(--color-text-secondary); font-size: 0.85rem;">
+                            {{ d.get('DESA/KELURAHAN') or '-' }}
+                        </td>
+                        <td style="color: var(--color-text-secondary); font-size: 0.85rem;">
+                            {{ d.get('JENIS KELAMIN') or '-' }}
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="badge badge-belt-hijau"
+                                style="font-size: 0.75rem; padding: 4px 10px; font-weight: 700;">
+                                SABUK HIJAU
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section 3: Kenaikan Sabuk Anggota Lama in Table-Card Format -->
+    <div class="table-card" style="margin-bottom: 24px;">
+        <!-- Card Header -->
+        <div
+            style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #FFFFFF;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div
+                    style="width: 34px; height: 34px; border-radius: var(--radius-md); background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Pilih
+                        Anggota Lama & Sabuk Tujuan</h3>
+                    <span style="font-size: 0.8rem; color: var(--color-text-muted);">Pilih anggota yang naik tingkat dan
+                        tentukan tingkatan sabuk barunya</span>
+                </div>
+            </div>
+            <div>
+                <span id="upgradeTableBadge" class="badge badge-neutral" style="font-size: 0.8rem; padding: 5px 12px;">
+                    0 Anggota Terpilih
+                </span>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar (Exact style from users/index.html) -->
+        <div
+            style="padding: 16px 20px; background: var(--color-surface-subtle); border-bottom: 1px solid var(--color-border);">
+            <div class="budget-filter-form" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                <!-- Cari Anggota -->
+                <div style="flex: 2; min-width: 220px;">
+                    <label
+                        style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                        Pencarian Anggota
+                    </label>
+                    <div style="position: relative;">
+                        <input type="text" id="searchInput" class="form-control"
+                            placeholder="Ketik nama atau nomor induk..." onkeyup="filterMembers()"
+                            onkeydown="handleSearchKeydown(event)" style="padding-left: 36px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Pilih Anggota Terdaftar -->
+                <div style="flex: 3; min-width: 260px;">
+                    <label
+                        style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                        Pilih Dari Database Anggota ({{ existing_members|length }} Terdaftar)
+                    </label>
+                    <select id="memberSelect" class="form-control" style="font-weight: 600;">
                         <option value="">-- Pilih Anggota Terdaftar --</option>
                         {% for member in existing_members %}
-                        <option value="{{ member.get('NOMOR INDUK') }}" data-nama="{{ member.get('NAMA LENGKAP') }}" data-sabuk="{{ member.get('SABUK') }}" data-cabang="{{ member.get('CABANG') }}">
-                            {{ member.get('NOMOR INDUK') }} - {{ member.get('NAMA LENGKAP') }} (Sabuk: {{ member.get('SABUK') }})
+                        <option value="{{ member.get('NOMOR INDUK') }}" data-nama="{{ member.get('NAMA LENGKAP') }}"
+                            data-sabuk="{{ member.get('SABUK', 'HIJAU') }}"
+                            data-cabang="{{ member.get('CABANG', '') }}">
+                            {{ member.get('NOMOR INDUK') }} - {{ member.get('NAMA LENGKAP') }} [Sabuk: {{
+                            member.get('SABUK', 'HIJAU') }}] ({{ member.get('CABANG', '') }})
                         </option>
                         {% endfor %}
                     </select>
-                    <button type="button" class="btn btn-secondary" onclick="addSelectedMember()" style="padding: 10px 18px;">
-                        + Tambah ke Daftar
+                </div>
+
+                <!-- Tombol Tambah ke Daftar -->
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="addSelectedMember()"
+                        style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 6px; height: 42px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Tambah ke Daftar</span>
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- List Anggota Terpilih -->
-            <div style="margin-top: 16px;">
-                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary); margin: 0 0 12px 0;">
-                    Daftar Anggota Yang Akan Dinaikkan Tingkatnya:
-                </h4>
-                <div id="upgradeList" style="display: flex; flex-direction: column; gap: 10px;">
-                    <div id="emptyMessage" style="text-align: center; padding: 24px; border: 1px dashed var(--color-border); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: 0.875rem;">
-                        Belum ada anggota lama yang ditambahkan ke daftar kenaikan.
-                    </div>
+        <!-- Data Table of Upgraded Members -->
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 160px;">Nomor Induk</th>
+                        <th style="min-width: 200px;">Nama Lengkap</th>
+                        <th style="width: 160px;">Penempatan Cabang</th>
+                        <th style="width: 150px;">Sabuk Saat Ini</th>
+                        <th style="min-width: 220px;">Sabuk Tujuan (Baru)</th>
+                        <th style="width: 100px; text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="upgradeTableBody">
+                    <tr id="emptyRow">
+                        <td colspan="6" style="text-align: center; padding: 36px 16px; color: var(--color-text-muted);">
+                            <div style="font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px;">Belum
+                                ada anggota lama yang ditambahkan ke daftar kenaikan.</div>
+                            <div style="font-size: 0.8rem;">Gunakan kolom pencarian dan dropdown di atas, lalu klik
+                                <strong>+ Tambah ke Daftar</strong>.
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section 4: Bottom Confirmation & Action Toolbar (Matching users/index.html Card) -->
+    <div class="card"
+        style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1;">
+            <div
+                style="width: 38px; height: 38px; border-radius: var(--radius-md); background: #ECFDF5; color: #047857; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <div style="min-width: 0;">
+                <div
+                    style="font-weight: 700; color: var(--color-text-primary); font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Sinkronisasi Atomik 3 Lembar Kerja
+                </div>
+                <div
+                    style="font-size: 0.8rem; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Data akan dicatat secara otomatis ke Data Induk, Arsip Kenaikan Tingkat, dan Rekap Pelaksanaan.
                 </div>
             </div>
         </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 20px; border-top: 1px solid var(--color-border);">
-            <button type="button" class="btn btn-primary" style="padding: 12px 24px; font-size: 0.95rem;" 
-                    data-confirm="Apakah Anda yakin ingin memproses pengesahan kenaikan tingkat dan menyinkronkan data di 3 sheet secara otomatis?"
-                    data-confirm-title="Pengesahan Kenaikan Tingkat"
-                    data-confirm-type="primary"
-                    data-confirm-btn="Ya, Mulai Sinkronisasi">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                Mulai Sinkronisasi Otomatis 3 Sheet
+        <div style="flex-shrink: 0; white-space: nowrap;">
+            <button type="button" class="btn btn-primary btn-submit-wizard" form="wizardForm"
+                data-confirm="Apakah Anda yakin ingin memproses pengesahan kenaikan tingkat dan menyinkronkan data di 3 sheet secara otomatis?"
+                data-confirm-title="Pengesahan Kenaikan Tingkat" data-confirm-type="primary"
+                data-confirm-btn="Ya, Mulai Sinkronisasi"
+                style="padding: 12px 24px; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); white-space: nowrap;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <span>Simpan Data</span>
             </button>
         </div>
-    </form>
-</div>
+    </div>
+
+</form>
 {% endblock %}
 
 {% block extra_js %}
 <script>
+    const stagingCount = parseInt('{{ staging_data|length }}', 10) || 0;
+    const belts = ["HIJAU", "BIRU", "COKELAT", "HITAM COKELAT", "HITAM ORANGE", "GURU", "GURU BESAR"];
+
+    // Set today's date shortcut
+    function setEventDateToday() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const dateInput = document.getElementById("eventDateInput");
+        if (dateInput) {
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+    }
+
+    // Filter members dropdown
     function filterMembers() {
         const input = document.getElementById("searchInput").value.toLowerCase();
         const select = document.getElementById("memberSelect");
@@ -155,80 +392,228 @@
         }
     }
 
+    // Handle Enter in search input to quickly add member
+    function handleSearchKeydown(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const select = document.getElementById("memberSelect");
+            const visibleOptions = Array.from(select.options).slice(1).filter(opt => opt.style.display !== 'none');
+            if (visibleOptions.length === 1) {
+                select.value = visibleOptions[0].value;
+                addSelectedMember();
+            } else if (select.selectedIndex > 0) {
+                addSelectedMember();
+            }
+        }
+    }
+
+    // Belt badge class helper
+    function getBeltBadgeClass(belt) {
+        if (!belt) return 'badge-belt-hijau';
+        const b = belt.toUpperCase().replace(/^SABUK\s+/, '').trim();
+        if (b === 'HIJAU') return 'badge-belt-hijau';
+        if (b === 'BIRU') return 'badge-belt-biru';
+        if (b === 'COKELAT') return 'badge-belt-cokelat';
+        if (b === 'HITAM COKELAT') return 'badge-belt-hitam-cokelat';
+        if (b === 'HITAM ORANGE') return 'badge-belt-hitam-orange';
+        if (b === 'GURU') return 'badge-belt-guru';
+        if (b === 'GURU BESAR') return 'badge-belt-guru';
+        return 'badge-secondary';
+    }
+
+    // Add member to promotion list
     function addSelectedMember() {
         const select = document.getElementById("memberSelect");
-        if (select.selectedIndex === 0) return;
-
-        const option = select.options[select.selectedIndex];
-        const nomorInduk = option.value;
-        const nama = option.getAttribute('data-nama');
-        const currentSabuk = option.getAttribute('data-sabuk');
-        
-        const upgradeList = document.getElementById('upgradeList');
-        const emptyMessage = document.getElementById('emptyMessage');
-        if (emptyMessage) {
-            emptyMessage.style.display = 'none';
-        }
-
-        const belts = ["HIJAU", "BIRU", "COKELAT", "HITAM COKELAT", "HITAM ORANGE", "GURU", "GURU BESAR"];
-        let targetOptions = "";
-        let foundCurrent = false;
-        
-        for (let i = 0; i < belts.length; i++) {
-            if (foundCurrent) {
-                targetOptions += `<option value="${belts[i]}">${belts[i]}</option>`;
-            }
-            if (belts[i] === currentSabuk) {
-                foundCurrent = true;
-            }
-        }
-        
-        if (targetOptions === "") {
-            targetOptions = `<option value="">Tidak ada level selanjutnya</option>`;
-        }
-
-        const rowId = 'member_row_' + nomorInduk;
-        if (document.getElementById(rowId)) {
+        if (select.selectedIndex <= 0) {
             modernAlert({
-                title: 'Sudah Ditambahkan',
-                message: 'Anggota ini sudah ada di dalam daftar kenaikan tingkat.',
+                title: 'Pilih Anggota',
+                message: 'Silakan pilih salah satu anggota dari daftar terlebih dahulu.',
                 type: 'warning'
             });
             return;
         }
 
-        const row = document.createElement('div');
-        row.id = rowId;
-        row.className = 'upgrade-member-row';
-        
-        row.innerHTML = `
-            <input type="text" name="nomor_induk[]" class="form-control" value="${nomorInduk}" readonly style="font-family: monospace; font-weight: 600; color: var(--color-primary); background: var(--color-surface-subtle);">
-            <input type="text" name="nama_lengkap[]" class="form-control" value="${nama}" readonly style="font-weight: 700; background: var(--color-surface-subtle);">
-            <div style="font-size: 0.85rem; color: var(--color-text-secondary); padding: 0 4px;">Saat ini: <strong>${currentSabuk}</strong></div>
-            <select name="target_belt[]" class="form-control" required style="border-color: var(--color-primary-border); font-weight: 600;">
-                <option value="">-- Pilih Sabuk Baru --</option>
-                ${targetOptions}
-            </select>
-            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); checkEmpty();" title="Hapus dari daftar">
-                Hapus
-            </button>
+        const option = select.options[select.selectedIndex];
+        const nomorInduk = option.value;
+        const nama = option.getAttribute('data-nama');
+        const currentSabuk = (option.getAttribute('data-sabuk') || 'HIJAU').toUpperCase().replace(/^SABUK\s+/, '').trim();
+        const cabang = option.getAttribute('data-cabang') || '';
+
+        const upgradeTableBody = document.getElementById('upgradeTableBody');
+        const emptyRow = document.getElementById('emptyRow');
+
+        // Check duplicates
+        const rowId = 'member_row_' + nomorInduk;
+        if (document.getElementById(rowId)) {
+            modernAlert({
+                title: 'Sudah Ditambahkan',
+                message: `Anggota ${nama} (${nomorInduk}) sudah ada di dalam daftar kenaikan tingkat.`,
+                type: 'warning'
+            });
+            return;
+        }
+
+        if (emptyRow) {
+            emptyRow.style.display = 'none';
+        }
+
+        // Build target belt options (higher levels only, auto-select immediate next)
+        let targetOptions = `<option value="">-- Pilih Sabuk Baru --</option>`;
+        let foundCurrent = false;
+        let isFirstNext = true;
+
+        for (let i = 0; i < belts.length; i++) {
+            if (foundCurrent) {
+                const selectedAttr = isFirstNext ? 'selected' : '';
+                const tagLabel = isFirstNext ? ' (Tingkat Berikutnya)' : '';
+                targetOptions += `<option value="${belts[i]}" ${selectedAttr}>${belts[i]}${tagLabel}</option>`;
+                isFirstNext = false;
+            }
+            if (belts[i] === currentSabuk) {
+                foundCurrent = true;
+            }
+        }
+
+        if (!foundCurrent) {
+            // If current belt wasn't recognized exactly, let user pick from BIRU upwards
+            for (let i = 1; i < belts.length; i++) {
+                targetOptions += `<option value="${belts[i]}">${belts[i]}</option>`;
+            }
+        } else if (isFirstNext) {
+            targetOptions = `<option value="">Tingkat Tertinggi (Tidak Ada Selanjutnya)</option>`;
+        }
+
+        const beltBadgeClass = getBeltBadgeClass(currentSabuk);
+
+        const tr = document.createElement('tr');
+        tr.id = rowId;
+
+        tr.innerHTML = `
+            <td>
+                <span style="font-weight: 700; color: var(--color-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--color-primary-soft); padding: 3px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-primary-border); display: inline-block;">
+                    ${nomorInduk}
+                </span>
+                <input type="hidden" name="nomor_induk[]" value="${nomorInduk}">
+            </td>
+            <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 30px; height: 30px; border-radius: var(--radius-full); background: var(--color-surface-subtle); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: var(--color-primary);">
+                        ${nama.charAt(0).toUpperCase()}
+                    </div>
+                    <span style="font-weight: 700; color: var(--color-text-primary); font-size: 0.925rem;">
+                        ${nama}
+                    </span>
+                </div>
+                <input type="hidden" name="nama_lengkap[]" value="${nama}">
+            </td>
+            <td>
+                <span class="badge badge-neutral" style="font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    ${cabang || '-'}
+                </span>
+            </td>
+            <td>
+                <span class="badge ${beltBadgeClass}" style="font-size: 0.75rem; padding: 4px 10px; font-weight: 700;">
+                    ${currentSabuk}
+                </span>
+            </td>
+            <td>
+                <select name="target_belt[]" class="form-control" required style="font-weight: 600; border-color: var(--color-primary-border);">
+                    ${targetOptions}
+                </select>
+            </td>
+            <td style="text-align: center;">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeUpgradeMember('${rowId}')" style="padding: 6px 12px; display: inline-flex; align-items: center; gap: 4px;" title="Hapus dari daftar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <span>Hapus</span>
+                </button>
+            </td>
         `;
 
-        upgradeList.appendChild(row);
-        
-        // Reset selection
+        upgradeTableBody.appendChild(tr);
+
+        // Reset picker
         select.selectedIndex = 0;
         document.getElementById("searchInput").value = "";
         filterMembers();
+
+        updateCounters();
     }
-    
-    function checkEmpty() {
-        const upgradeList = document.getElementById('upgradeList');
-        const rows = upgradeList.querySelectorAll('[id^="member_row_"]');
-        const emptyMessage = document.getElementById('emptyMessage');
-        if (rows.length === 0 && emptyMessage) {
-            emptyMessage.style.display = 'block';
+
+    // Remove member from list
+    function removeUpgradeMember(rowId) {
+        const row = document.getElementById(rowId);
+        if (row) {
+            row.style.opacity = '0';
+            row.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                row.remove();
+                checkEmpty();
+                updateCounters();
+            }, 120);
         }
     }
+
+    // Check if upgrade table is empty
+    function checkEmpty() {
+        const upgradeTableBody = document.getElementById('upgradeTableBody');
+        const rows = upgradeTableBody.querySelectorAll('[id^="member_row_"]');
+        const emptyRow = document.getElementById('emptyRow');
+        if (rows.length === 0 && emptyRow) {
+            emptyRow.style.display = '';
+        }
+    }
+
+    // Update dynamic counter badges and stats
+    function updateCounters() {
+        const upgradeTableBody = document.getElementById('upgradeTableBody');
+        const rows = upgradeTableBody.querySelectorAll('[id^="member_row_"]');
+        const count = rows.length;
+
+        // Metric Card 2 (Top)
+        const statUpgradeCount = document.getElementById('statUpgradeCount');
+        if (statUpgradeCount) {
+            statUpgradeCount.textContent = count;
+        }
+
+        const statUpgradeBadge = document.getElementById('statUpgradeBadge');
+        if (statUpgradeBadge) {
+            statUpgradeBadge.textContent = `${count} Terpilih`;
+        }
+
+        // Metric Card 3 (Top Total)
+        const statTotalCount = document.getElementById('statTotalCount');
+        if (statTotalCount) {
+            statTotalCount.textContent = stagingCount + count;
+        }
+
+        // Card 3 Table Header Badge
+        const upgradeTableBadge = document.getElementById('upgradeTableBadge');
+        if (upgradeTableBadge) {
+            upgradeTableBadge.textContent = `${count} Anggota Dipilih`;
+        }
+    }
+
+    // Initialize default values on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        updateCounters();
+
+        // Validation guard: ensure required fields are valid before opening confirmation dialog
+        const syncButtons = document.querySelectorAll('.btn-submit-wizard');
+        syncButtons.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const form = document.getElementById('wizardForm');
+                if (form && !form.checkValidity()) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    form.reportValidity();
+                    return false;
+                }
+            }, true);
+        });
+    });
 </script>
 {% endblock %}

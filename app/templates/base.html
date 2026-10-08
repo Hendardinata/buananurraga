@@ -68,6 +68,10 @@
                         <span>Wizard Khataman</span>
                     </a>
                 </li>
+                {% endif %}
+
+                {% if session.get('role') in ['super_admin', 'admin_pusat', 'admin_cabang'] %}
+                <div class="sidebar-menu-heading">Manajemen Keuangan</div>
                 <li>
                     <a href="{{ url_for('budget.index') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('budget.') else '' }}">
                         <span class="menu-icon">

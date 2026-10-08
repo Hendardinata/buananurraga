@@ -149,6 +149,7 @@
 
 .kta-header-text {
   flex-grow: 1;
+  text-align: center;
 }
 
 .kta-org-supertitle {
@@ -420,6 +421,10 @@
   justify-content: space-between;
 }
 
+.kta-rules-box {
+  text-align: center;
+}
+
 .kta-rules-box h5 {
   font-size: 8.5px;
   color: var(--kta-red-dark);
@@ -440,14 +445,10 @@
 
 .kta-rules-list li {
   margin-bottom: 2px;
-  position: relative;
-  padding-left: 11px;
 }
 
 .kta-rules-list li::before {
-  content: '▪';
-  position: absolute;
-  left: 0;
+  content: '▪ ';
   color: var(--kta-red-primary);
   font-size: 8px;
 }

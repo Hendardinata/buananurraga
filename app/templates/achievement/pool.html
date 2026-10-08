@@ -1,66 +1,387 @@
 {% extends "base.html" %}
 
+{% block title %}Bursa Atlet & Prestasi | Buana Nurraga{% endblock %}
+{% block page_title %}Bursa Atlet & Prestasi{% endblock %}
+
 {% block content %}
-<div class="page-header" style="margin-bottom: 24px;">
+<!-- Page Header -->
+<div class="page-header" style="align-items: flex-start; margin-bottom: 24px;">
     <div>
-        <h1 class="page-title" style="display: flex; align-items: center; gap: 10px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-warning);"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-            Bursa Atlet & Prestasi
-        </h1>
-        <p class="page-subtitle">Daftar anggota yang memiliki riwayat prestasi dalam kejuaraan.</p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+            <h1 class="page-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: #D97706;">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+                Bursa Atlet & Prestasi
+            </h1>
+            <span class="badge badge-belt-hitam-orange" style="font-size: 0.75rem; padding: 4px 10px;">
+                Talent Pool
+            </span>
+        </div>
+        <p class="page-subtitle" style="margin: 0;">Pusat database rekam jejak juara, pencarian bakat atlet, dan
+            pembinaan prestasi kejuaraan perguruan.</p>
     </div>
 </div>
 
-<div class="card" style="padding: 0;">
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+<!-- Executive Metric Cards (4 Columns) -->
+<div class="achievement-stats-grid">
+    <!-- Card 1: Total Prestasi -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Total Prestasi</span>
+            <div class="stat-icon" style="background-color: var(--color-primary-soft); color: var(--color-primary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-primary); font-size: 2rem;">
+            {{ total_achievements }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Dari <strong>{{ unique_athletes }}</strong> atlet juara</span>
+            <span class="badge badge-neutral" style="font-size: 0.7rem; padding: 2px 8px;">Terverifikasi</span>
+        </div>
+    </div>
+
+    <!-- Card 2: Medali Emas -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Medali Emas</span>
+            <div class="stat-icon" style="background-color: #FEF3C7; color: #D97706;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: #D97706; font-size: 2rem;">
+            {{ total_emas }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Podium I (Juara 1)</span>
+            <span class="badge badge-medal-emas" style="font-size: 0.7rem; padding: 2px 8px;">🥇 Emas</span>
+        </div>
+    </div>
+
+    <!-- Card 3: Medali Perak -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Medali Perak</span>
+            <div class="stat-icon" style="background-color: #F1F5F9; color: #475569;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M8 12h8"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: #475569; font-size: 2rem;">
+            {{ total_perak }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Podium II (Juara 2)</span>
+            <span class="badge badge-medal-perak" style="font-size: 0.7rem; padding: 2px 8px;">🥈 Perak</span>
+        </div>
+    </div>
+
+    <!-- Card 4: Medali Perunggu -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Medali Perunggu</span>
+            <div class="stat-icon" style="background-color: #FFEDD5; color: #C2410C;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 8v8"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: #C2410C; font-size: 2rem;">
+            {{ total_perunggu }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Podium III (Juara 3)</span>
+            <span class="badge badge-medal-perunggu" style="font-size: 0.7rem; padding: 2px 8px;">🥉 Perunggu</span>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Toolbar Card -->
+<div class="card" style="padding: 16px 20px; margin-bottom: 20px;">
+    <form method="GET" action="{{ url_for('achievement.pool') }}" class="budget-filter-form">
+        <!-- Pencarian -->
+        <div style="flex: 2; min-width: 220px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Pencarian Atlet / Kejuaraan
+            </label>
+            <div style="position: relative;">
+                <input type="text" name="search" class="form-control" value="{{ search_query }}"
+                    placeholder="Ketik nama atlet, no. induk, kejuaraan..." style="padding-left: 36px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Filter Medali -->
+        <div style="flex: 1; min-width: 150px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Perolehan Medali
+            </label>
+            <select name="medali" class="form-control">
+                <option value="">Semua Medali</option>
+                <option value="Emas" {% if medali_filter|lower=='emas' %}selected{% endif %}>🥇 Emas</option>
+                <option value="Perak" {% if medali_filter|lower=='perak' %}selected{% endif %}>🥈 Perak</option>
+                <option value="Perunggu" {% if medali_filter|lower=='perunggu' %}selected{% endif %}>🥉 Perunggu
+                </option>
+            </select>
+        </div>
+
+        <!-- Filter Cabang -->
+        <div style="flex: 1; min-width: 150px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Cabang
+            </label>
+            <select name="branch" class="form-control">
+                <option value="">Semua Cabang</option>
+                {% for b in branches %}
+                <option value="{{ b.branch_name }}" {% if branch_filter|upper==b.branch_name|upper %}selected{% endif
+                    %}>{{ b.branch_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Filter Tingkat -->
+        <div style="flex: 1; min-width: 150px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Tingkat Kejuaraan
+            </label>
+            <select name="tingkat" class="form-control">
+                <option value="">Semua Tingkat</option>
+                <option value="Kabupaten" {% if tingkat_filter|lower=='kabupaten' %}selected{% endif %}>Kabupaten / Kota
+                </option>
+                <option value="Provinsi" {% if tingkat_filter|lower=='provinsi' %}selected{% endif %}>Provinsi</option>
+                <option value="Nasional" {% if tingkat_filter|lower=='nasional' %}selected{% endif %}>Nasional</option>
+                <option value="Internasional" {% if tingkat_filter|lower=='internasional' %}selected{% endif %}>
+                    Internasional</option>
+            </select>
+        </div>
+
+        <!-- Tombol Filter & Reset -->
+        <div style="display: flex; gap: 8px;">
+            <button type="submit" class="btn btn-primary"
+                style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                <span>Filter</span>
+            </button>
+            {% if search_query or medali_filter or branch_filter or tingkat_filter %}
+            <a href="{{ url_for('achievement.pool') }}" class="btn btn-secondary" style="padding: 10px 14px;"
+                title="Reset Filter">
+                Reset
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<!-- Main Table Card -->
+<div class="table-card" style="margin-bottom: 24px;">
+    <!-- Card Header -->
+    <div
+        style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #FFFFFF;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div
+                style="width: 34px; height: 34px; border-radius: var(--radius-md); background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+            </div>
+            <div>
+                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Daftar
+                    Atlet & Riwayat Prestasi</h3>
+                <span style="font-size: 0.8rem; color: var(--color-text-muted);">Rekapitulasi pencapaian atlet pada
+                    seluruh ajang kejuaraan</span>
+            </div>
+        </div>
+        <div>
+            <span class="badge badge-neutral" style="font-size: 0.8rem; padding: 5px 12px;">{{ total_items }} Total
+                Catatan</span>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-wrapper">
+        <table class="data-table">
             <thead>
-                <tr style="border-bottom: 1px solid var(--color-border); background: rgba(0,0,0,0.02);">
-                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">ANGGOTA</th>
-                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">CABANG</th>
-                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">KEJUARAAN</th>
-                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">MEDALI</th>
-                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem; text-align: right;">AKSI</th>
+                <tr>
+                    <th style="width: 50px; text-align: center;">No</th>
+                    <th style="min-width: 200px;">Atlet / Anggota</th>
+                    <th style="width: 140px;">Cabang</th>
+                    <th style="min-width: 220px;">Kejuaraan & Tahun</th>
+                    <th style="width: 180px;">Kategori & Tingkat</th>
+                    <th style="width: 140px; text-align: center;">Medali</th>
+                    <th style="width: 120px; text-align: right;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 {% for ach in achievements %}
-                <tr style="border-bottom: 1px solid var(--color-border-light);">
-                    <td style="padding: 16px;">
-                        <div style="font-weight: 600; color: var(--color-text-primary);">{{ ach.nama_lengkap }}</div>
-                        <div style="font-size: 0.8rem; color: var(--color-text-muted); font-family: monospace;">{{ ach.nomor_induk }}</div>
+                <tr>
+                    <!-- No Urut -->
+                    <td
+                        style="text-align: center; color: var(--color-text-muted); font-size: 0.8rem; font-weight: 600;">
+                        #{{ (page - 1) * per_page + loop.index }}
                     </td>
-                    <td style="padding: 16px; font-size: 0.9rem;">
-                        {{ ach.cabang }}
+
+                    <!-- Profil Atlet -->
+                    <td>
+                        <div style="font-weight: 700; color: var(--color-text-primary); font-size: 0.925rem;">
+                            {{ ach.nama_lengkap }}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 3px;">
+                            <span style="font-size: 0.775rem; color: var(--color-text-muted); font-family: monospace;">
+                                {{ ach.nomor_induk }}
+                            </span>
+                            {% if ach.sabuk and ach.sabuk != '-' %}
+                            {% set sabuk_class = 'badge-neutral' %}
+                            {% if ach.sabuk|upper == 'HIJAU' %}{% set sabuk_class = 'badge-belt-hijau' %}
+                            {% elif ach.sabuk|upper == 'BIRU' %}{% set sabuk_class = 'badge-belt-biru' %}
+                            {% elif ach.sabuk|upper == 'COKELAT' %}{% set sabuk_class = 'badge-belt-cokelat' %}
+                            {% elif 'HITAM' in ach.sabuk|upper %}{% set sabuk_class = 'badge-belt-hitam-orange' %}
+                            {% endif %}
+                            <span class="badge {{ sabuk_class }}" style="font-size: 0.65rem; padding: 1px 6px;">
+                                {{ ach.sabuk }}
+                            </span>
+                            {% endif %}
+                        </div>
                     </td>
-                    <td style="padding: 16px;">
-                        <div style="font-weight: 500; font-size: 0.95rem;">{{ ach.nama_kejuaraan }} ({{ ach.tahun }})</div>
-                        <div style="font-size: 0.8rem; color: var(--color-text-secondary);">{{ ach.kategori }} - {{ ach.tingkat }}</div>
+
+                    <!-- Cabang -->
+                    <td>
+                        <span class="badge badge-neutral"
+                            style="font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {{ ach.cabang }}
+                        </span>
                     </td>
-                    <td style="padding: 16px;">
-                        {% if ach.medali == 'Emas' %}
-                        <span class="badge" style="background: rgba(234, 179, 8, 0.15); color: #B45309; border: 1px solid rgba(234, 179, 8, 0.3);">🥇 Emas</span>
-                        {% elif ach.medali == 'Perak' %}
-                        <span class="badge" style="background: rgba(156, 163, 175, 0.15); color: #4B5563; border: 1px solid rgba(156, 163, 175, 0.3);">🥈 Perak</span>
-                        {% elif ach.medali == 'Perunggu' %}
-                        <span class="badge" style="background: rgba(180, 83, 9, 0.15); color: #78350F; border: 1px solid rgba(180, 83, 9, 0.3);">🥉 Perunggu</span>
+
+                    <!-- Kejuaraan & Tahun -->
+                    <td>
+                        <div style="font-weight: 600; color: var(--color-text-primary); font-size: 0.9rem;">
+                            {{ ach.nama_kejuaraan }}
+                        </div>
+                        <div style="font-size: 0.775rem; color: var(--color-text-muted); margin-top: 2px;">
+                            Tahun Penyelenggaraan: <strong style="color: var(--color-text-secondary);">{{ ach.tahun
+                                }}</strong>
+                        </div>
+                    </td>
+
+                    <!-- Kategori & Tingkat -->
+                    <td>
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--color-text-secondary);">
+                            {{ ach.kategori }}
+                        </div>
+                        <div style="margin-top: 3px;">
+                            <span class="badge badge-neutral" style="font-size: 0.7rem; padding: 2px 7px;">
+                                {{ ach.tingkat }}
+                            </span>
+                        </div>
+                    </td>
+
+                    <!-- Medali -->
+                    <td style="text-align: center;">
+                        {% if ach.medali|lower == 'emas' %}
+                        <span class="badge badge-medal-emas" style="padding: 5px 12px; font-size: 0.8rem;">
+                            🥇 Emas
+                        </span>
+                        {% elif ach.medali|lower == 'perak' %}
+                        <span class="badge badge-medal-perak" style="padding: 5px 12px; font-size: 0.8rem;">
+                            🥈 Perak
+                        </span>
+                        {% elif ach.medali|lower == 'perunggu' %}
+                        <span class="badge badge-medal-perunggu" style="padding: 5px 12px; font-size: 0.8rem;">
+                            🥉 Perunggu
+                        </span>
                         {% else %}
-                        <span class="badge">{{ ach.medali }}</span>
+                        <span class="badge badge-neutral" style="padding: 5px 12px; font-size: 0.8rem;">
+                            {{ ach.medali }}
+                        </span>
                         {% endif %}
                     </td>
-                    <td style="padding: 16px; text-align: right;">
-                        <a href="{{ url_for('kta.view', nomor_induk=ach.nomor_induk) }}" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 6px 12px;">Lihat Profil</a>
+
+                    <!-- Aksi -->
+                    <td style="text-align: right;">
+                        <a href="{{ url_for('kta.view', nomor_induk=ach.nomor_induk) }}"
+                            class="btn btn-secondary btn-sm"
+                            style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; padding: 6px 12px; border-color: var(--color-primary-border); color: var(--color-primary);">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            <span>Lihat Profil</span>
+                        </a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5" style="padding: 48px; text-align: center; color: var(--color-text-muted);">
-                        Belum ada data prestasi yang dicatat.
+                    <td colspan="7" style="padding: 0;">
+                        <div class="budget-empty-state">
+                            <div class="budget-empty-icon"
+                                style="background: #FEF3C7; color: #D97706; border-style: solid; border-color: #FDE68A;">
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="7"></circle>
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                                </svg>
+                            </div>
+                            <h4
+                                style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">
+                                Tidak Ada Data Prestasi Atlet</h4>
+                            <p
+                                style="margin: 0 0 18px 0; font-size: 0.85rem; color: var(--color-text-muted); max-width: 400px;">
+                                {% if search_query or medali_filter or branch_filter or tingkat_filter %}
+                                Tidak ditemukan atlet dengan kriteria filter yang Anda pilih. Silakan reset filter untuk
+                                menampilkan seluruh data.
+                                {% else %}
+                                Belum ada catatan medali atau prestasi atlet yang tersimpan dalam sistem.
+                                {% endif %}
+                            </p>
+                            {% if search_query or medali_filter or branch_filter or tingkat_filter %}
+                            <a href="{{ url_for('achievement.pool') }}" class="btn btn-secondary btn-sm">Reset
+                                Filter</a>
+                            {% endif %}
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <!-- Paginasi -->
+    {% include '_pagination.html' %}
 </div>
 {% endblock %}

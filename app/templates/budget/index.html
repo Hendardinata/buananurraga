@@ -3,151 +3,604 @@
 {% block page_title %}Laporan Anggaran & Kas{% endblock %}
 
 {% block content %}
-<div class="page-header">
+<!-- Page Header -->
+<div class="page-header" style="align-items: flex-start; margin-bottom: 24px;">
     <div>
-        <h1 class="page-title">Laporan Anggaran & Kas</h1>
-        <p class="page-subtitle">Pencatatan kas masuk dan keluar perguruan secara transparan.</p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+            <h1 class="page-title" style="margin: 0;">Laporan Anggaran & Kas</h1>
+            {% if user.role in ['super_admin', 'admin_pusat'] %}
+            <span class="badge badge-belt-hitam-orange" style="font-size: 0.75rem; padding: 4px 10px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                    </path>
+                </svg>
+                Pusat & Seluruh Cabang
+            </span>
+            {% else %}
+            <span class="badge badge-belt-biru" style="font-size: 0.75rem; padding: 4px 10px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Cabang: {{ user_branch_name }}
+            </span>
+            {% endif %}
+        </div>
+        <p class="page-subtitle" style="margin: 0;">Pencatatan kas masuk dan kas keluar perguruan secara transparan &
+            akuntabel.</p>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="openModernModal('modalAddTransaction')"
+            style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Catat Transaksi Baru</span>
+        </button>
     </div>
 </div>
 
-<!-- Stat Cards -->
-<div class="dashboard-grid">
-    <div class="stat-card">
+<!-- Stat Cards (3 Columns) -->
+<div class="budget-stat-grid">
+    <!-- Total Pemasukan -->
+    <div class="stat-card stat-card-pemasukan">
         <div class="stat-card-header">
             <span class="stat-title">Total Pemasukan</span>
             <div class="stat-icon" style="background-color: var(--color-success-bg); color: var(--color-success);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                    <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
             </div>
         </div>
-        <div class="stat-value" style="color: var(--color-success);">
+        <div class="stat-value" style="color: var(--color-success); font-size: 2rem;">
             Rp {{ "{:,.0f}".format(total_pemasukan).replace(',', '.') }}
         </div>
-        <div class="stat-meta">Akumulasi iuran & kas masuk</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Akumulasi iuran & kas masuk</span>
+            <span class="badge badge-success" style="font-size: 0.7rem; padding: 2px 8px;">+ Kas Masuk</span>
+        </div>
     </div>
-    
-    <div class="stat-card">
+
+    <!-- Total Pengeluaran -->
+    <div class="stat-card stat-card-pengeluaran">
         <div class="stat-card-header">
             <span class="stat-title">Total Pengeluaran</span>
             <div class="stat-icon" style="background-color: var(--color-danger-bg); color: var(--color-danger);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
             </div>
         </div>
-        <div class="stat-value" style="color: var(--color-danger);">
+        <div class="stat-value" style="color: var(--color-danger); font-size: 2rem;">
             Rp {{ "{:,.0f}".format(total_pengeluaran).replace(',', '.') }}
         </div>
-        <div class="stat-meta">Akumulasi biaya kegiatan & operasional</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Biaya kegiatan & operasional</span>
+            <span class="badge badge-danger" style="font-size: 0.7rem; padding: 2px 8px;">- Kas Keluar</span>
+        </div>
     </div>
-    
-    <div class="stat-card">
+
+    <!-- Saldo Kas Akhir -->
+    <div class="stat-card stat-card-saldo">
         <div class="stat-card-header">
             <span class="stat-title">Saldo Kas Akhir</span>
             <div class="stat-icon" style="background-color: var(--color-primary-soft); color: var(--color-primary);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="M12 8v8"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
             </div>
         </div>
-        <div class="stat-value" style="color: var(--color-primary);">
+        <div class="stat-value" style="color: var(--color-primary); font-size: 2rem;">
             Rp {{ "{:,.0f}".format(saldo_akhir).replace(',', '.') }}
         </div>
-        <div class="stat-meta">Posisi dana kas saat ini</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Posisi dana kas aktif saat ini</span>
+            <span class="badge badge-belt-biru" style="font-size: 0.7rem; padding: 2px 8px;">Saldo Real</span>
+        </div>
     </div>
 </div>
 
-<div class="budget-grid-layout">
-    <!-- Riwayat Transaksi Table Card with Pagination -->
-    <div class="table-card">
-        <div style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Riwayat Transaksi</h3>
-            <span class="badge badge-neutral">{{ total_items }} Total Catatan</span>
-        </div>
-        <div class="data-table-wrapper">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Keterangan</th>
-                        <th>Jenis</th>
-                        <th style="text-align: right;">Nominal</th>
-                        <th style="text-align: right;">Saldo</th>
-                        <th>Cabang</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for b in budgets %}
-                    <tr>
-                        <td style="font-size: 0.8rem; color: var(--color-text-secondary); white-space: nowrap;">
-                            {{ b.get('TANGGAL') }}
-                        </td>
-                        <td style="font-weight: 600; color: var(--color-text-primary);">
-                            {{ b.get('KETERANGAN') }}
-                        </td>
-                        <td>
-                            {% if b.get('JENIS')|upper == 'PEMASUKAN' %}
-                                <span class="badge badge-success">+ MASUK</span>
-                            {% else %}
-                                <span class="badge badge-danger">- KELUAR</span>
-                            {% endif %}
-                        </td>
-                        <td class="{% if b.get('JENIS')|upper == 'PEMASUKAN' %}text-success{% else %}text-danger{% endif %}" style="text-align: right; font-weight: 700;">
-                            Rp {{ "{:,.0f}".format(b.get('NOMINAL', 0)|float).replace(',', '.') }}
-                        </td>
-                        <td style="text-align: right; font-weight: 700; color: var(--color-primary); font-family: monospace;">
-                            Rp {{ "{:,.0f}".format(b.get('SALDO', 0)|float).replace(',', '.') }}
-                        </td>
-                        <td style="font-size: 0.8rem; color: var(--color-text-secondary);">
-                            {{ b.get('CABANG') }}
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="6" style="padding: 40px; text-align: center; color: var(--color-text-muted);">
-                            Belum ada riwayat transaksi kas yang dicatat.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!-- Filter Toolbar Card -->
+<div class="budget-filter-card">
+    <form method="GET" action="{{ url_for('budget.index') }}" class="budget-filter-form">
+        <!-- Pencarian Keterangan -->
+        <div style="flex: 2; min-width: 240px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Pencarian Transaksi
+            </label>
+            <div style="position: relative;">
+                <input type="text" name="search" class="form-control" value="{{ search_query }}"
+                    placeholder="Ketik keterangan atau nama cabang..." style="padding-left: 36px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
         </div>
 
-        <!-- 10-Item Pagination -->
-        {% include '_pagination.html' %}
+        <!-- Filter Jenis Arus Kas -->
+        <div style="flex: 1; min-width: 170px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Jenis Arus Kas
+            </label>
+            <select name="jenis" class="form-control">
+                <option value="">Semua Jenis (Masuk & Keluar)</option>
+                <option value="PEMASUKAN" {% if jenis_filter=='PEMASUKAN' %}selected{% endif %}>Pemasukan (+)</option>
+                <option value="PENGELUARAN" {% if jenis_filter=='PENGELUARAN' %}selected{% endif %}>Pengeluaran (-)
+                </option>
+            </select>
+        </div>
+
+        <!-- Filter Cabang (Hanya untuk Super Admin / Admin Pusat) -->
+        {% if user.role in ['super_admin', 'admin_pusat'] %}
+        <div style="flex: 1; min-width: 170px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Filter Cabang
+            </label>
+            <select name="branch" class="form-control">
+                <option value="">Semua Cabang</option>
+                <option value="PUSAT" {% if branch_filter=='PUSAT' %}selected{% endif %}>PUSAT</option>
+                {% for b in all_branches %}
+                <option value="{{ b.branch_name }}" {% if branch_filter==b.branch_name %}selected{% endif %}>{{
+                    b.branch_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+        <!-- Tombol Aksi Filter -->
+        <div style="display: flex; gap: 8px;">
+            <button type="submit" class="btn btn-primary"
+                style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                <span>Filter</span>
+            </button>
+            {% if search_query or jenis_filter or branch_filter %}
+            <a href="{{ url_for('budget.index') }}" class="btn btn-secondary" style="padding: 10px 14px;"
+                title="Reset Semua Filter">
+                Reset
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<!-- Main Ledger Table Card -->
+<div class="table-card" style="margin-bottom: 24px;">
+    <!-- Header Tabel -->
+    <div
+        style="padding: 20px 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #FFFFFF;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div
+                style="width: 34px; height: 34px; border-radius: var(--radius-md); background: var(--color-primary-soft); color: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <div>
+                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary);">Buku
+                    Jurnal Kas & Riwayat Transaksi</h3>
+                <span style="font-size: 0.8rem; color: var(--color-text-muted);">Daftar seluruh mutasi kas masuk dan
+                    keluar</span>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="badge badge-neutral" style="font-size: 0.8rem; padding: 5px 12px;">{{ total_items }} Total
+                Catatan</span>
+        </div>
     </div>
 
-    <!-- Form Catat Transaksi Card -->
-    <div class="card" style="margin-bottom: 0;">
-        <div class="card-header">
-            <h3 class="card-title">Catat Transaksi Baru</h3>
-            <span class="badge badge-belt-biru">Input Kas</span>
+    <!-- Data Table -->
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 60px; text-align: center;">No</th>
+                    <th style="width: 170px;">Tanggal & Waktu</th>
+                    <th>Keterangan Transaksi</th>
+                    <th style="width: 160px;">Cabang</th>
+                    <th style="width: 140px; text-align: center;">Jenis Arus Kas</th>
+                    <th style="width: 180px; text-align: right;">Nominal</th>
+                    <th style="width: 180px; text-align: right;">Saldo Kas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in budgets %}
+                <tr>
+                    <!-- No Urut -->
+                    <td
+                        style="text-align: center; color: var(--color-text-muted); font-size: 0.8rem; font-weight: 600;">
+                        #{{ (page - 1) * per_page + loop.index }}
+                    </td>
+
+                    <!-- Tanggal & Waktu Rapi -->
+                    <td style="white-space: nowrap;">
+                        <div style="font-weight: 600; color: var(--color-text-primary); font-size: 0.875rem;">
+                            {{ b.date_formatted }}
+                        </div>
+                        {% if b.time_formatted %}
+                        <div
+                            style="font-size: 0.75rem; color: var(--color-text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            {{ b.time_formatted }} WITA
+                        </div>
+                        {% endif %}
+                    </td>
+
+                    <!-- Keterangan -->
+                    <td>
+                        <div style="font-weight: 700; color: var(--color-text-primary); font-size: 0.925rem;">
+                            {{ b.get('KETERANGAN') }}
+                        </div>
+                    </td>
+
+                    <!-- Cabang -->
+                    <td>
+                        <span class="badge badge-neutral"
+                            style="font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {{ b.get('CABANG') }}
+                        </span>
+                    </td>
+
+                    <!-- Jenis Transaksi Badge -->
+                    <td style="text-align: center;">
+                        {% if b.get('JENIS')|upper == 'PEMASUKAN' %}
+                        <span class="badge badge-success"
+                            style="padding: 5px 12px; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="19" x2="12" y2="5"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            </svg>
+                            Pemasukan
+                        </span>
+                        {% else %}
+                        <span class="badge badge-danger"
+                            style="padding: 5px 12px; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                            Pengeluaran
+                        </span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Nominal -->
+                    <td style="text-align: right; white-space: nowrap;">
+                        {% if b.get('JENIS')|upper == 'PEMASUKAN' %}
+                        <span style="color: var(--color-success); font-weight: 800; font-size: 0.95rem;">
+                            + Rp {{ "{:,.0f}".format(b.get('NOMINAL', 0)|float).replace(',', '.') }}
+                        </span>
+                        {% else %}
+                        <span style="color: var(--color-danger); font-weight: 800; font-size: 0.95rem;">
+                            - Rp {{ "{:,.0f}".format(b.get('NOMINAL', 0)|float).replace(',', '.') }}
+                        </span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Saldo Kumulatif -->
+                    <td style="text-align: right; white-space: nowrap;">
+                        <span
+                            style="font-weight: 700; color: var(--color-primary); font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.95rem; background: var(--color-primary-subtle); padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-primary-border);">
+                            Rp {{ "{:,.0f}".format(b.get('SALDO', 0)|float).replace(',', '.') }}
+                        </span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="padding: 0;">
+                        <div class="budget-empty-state">
+                            <div class="budget-empty-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <h4
+                                style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary);">
+                                Belum Ada Transaksi Kas</h4>
+                            <p
+                                style="margin: 0 0 18px 0; font-size: 0.85rem; color: var(--color-text-muted); max-width: 360px;">
+                                {% if search_query or jenis_filter or branch_filter %}
+                                Tidak ada catatan transaksi yang sesuai dengan kriteria filter Anda. Silakan reset
+                                filter untuk melihat semua data.
+                                {% else %}
+                                Belum ada catatan mutasi kas yang tersimpan. Mulai pencatatan keuangan pertama sekarang.
+                                {% endif %}
+                            </p>
+                            {% if search_query or jenis_filter or branch_filter %}
+                            <a href="{{ url_for('budget.index') }}" class="btn btn-secondary btn-sm">Reset Filter</a>
+                            {% else %}
+                            <button type="button" class="btn btn-primary btn-sm"
+                                onclick="openModernModal('modalAddTransaction')">
+                                + Catat Transaksi Baru
+                            </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginasi -->
+    {% include '_pagination.html' %}
+</div>
+
+<!-- ========================================================
+     MODAL CATAT TRANSAKSI BARU (MODERN POPUP DIALOG)
+     ======================================================== -->
+<div id="modalAddTransaction" class="modal-overlay">
+    <div class="modal-window" style="max-width: 520px; border-radius: 16px;">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <div class="modal-icon-badge"
+                    style="background: var(--color-primary-soft); color: var(--color-primary);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="modal-title">Catat Transaksi Kas Baru</h3>
+                    <div class="modal-subtitle">Tambahkan pencatatan pemasukan atau pengeluaran kas</div>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeModernModal('modalAddTransaction')"
+                aria-label="Tutup">&times;</button>
         </div>
 
-        <form method="POST" action="{{ url_for('budget.add') }}">
-            <div class="form-group">
-                <label>Jenis Transaksi</label>
-                <select name="jenis" class="form-control" required>
-                    <option value="PEMASUKAN">PEMASUKAN (+)</option>
-                    <option value="PENGELUARAN">PENGELUARAN (-)</option>
-                </select>
+        <!-- Form Tambah Kas -->
+        <form method="POST" action="{{ url_for('budget.add') }}" id="formAddBudget" style="margin: 0;">
+            <div class="modal-body" style="padding: 22px 24px;">
+                <!-- 1. Pilihan Jenis Transaksi (Segmented Toggle Visual) -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label
+                        style="font-weight: 700; font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px; display: block;">
+                        Jenis Transaksi Arus Kas <span style="color: var(--color-danger);">*</span>
+                    </label>
+                    <div class="tx-type-selector">
+                        <div class="tx-type-btn active btn-pemasukan" id="btnSelectIncome"
+                            onclick="setTransactionType('PEMASUKAN')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="19" x2="12" y2="5"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            </svg>
+                            <span>PEMASUKAN (+)</span>
+                        </div>
+                        <div class="tx-type-btn btn-pengeluaran" id="btnSelectExpense"
+                            onclick="setTransactionType('PENGELUARAN')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                            <span>PENGELUARAN (-)</span>
+                        </div>
+                    </div>
+                    <!-- Hidden input to store chosen type for backend -->
+                    <input type="hidden" name="jenis" id="modal_jenis_input" value="PEMASUKAN" required>
+                </div>
+
+                <!-- 2. Nominal Transaksi dengan Auto Pemisah Ribuan -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label
+                        style="font-weight: 700; font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px; display: block;">
+                        Nominal Rupiah (Rp) <span style="color: var(--color-danger);">*</span>
+                    </label>
+                    <div style="display: flex; align-items: stretch;">
+                        <span
+                            style="display: inline-flex; align-items: center; padding: 0 16px; font-weight: 800; font-size: 1rem; color: var(--color-text-secondary); background: var(--color-surface-subtle); border: 1.5px solid var(--color-border); border-right: none; border-radius: var(--radius-md) 0 0 var(--radius-md);">
+                            Rp
+                        </span>
+                        <input type="text" id="nominal_display" class="form-control" placeholder="0" required
+                            style="border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 1.25rem; font-weight: 800; color: var(--color-text-primary); letter-spacing: 0.5px;">
+                    </div>
+                    <input type="hidden" name="nominal" id="nominal_actual" required>
+
+                    <!-- Quick Preset Chips -->
+                    <div class="nominal-presets">
+                        <span
+                            style="font-size: 0.725rem; color: var(--color-text-muted); align-self: center; margin-right: 4px;">Pintasan:</span>
+                        <button type="button" class="preset-chip" onclick="addPresetNominal(50000)">+ 50 Rb</button>
+                        <button type="button" class="preset-chip" onclick="addPresetNominal(100000)">+ 100 Rb</button>
+                        <button type="button" class="preset-chip" onclick="addPresetNominal(250000)">+ 250 Rb</button>
+                        <button type="button" class="preset-chip" onclick="addPresetNominal(500000)">+ 500 Rb</button>
+                        <button type="button" class="preset-chip" onclick="clearNominal()"
+                            style="color: var(--color-danger); border-color: var(--color-danger-border);">Reset</button>
+                    </div>
+                </div>
+
+                <!-- 3. Keterangan Transaksi -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label
+                        style="font-weight: 700; font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px; display: block;">
+                        Keterangan Transaksi <span style="color: var(--color-danger);">*</span>
+                    </label>
+                    <input type="text" name="keterangan" class="form-control"
+                        placeholder="Contoh: Iuran Khataman Gelombang 1 / Pembelian Seragam" required>
+                    <small style="color: var(--color-text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+                        Tuliskan peruntukan atau sumber dana kas dengan jelas.
+                    </small>
+                </div>
+
+                <!-- 4. Cabang Terkait -->
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label
+                        style="font-weight: 700; font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px; display: block;">
+                        Cabang Terkait
+                    </label>
+                    {% if user.role in ['super_admin', 'admin_pusat'] %}
+                    <select name="cabang" class="form-control" required>
+                        <option value="PUSAT" selected>PUSAT</option>
+                        {% for b in all_branches %}
+                        <option value="{{ b.branch_name }}">{{ b.branch_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small style="color: var(--color-text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+                        Sebagai Admin Pusat / Super Admin, Anda dapat menginput transaksi untuk unit Pusat maupun
+                        Cabang.
+                    </small>
+                    {% else %}
+                    <div
+                        style="display: flex; align-items: center; gap: 10px; background: var(--color-surface-subtle); padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="color: var(--color-text-muted);">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <span style="font-weight: 700; color: var(--color-text-primary); font-size: 0.9rem;">{{
+                            user_branch_name }}</span>
+                        <span class="badge badge-neutral" style="margin-left: auto; font-size: 0.7rem;">Terkunci
+                            Otomatis</span>
+                        <input type="hidden" name="cabang" value="{{ user_branch_name }}">
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label>Keterangan Transaksi</label>
-                <input type="text" name="keterangan" class="form-control" placeholder="Contoh: Iuran Khataman Gelombang 1" required>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer"
+                style="background: var(--color-surface-subtle); padding: 16px 24px; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 10px; border-radius: 0 0 16px 16px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModernModal('modalAddTransaction')">
+                    Batal
+                </button>
+                <button type="submit" class="btn btn-primary" id="btnSubmitBudget"
+                    style="padding: 10px 22px; display: inline-flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    <span>Simpan Catatan Kas</span>
+                </button>
             </div>
-            
-            <div class="form-group">
-                <label>Nominal (Rupiah)</label>
-                <input type="number" name="nominal" class="form-control" placeholder="Contoh: 500000" required min="1">
-            </div>
-            
-            <div class="form-group">
-                <label>Cabang Terkait</label>
-                <input type="text" name="cabang" class="form-control" placeholder="PUSAT" value="PUSAT">
-            </div>
-            
-            <button type="submit" class="btn btn-primary btn-block" style="padding: 12px; margin-top: 10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                Simpan Catatan Kas
-            </button>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Logic Toggle Jenis Transaksi
+    function setTransactionType(type) {
+        const inputJenis = document.getElementById('modal_jenis_input');
+        const btnIncome = document.getElementById('btnSelectIncome');
+        const btnExpense = document.getElementById('btnSelectExpense');
+
+        inputJenis.value = type;
+
+        if (type === 'PEMASUKAN') {
+            btnIncome.classList.add('active');
+            btnExpense.classList.remove('active');
+        } else {
+            btnExpense.classList.add('active');
+            btnIncome.classList.remove('active');
+        }
+    }
+
+    // Format Nominal & Presets
+    function updateNominal(val) {
+        const display = document.getElementById('nominal_display');
+        const actual = document.getElementById('nominal_actual');
+
+        let num = parseInt(val, 10);
+        if (isNaN(num) || num <= 0) {
+            display.value = '';
+            actual.value = '';
+        } else {
+            actual.value = num;
+            display.value = num.toLocaleString('id-ID');
+        }
+    }
+
+    function addPresetNominal(presetAmount) {
+        const actual = document.getElementById('nominal_actual');
+        let currentVal = parseInt(actual.value, 10) || 0;
+        updateNominal(currentVal + presetAmount);
+    }
+
+    function clearNominal() {
+        updateNominal(0);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const nominalDisplay = document.getElementById('nominal_display');
+        const nominalActual = document.getElementById('nominal_actual');
+
+        if (nominalDisplay && nominalActual) {
+            nominalDisplay.addEventListener('input', function (e) {
+                // Hapus karakter non-digit
+                let value = this.value.replace(/[^0-9]/g, '');
+                nominalActual.value = value;
+
+                if (value) {
+                    this.value = parseInt(value, 10).toLocaleString('id-ID');
+                } else {
+                    this.value = '';
+                }
+            });
+        }
+
+        // Tutup modal jika klik overlay luar
+        const modalEl = document.getElementById('modalAddTransaction');
+        if (modalEl) {
+            modalEl.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModernModal('modalAddTransaction');
+                }
+            });
+        }
+
+        // Buka modal otomatis jika URL memiliki parameter open_modal=1 atau hash #catat-kas
+        if (window.location.hash === '#catat-kas' || new URLSearchParams(window.location.search).get('open_modal') === '1') {
+            openModernModal('modalAddTransaction');
+        }
+    });
+</script>
 {% endblock %}

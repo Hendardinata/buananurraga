@@ -31,73 +31,239 @@
         border-color: var(--color-primary-border);
         box-shadow: var(--shadow-md);
     }
+
+    @media print {
+
+        .sidebar,
+        .topbar,
+        .page-header,
+        .users-stats-grid,
+        .card,
+        .pagination-container,
+        .btn,
+        .no-print {
+            display: none !important;
+        }
+
+        .app-container,
+        .main-wrapper,
+        .page-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #FFFFFF !important;
+        }
+
+        .batch-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+        }
+
+        .batch-card-mini {
+            border: 1px solid #CBD5E1 !important;
+            page-break-inside: avoid !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
+<!-- Page Header -->
+<div class="page-header" style="align-items: flex-start; margin-bottom: 24px;">
     <div>
-        <h1 class="page-title">Cetak Massal KTA Digital</h1>
-        <p class="page-subtitle">Kelola dan cetak KTA standar ID-1 untuk seluruh anggota berdasarkan cabang atau
-            tingkatan sabuk.</p>
-    </div>
-
-    <div>
-        <button class="btn btn-primary" onclick="window.print()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                <rect x="6" y="14" width="12" height="8"></rect>
-            </svg>
-            Cetak Halaman (Print)
-        </button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+            <h1 class="page-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary);">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                </svg>
+                Cetak Massal KTA Digital
+            </h1>
+            <span class="badge badge-belt-biru" style="font-size: 0.75rem; padding: 4px 10px;">
+                Standar ID-1 ISO 7810
+            </span>
+        </div>
+        <p class="page-subtitle" style="margin: 0;">Kelola, tinjau, dan cetak kartu tanda anggota digital untuk seluruh
+            anggota perguruan berdasarkan cabang atau tingkatan sabuk.</p>
     </div>
 </div>
 
-<!-- Filter Bar -->
-<div class="card" style="padding: 16px 20px; margin-bottom: 24px;">
-    <form method="GET" action="{{ url_for('kta.batch') }}" class="filter-form-responsive"
-        style="display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end;">
-        <div style="flex: 1; min-width: 180px;">
+<!-- Executive Metric Cards (4 Columns) -->
+<div class="users-stats-grid no-print">
+    <!-- Card 1: Total Anggota -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Total Anggota</span>
+            <div class="stat-icon" style="background-color: var(--color-primary-soft); color: var(--color-primary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-primary); font-size: 2rem;">
+            {{ total_all_members }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Basis data perguruan</span>
+            <span class="badge badge-neutral" style="font-size: 0.7rem; padding: 2px 8px;">Nasional</span>
+        </div>
+    </div>
+
+    <!-- Card 2: KTA Fisik Tercetak -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">KTA Fisik Tercetak</span>
+            <div class="stat-icon" style="background-color: var(--color-success-bg); color: var(--color-success);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: var(--color-success); font-size: 2rem;">
+            {{ total_kta_printed }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Status KTA: <strong>PUNYA</strong></span>
+            <span class="badge badge-success" style="font-size: 0.7rem; padding: 2px 8px;">Selesai Cetak</span>
+        </div>
+    </div>
+
+    <!-- Card 3: KTA Belum Tercetak -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Belum Cetak Fisik</span>
+            <div class="stat-icon" style="background-color: #FEF3C7; color: #D97706;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value" style="color: #D97706; font-size: 2rem;">
+            {{ total_kta_pending }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">Status KTA: <strong>BELUM</strong></span>
+            <span class="badge badge-warning" style="font-size: 0.7rem; padding: 2px 8px;">Antrean Cetak</span>
+        </div>
+    </div>
+
+    <!-- Card 4: Wilayah Cabang Terpilih -->
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-title">Cakupan Wilayah</span>
+            <div class="stat-icon" style="background-color: #EEF2FF; color: #4F46E5;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            </div>
+        </div>
+        <div class="stat-value"
+            style="color: #4F46E5; font-size: 1.5rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+            title="{{ current_branch or 'Semua Cabang' }}">
+            {{ current_branch or 'Semua Cabang' }}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="stat-meta" style="margin: 0;">{{ total_items }} anggota tersaring</span>
+            <span class="badge badge-neutral" style="font-size: 0.7rem; padding: 2px 8px;">Aktif</span>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Toolbar Card -->
+<div class="card no-print" style="padding: 16px 20px; margin-bottom: 24px;">
+    <form method="GET" action="{{ url_for('kta.batch') }}" class="budget-filter-form">
+        <!-- Pencarian Nama / Nomor Induk -->
+        <div style="flex: 2; min-width: 220px;">
             <label
-                style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px;">
-                Cabang:
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Pencarian Anggota
+            </label>
+            <div style="position: relative;">
+                <input type="text" name="search" class="form-control" value="{{ search_query }}"
+                    placeholder="Ketik nama anggota atau nomor induk..." style="padding-left: 36px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Filter Cabang (Hanya aktif jika bukan admin cabang) -->
+        {% if user.role != 'admin_cabang' %}
+        <div style="flex: 1; min-width: 160px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Wilayah Cabang
             </label>
             <select name="branch" class="form-control">
                 <option value="">Semua Cabang</option>
                 {% for b in branches %}
-                <option value="{{ b.branch_name }}" {% if current_branch==b.branch_name %}selected{% endif %}>{{
-                    b.branch_name }}</option>
+                <option value="{{ b.branch_name }}" {% if current_branch|upper==b.branch_name|upper %}selected{% endif
+                    %}>{{ b.branch_name }}</option>
                 {% endfor %}
             </select>
         </div>
+        {% endif %}
 
-        <div style="flex: 1; min-width: 180px;">
+        <!-- Filter Tingkatan Sabuk -->
+        <div style="flex: 1; min-width: 160px;">
             <label
-                style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px;">
-                Tingkatan Sabuk:
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Tingkatan Sabuk
             </label>
             <select name="sabuk" class="form-control">
                 <option value="">Semua Sabuk</option>
-                <option value="HIJAU" {% if current_sabuk=='HIJAU' %}selected{% endif %}>Hijau</option>
-                <option value="BIRU" {% if current_sabuk=='BIRU' %}selected{% endif %}>Biru</option>
-                <option value="COKELAT" {% if current_sabuk=='COKELAT' %}selected{% endif %}>Cokelat</option>
+                <option value="HIJAU" {% if current_sabuk=='HIJAU' %}selected{% endif %}>Sabuk Hijau</option>
+                <option value="BIRU" {% if current_sabuk=='BIRU' %}selected{% endif %}>Sabuk Biru</option>
+                <option value="COKELAT" {% if current_sabuk=='COKELAT' %}selected{% endif %}>Sabuk Cokelat</option>
                 <option value="HITAM COKELAT" {% if current_sabuk=='HITAM COKELAT' %}selected{% endif %}>Hitam Cokelat
                     (Pelatih)</option>
                 <option value="HITAM ORANGE" {% if current_sabuk=='HITAM ORANGE' %}selected{% endif %}>Hitam Orange
                     (Pelatih Utama)</option>
-                <option value="GURU" {% if current_sabuk=='GURU' %}selected{% endif %}>Guru</option>
+                <option value="GURU" {% if current_sabuk=='GURU' %}selected{% endif %}>Dewan Guru</option>
                 <option value="GURU BESAR" {% if current_sabuk=='GURU BESAR' %}selected{% endif %}>Guru Besar</option>
             </select>
         </div>
 
+        <!-- Filter Status KTA Fisik -->
+        <div style="flex: 1; min-width: 150px;">
+            <label
+                style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; display: block;">
+                Status KTA Fisik
+            </label>
+            <select name="status" class="form-control">
+                <option value="">Semua Status</option>
+                <option value="PUNYA" {% if current_status=='PUNYA' %}selected{% endif %}>Sudah Cetak (PUNYA)</option>
+                <option value="BELUM" {% if current_status=='BELUM' %}selected{% endif %}>Belum Cetak (BELUM)</option>
+            </select>
+        </div>
+
+        <!-- Tombol Aksi Filter -->
         <div style="display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary" style="padding: 10px 18px;">
-                Filter KTA
+            <button type="submit" class="btn btn-primary"
+                style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                <span>Filter KTA</span>
             </button>
-            {% if current_branch or current_sabuk %}
-            <a href="{{ url_for('kta.batch') }}" class="btn btn-secondary" style="padding: 10px 14px;">
+            {% if search_query or current_branch or current_sabuk or current_status %}
+            <a href="{{ url_for('kta.batch') }}" class="btn btn-secondary" style="padding: 10px 14px;"
+                title="Reset Filter">
                 Reset
             </a>
             {% endif %}
@@ -105,23 +271,39 @@
     </form>
 </div>
 
+<!-- Header Ringkasan Grid -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;" class="no-print">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 700; color: var(--color-text-primary); font-size: 1.05rem;">Pratinjau Kartu KTA
+            Digital</span>
+        <span class="badge badge-neutral" style="font-size: 0.775rem; padding: 4px 10px;">{{ total_items }} Anggota
+            Ditemukan</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--color-text-muted);">
+        Menampilkan <strong>{{ start_item }}</strong> - <strong>{{ end_item }}</strong> dari <strong>{{ total_items
+            }}</strong>
+    </div>
+</div>
+
 <!-- Mini Cards Grid -->
 <div class="batch-grid">
     {% for item in items %}
     <div class="batch-card-mini">
         <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
-            <img src="{{ item.photo_url }}"
-                style="width: 52px; height: 68px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);"
+            <img src="{{ item.photo_url }}" alt="{{ item.nama_lengkap }}"
+                style="width: 52px; height: 68px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); flex-shrink: 0;"
                 onerror="this.src='/static/img/avatar_placeholder.svg'">
-            <div>
-                <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary);">
-                    {{ item.nama_lengkap }}</h4>
-                <span
-                    style="font-family: monospace; font-size: 0.8rem; font-weight: 600; color: var(--color-primary);">{{
-                    item.nomor_induk }}</span>
+            <div style="min-width: 0; flex: 1;">
+                <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                    title="{{ item.nama_lengkap }}">
+                    {{ item.nama_lengkap }}
+                </h4>
+                <span style="font-family: monospace; font-size: 0.8rem; font-weight: 600; color: var(--color-primary);">
+                    {{ item.nomor_induk }}
+                </span>
                 <div style="margin-top: 6px;">
-                    <span class="badge kta-belt-{{ (item.sabuk or '') | lower | replace(' ', '-') }}"
-                        data-bg="{{ item.belt_info.bg_gradient }}" style="font-size: 0.72rem;">
+                    <span class="badge"
+                        style="background: {{ item.belt_info.bg_gradient }}; color: #FFFFFF; font-size: 0.72rem;">
                         {{ item.belt_info.label }}
                     </span>
                 </div>
@@ -148,9 +330,8 @@
     {% endfor %}
 </div>
 
-<!-- 10-Item Pagination -->
-<div class="table-card" style="margin-top: 20px;">
+<!-- 12-Item Pagination -->
+<div class="table-card no-print" style="margin-top: 20px;">
     {% include '_pagination.html' %}
 </div>
-
 {% endblock %}
