@@ -1,8 +1,10 @@
 from app.repositories.google_sheet.gas_client import GasClient
 from app.core.numbering import NumberingEngine
+from app.core.cache import ttl_cache
 
 class PromotionService:
     @staticmethod
+    @ttl_cache(ttl_seconds=60)
     def fetch_staging_data():
         # Ideally, we should fetch from "DATA MENTAH" sheet
         # I'll implement a new GAS action for this, but for now we can mock it 

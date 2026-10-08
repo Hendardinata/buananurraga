@@ -32,6 +32,13 @@ def register():
             # Send to GAS
             GasClient.add_member_to_staging(member_data)
             
+            # Clear staging data cache so the new member immediately appears in Wizard
+            try:
+                from app.services.promotion_service import PromotionService
+                PromotionService.fetch_staging_data.clear_cache()
+            except Exception:
+                pass
+            
             flash('Berhasil mendaftarkan calon anggota ke Data Mentah!', 'success')
             return redirect(url_for('member.index'))
             

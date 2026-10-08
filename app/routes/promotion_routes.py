@@ -50,6 +50,14 @@ def wizard():
             
             if new_members or upgrade_members:
                 PromotionService.consolidated_promote(event_date, location, new_members, upgrade_members)
+                
+                # Clear caches so Data Induk and Staging updates immediately show
+                try:
+                    PromotionService.fetch_staging_data.clear_cache()
+                    MemberService.get_all_members.clear_cache()
+                except Exception:
+                    pass
+                    
                 flash(f"Berhasil memproses! {len(new_members)} anggota baru dan {len(upgrade_members)} naik tingkat.", "success")
                 return redirect(url_for('member.index'))
             else:

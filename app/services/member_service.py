@@ -1,8 +1,10 @@
 from app.repositories.google_sheet.gas_client import GasClient
 from app.core.normalizer import DataNormalizer
+from app.core.cache import ttl_cache
 
 class MemberService:
     @staticmethod
+    @ttl_cache(ttl_seconds=60)
     def get_all_members():
         # Fetch raw data from GAS
         raw_members = GasClient.get_all_members()
@@ -38,4 +40,9 @@ class MemberService:
 
     @staticmethod
     def update_kta_status(nomor_induk, status="PUNYA"):
-        return GasClient.update_kta_status(nomor_induk, status=status)
+        result = GasClient.update_kta_status(nomor_induk, status=status)
+        try:
+            MemberService.get_all_members.clear_cache()
+        except Exception:
+            pass
+        return result

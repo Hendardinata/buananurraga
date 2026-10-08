@@ -1,8 +1,10 @@
 from app.repositories.google_sheet.gas_client import GasClient
+from app.core.cache import ttl_cache
 from datetime import datetime
 
 class BudgetService:
     @staticmethod
+    @ttl_cache(ttl_seconds=60)
     def get_all_budgets():
         try:
             budgets = GasClient.get_budgets()
@@ -32,4 +34,12 @@ class BudgetService:
             "nominal": nominal,
             "cabang": cabang.upper()
         }
-        return GasClient.add_budget(payload)
+        result = GasClient.add_budget(payload)
+        
+        # Clear cache so updates show immediately
+        try:
+            BudgetService.get_all_budgets.clear_cache()
+        except Exception:
+            pass
+            
+        return result
