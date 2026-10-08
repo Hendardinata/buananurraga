@@ -25,7 +25,10 @@ def view(nomor_induk):
     host_url = request.host_url
     kta_payload = KtaService.prepare_kta_payload(member, host_url)
 
-    return render_template('kta/view.html', kta=kta_payload, user=user)
+    from app.services.achievement_service import AchievementService
+    achievements = AchievementService.get_achievements_by_nomor_induk(nomor_induk)
+
+    return render_template('kta/view.html', kta=kta_payload, user=user, achievements=achievements)
 
 @kta_bp.route('/download/<nomor_induk>')
 @login_required

@@ -4,209 +4,543 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Keabsahan Anggota - Perguruan Silat Buana Nurraga</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/design-tokens.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    
     <style>
+        :root {
+            --verify-bg-canvas: #F8FAFC;
+            --verify-card-bg: #FFFFFF;
+            --verify-text-primary: #0F172A;
+            --verify-text-secondary: #475569;
+            --verify-text-muted: #64748B;
+            --verify-border-color: #E2E8F0;
+            --verify-border-subtle: #F1F5F9;
+            
+            --brand-green-primary: #15803D;
+            --brand-green-emerald: #16A34A;
+            --brand-green-light: #ECFDF5;
+            --brand-green-border: #A7F3D0;
+            
+            --brand-red-primary: #DC2626;
+            --brand-red-light: #FEF2F2;
+            --brand-red-border: #FECACA;
+            
+            --brand-black-primary: #0F172A;
+            --brand-stripe: linear-gradient(90deg, #DC2626 0%, #0F172A 50%, #16A34A 100%);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0A0D12;
+            margin: 0;
+            padding: 40px 16px;
+            min-height: 100vh;
+            background-color: var(--verify-bg-canvas);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(46, 125, 50, 0.22) 0%, transparent 60%),
-                radial-gradient(circle at 10% 90%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 0%, rgba(22, 163, 74, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(220, 38, 38, 0.04) 0%, transparent 50%),
                 url('/static/img/guilloche_bg.svg');
             background-size: cover, cover, cover;
-            min-height: 100vh;
+            background-position: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--verify-text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
-            box-sizing: border-box;
-            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .verify-card {
-            background: rgba(20, 26, 35, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: var(--verify-card-bg);
+            border: 1px solid var(--verify-border-color);
             border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.15);
+            box-shadow: 
+                0 20px 45px -12px rgba(15, 23, 42, 0.08),
+                0 2px 6px rgba(15, 23, 42, 0.03);
             width: 100%;
-            max-width: 580px;
+            max-width: 600px;
             overflow: hidden;
             position: relative;
         }
 
-        .verify-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #1B5E20, #D4AF37, #1B5E20);
+        /* Header */
+        .verify-header {
+            padding: 32px 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--verify-border-subtle);
+            background: #FFFFFF;
+            position: relative;
         }
 
-        .verify-header {
-            padding: 28px 24px 20px 24px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        .verify-logo-box {
+            display: inline-block;
+            margin-bottom: 12px;
             position: relative;
         }
 
         .verify-logo {
-            width: 72px;
-            height: 72px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            display: block;
         }
 
-        .verify-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--color-gold);
+        .verify-org-supertitle {
+            font-size: 0.72rem;
+            font-weight: 700;
             letter-spacing: 1.5px;
+            color: var(--brand-green-primary);
+            text-transform: uppercase;
             margin: 0 0 4px 0;
         }
 
+        .verify-title {
+            font-family: 'Cinzel', 'Montserrat', serif;
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            color: var(--verify-text-primary);
+            margin: 0 0 4px 0;
+            line-height: 1.25;
+        }
+
         .verify-subtitle {
-            font-size: 0.8rem;
-            color: #B0BEC5;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--verify-text-muted);
             letter-spacing: 1px;
             margin: 0;
             text-transform: uppercase;
         }
 
-        /* Status Badge */
-        .status-badge {
-            margin: 18px auto 0 auto;
-            padding: 8px 18px;
-            border-radius: 30px;
-            display: inline-flex;
+        /* Status Banner */
+        .status-banner {
+            margin-top: 18px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+            gap: 14px;
+            text-align: left;
         }
 
-        .status-badge.valid {
-            background: rgba(46, 125, 50, 0.25);
-            border: 1px solid #4CAF50;
-            color: #81C784;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        .status-banner.valid {
+            background: var(--brand-green-light);
+            border: 1px solid var(--brand-green-border);
         }
 
-        .status-badge.invalid {
-            background: rgba(211, 47, 47, 0.25);
-            border: 1px solid #E57373;
-            color: #FF8A80;
-            box-shadow: 0 0 15px rgba(229, 115, 115, 0.3);
+        .status-banner.valid .status-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--brand-green-emerald);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(22, 163, 74, 0.28);
         }
 
+        .status-banner.valid .status-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #065F46;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .status-banner.valid .status-desc {
+            font-size: 0.76rem;
+            color: #047857;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .status-banner.invalid {
+            background: var(--brand-red-light);
+            border: 1px solid var(--brand-red-border);
+        }
+
+        .status-banner.invalid .status-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--brand-red-primary);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.28);
+        }
+
+        .status-banner.invalid .status-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #991B1B;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .status-banner.invalid .status-desc {
+            font-size: 0.76rem;
+            color: #B91C1C;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        /* Body */
         .verify-body {
             padding: 24px;
         }
 
-        .member-profile-row {
+        /* Member Profile Row */
+        .member-profile-card {
             display: flex;
-            gap: 20px;
             align-items: center;
-            margin-bottom: 24px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
+            gap: 18px;
             padding: 16px;
+            background: #F8FAFC;
+            border: 1px solid var(--verify-border-color);
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .member-photo-frame {
+            position: relative;
+            width: 82px;
+            height: 104px;
+            border-radius: 8px;
+            background: #FFFFFF;
+            border: 2px solid var(--brand-black-primary);
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.1);
+            flex-shrink: 0;
+            overflow: hidden;
+            padding: 2px;
         }
 
         .member-photo {
-            width: 80px;
-            height: 100px;
-            border-radius: 8px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 2px solid var(--color-gold);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            background: #0E1318;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .member-photo-seal {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .member-meta-box {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .member-label-meta {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: var(--verify-text-muted);
+            margin: 0 0 2px 0;
+        }
+
+        .member-name-heading {
+            font-family: 'Cinzel', 'Montserrat', 'Inter', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--verify-text-primary);
+            margin: 0 0 6px 0;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .member-id-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .member-id-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-black-primary);
+            border: 1px solid var(--brand-red-primary);
+            color: #FFFFFF;
+            font-family: 'SF Mono', Consolas, Monaco, monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+        }
+
+        /* Detail List */
+        .detail-table-card {
+            background: #FFFFFF;
+            border: 1px solid var(--verify-border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--verify-border-subtle);
+            font-size: 0.88rem;
+            transition: background-color 0.15s ease;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row:hover {
+            background-color: #F8FAFC;
+        }
+
+        .detail-label {
+            color: var(--verify-text-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 42%;
             flex-shrink: 0;
         }
 
-        .member-primary-info {
+        .detail-value {
+            color: var(--verify-text-primary);
+            font-weight: 700;
+            text-align: right;
             flex-grow: 1;
         }
 
-        .member-name {
-            font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
+        /* Belt Badge */
+        .belt-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.78rem;
             font-weight: 800;
+            letter-spacing: 0.6px;
             color: #FFFFFF;
-            margin: 0 0 6px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         }
 
-        .member-id-pill {
-            display: inline-block;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--color-gold);
-            color: var(--color-gold-light);
-            font-family: monospace;
-            font-size: 0.85rem;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 6px;
+        /* Active Status Pill */
+        .status-pill-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-green-light);
+            border: 1px solid var(--brand-green-border);
+            color: var(--brand-green-primary);
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.4px;
         }
 
-        .detail-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            font-size: 0.9rem;
+        /* Achievements Section */
+        .achievements-section {
+            background: #F8FAFC;
+            border: 1px solid var(--verify-border-color);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
         }
 
-        .detail-table td {
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        .achievements-heading {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--verify-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .detail-table td:first-child {
-            color: #B0BEC5;
-            width: 38%;
-            border-radius: 6px 0 0 6px;
-            border-left: 1px solid rgba(255, 255, 255, 0.04);
+        .achievements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .detail-table td:last-child {
-            color: #FFFFFF;
-            font-weight: 600;
-            border-radius: 0 6px 6px 0;
-            border-right: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .privacy-box {
-            background: rgba(14, 61, 19, 0.2);
-            border: 1px solid rgba(76, 175, 80, 0.3);
+        .achievement-card {
+            background: #FFFFFF;
+            border: 1px solid var(--verify-border-color);
             border-radius: 10px;
-            padding: 12px 16px;
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: #A5D6A7;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            line-height: 1.4;
         }
 
+        .achievement-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .achievement-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--verify-text-primary);
+            line-height: 1.25;
+        }
+
+        .achievement-desc {
+            font-size: 0.74rem;
+            color: var(--verify-text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Invalid / Error State */
+        .invalid-state-box {
+            text-align: center;
+            padding: 24px 10px;
+        }
+
+        .invalid-icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--brand-red-light);
+            border: 1px solid var(--brand-red-border);
+            color: var(--brand-red-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .invalid-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #991B1B;
+            margin: 0 0 8px 0;
+        }
+
+        .invalid-desc {
+            font-size: 0.88rem;
+            color: var(--verify-text-secondary);
+            max-width: 440px;
+            margin: 0 auto 16px auto;
+            line-height: 1.5;
+        }
+
+        .invalid-alert-guide {
+            background: #F8FAFC;
+            border: 1px solid var(--verify-border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.8rem;
+            color: var(--verify-text-secondary);
+            text-align: left;
+            margin: 0 auto;
+            max-width: 480px;
+            line-height: 1.5;
+        }
+
+        /* Footer */
         .verify-footer {
             padding: 18px 24px;
             text-align: center;
-            background: rgba(10, 14, 20, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: #F8FAFC;
+            border-top: 1px solid var(--verify-border-subtle);
             font-size: 0.75rem;
-            color: #78909C;
+            color: var(--verify-text-muted);
+        }
+
+        .footer-copyright {
+            margin: 0;
+            color: var(--verify-text-secondary);
+            font-weight: 600;
+        }
+
+        /* Responsive Mobile Styles */
+        @media (max-width: 540px) {
+            body {
+                padding: 16px 10px;
+            }
+
+            .verify-card {
+                border-radius: 16px;
+            }
+
+            .verify-header {
+                padding: 24px 16px 16px;
+            }
+
+            .verify-title {
+                font-size: 1.15rem;
+            }
+
+            .verify-body {
+                padding: 16px;
+            }
+
+            .member-profile-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .member-id-row {
+                justify-content: center;
+            }
+
+            .detail-row {
+                padding: 10px 14px;
+                font-size: 0.84rem;
+            }
+
+            .detail-label {
+                width: 48%;
+            }
+        }
+
+        /* Print Media */
+        @media print {
+            body {
+                background: #FFFFFF !important;
+                padding: 0 !important;
+            }
+            .verify-card {
+                border: 1px solid #CBD5E1 !important;
+                box-shadow: none !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+            }
         }
     </style>
 </head>
@@ -215,17 +549,37 @@
     <div class="verify-card">
         <!-- Header -->
         <div class="verify-header">
-            <img src="{{ url_for('static', filename='img/logo_bn.svg') }}" alt="Logo Buana Nurraga" class="verify-logo">
+            <div class="verify-logo-box">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Buana Nurraga" class="verify-logo">
+            </div>
+            <p class="verify-org-supertitle">Dewan Pimpinan Pusat • Nusa Tenggara Barat</p>
             <h1 class="verify-title">PERGURUAN SILAT BUANA NURRAGA</h1>
             <p class="verify-subtitle">Sistem Verifikasi Integritas Keanggotaan Nasional</p>
 
             {% if is_valid %}
-            <div class="status-badge valid">
-                <span style="font-size: 1.1rem;">✓</span> TERVERIFIKASI RESMI
+            <div class="status-banner valid">
+                <div class="status-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <div class="status-title">TERVERIFIKASI RESMI</div>
+                    <div class="status-desc">Data Anggota Sah & Aktif Tercatat di Buku Induk Perguruan</div>
+                </div>
             </div>
             {% else %}
-            <div class="status-badge invalid">
-                <span style="font-size: 1.1rem;">✗</span> DATA TIDAK DITEMUKAN / TIDAK VALID
+            <div class="status-banner invalid">
+                <div class="status-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+                <div>
+                    <div class="status-title">DATA TIDAK VALID / TIDAK DITEMUKAN</div>
+                    <div class="status-desc">Nomor induk tidak terdaftar dalam pangkalan data resmi perguruan</div>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -233,69 +587,121 @@
         <!-- Body -->
         <div class="verify-body">
             {% if is_valid %}
-            <div class="member-profile-row">
-                <img src="{{ member_data.photo_url }}" alt="Foto Anggota" class="member-photo" onerror="this.src='/static/img/avatar_placeholder.svg'">
-                <div class="member-primary-info">
-                    <p style="color: var(--color-gold); font-size: 0.75rem; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 1px;">Nama Anggota:</p>
-                    <h2 class="member-name">{{ member_data.nama_lengkap }}</h2>
-                    <span class="member-id-pill">{{ member_data.nomor_induk }}</span>
+            <!-- Member Profile Row -->
+            <div class="member-profile-card">
+                <div class="member-photo-frame">
+                    <img src="{{ member_data.photo_url }}" alt="Foto Anggota" class="member-photo" onerror="this.src='/static/img/avatar_placeholder.svg'">
+                    <img src="{{ url_for('static', filename='img/seal_official.svg') }}" alt="Seal" class="member-photo-seal">
+                </div>
+                <div class="member-meta-box">
+                    <p class="member-label-meta">Nama Lengkap Anggota:</p>
+                    <h2 class="member-name-heading">{{ member_data.nama_lengkap }}</h2>
+                    <div class="member-id-row">
+                        <span class="member-id-badge">{{ member_data.nomor_induk }}</span>
+                    </div>
                 </div>
             </div>
 
-            <table class="detail-table">
-                <tr>
-                    <td>Tingkatan Sabuk</td>
-                    <td>
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-weight: bold; background: {{ member_data.belt_info.bg_gradient }}; color: #FFFFFF; font-size: 0.8rem;">
+            <!-- Detail List -->
+            <div class="detail-table-card">
+                <div class="detail-row">
+                    <div class="detail-label">Tingkatan Sabuk</div>
+                    <div class="detail-value">
+                        <span class="belt-badge" style="background: {{ member_data.belt_info.bg_gradient }};">
                             {{ member_data.belt_info.label }}
                         </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Gelar / Jabatan</td>
-                    <td>{{ member_data.belt_info.level_name }}</td>
-                </tr>
-                <tr>
-                    <td>Cabang Latihan</td>
-                    <td>{{ member_data.cabang }}</td>
-                </tr>
-                <tr>
-                    <td>Kabupaten / Wilayah</td>
-                    <td>{{ member_data.kabupaten }}</td>
-                </tr>
-                <tr>
-                    <td>Tanggal Pengesahan</td>
-                    <td>{{ member_data.tanggal_sah }}</td>
-                </tr>
-                <tr>
-                    <td>Status Keanggotaan</td>
-                    <td><span style="color: #4CAF50;">● AKTIF & RESMI</span></td>
-                </tr>
-            </table>
-
-            <div class="privacy-box">
-                <span style="font-size: 1.4rem;">🛡️</span>
-                <div>
-                    <strong>Protokol Privasi Anggota:</strong> Data sensitif (NIK, rincian nomor kontak, dan alamat rumah lengkap) disamarkan untuk melindungi privasi anggota Perguruan Silat Buana Nurraga.
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Gelar / Jabatan</div>
+                    <div class="detail-value">{{ member_data.belt_info.level_name }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Cabang Latihan</div>
+                    <div class="detail-value">{{ member_data.cabang }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Kabupaten / Wilayah</div>
+                    <div class="detail-value">{{ member_data.kabupaten }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Tanggal Pengesahan</div>
+                    <div class="detail-value">{{ member_data.tanggal_sah }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Status Keanggotaan</div>
+                    <div class="detail-value">
+                        <span class="status-pill-active">
+                            AKTIF & RESMI
+                        </span>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Masa Berlaku KTA</div>
+                    <div class="detail-value" style="color: var(--brand-green-primary);">SEUMUR HIDUP / NASIONAL</div>
                 </div>
             </div>
 
+            <!-- Achievements (if any) -->
+            {% if achievements and achievements|length > 0 %}
+            <div class="achievements-section">
+                <div class="achievements-heading">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                    Rekam Prestasi Resmi Atlet ({{ achievements|length }})
+                </div>
+                <div class="achievements-list">
+                    {% for a in achievements %}
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            {% if (a.medali or '') | lower == 'emas' %}🥇
+                            {% elif (a.medali or '') | lower == 'perak' %}🥈
+                            {% else %}🥉{% endif %}
+                        </div>
+                        <div>
+                            <div class="achievement-title">Juara {{ (a.medali or '') | capitalize }} - {{ a.nama_kejuaraan }}</div>
+                            <div class="achievement-desc">{{ a.kategori }} • Tingkat {{ a.tingkat }} • Tahun {{ a.tahun }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
             {% else %}
-            <div style="text-align: center; padding: 30px 10px;">
-                <p style="color: #FF8A80; font-size: 1rem; margin-bottom: 12px;">
-                    Nomor Induk <strong>{{ nomor_induk }}</strong> tidak tercatat dalam arsip master Perguruan Silat Buana Nurraga.
+            <!-- Invalid / Not Found State -->
+            <div class="invalid-state-box">
+                <div class="invalid-icon-circle">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <h2 class="invalid-title">Nomor Induk Tidak Terdaftar</h2>
+                <p class="invalid-desc">
+                    Nomor Induk <strong>{{ nomor_induk }}</strong> tidak ditemukan dalam pangkalan data resmi Perguruan Silat Buana Nurraga.
                 </p>
-                <p style="color: #B0BEC5; font-size: 0.85rem; line-height: 1.5;">
-                    Pastikan Anda memindai kode QR resmi yang tertera pada Kartu Tanda Anggota (KTA) fisik yang diterbitkan oleh Pengurus Pusat atau Sekretariat Cabang resmi.
-                </p>
+                <div class="invalid-alert-guide">
+                    <strong>Panduan Keabsahan:</strong>
+                    <ul style="margin: 6px 0 0 0; padding-left: 20px;">
+                        <li>Pastikan nomor induk yang Anda masukkan atau kode QR pada KTA dipindai dengan benar.</li>
+                        <li>Hanya KTA resmi yang diterbitkan Dewan Pimpinan Pusat yang tercatat di sistem ini.</li>
+                        <li>Hubungi Sekretariat Cabang resmi untuk pengecekan data keanggotaan Anda.</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 22px;">
+                    <a href="/" class="action-btn action-btn-primary">Kembali ke Beranda</a>
+                </div>
             </div>
             {% endif %}
         </div>
 
         <!-- Footer -->
         <div class="verify-footer">
-            <p style="margin: 0 0 4px 0;">© Perguruan Silat Buana Nurraga • Dewan Pimpinan Pusat</p>
-            <p style="margin: 0; font-family: monospace; font-size: 0.7rem;">Waktu Pengecekan Sistem: {{ checked_at }}</p>
+            <p class="footer-copyright">© Perguruan Silat Buana Nurraga • Dewan Pimpinan Pusat</p>
         </div>
     </div>
 

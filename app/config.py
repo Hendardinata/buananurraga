@@ -14,6 +14,12 @@ class Config:
     GAS_API_URL = os.environ.get('GAS_API_URL')
     GAS_SECRET_TOKEN = os.environ.get('GAS_SECRET_TOKEN')
     
+    # Database settings
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, '..', 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     # Template Version (Schema validation)
     TEMPLATE_VERSION = '2.0.0'
     

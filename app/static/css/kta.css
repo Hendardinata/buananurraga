@@ -1,17 +1,28 @@
 /* ==========================================================================
-   KTA DIGITAL MEGANG, ELEGAN & MEWAH - PERGURUAN SILAT BUANA NURRAGA
-   Standar ID-1 (85.60 mm x 53.98 mm, Rasio 1.586)
+   KTA DIGITAL MODERN & ELEGAN - PERGURUAN SILAT BUANA NURRAGA
+   Standar ID-1 ISO/IEC 7810 (85.60 mm x 53.98 mm, Rasio 1.586)
+   Clean White Base - Aksen Merah, Hitam & Hijau (Harmonis dengan Logo)
    ========================================================================== */
 
 :root {
-  --kta-gold-gradient: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 30%, #AA771C 65%, #FDE08B 85%, #8B6508 100%);
-  --kta-gold-solid: #D4AF37;
-  --kta-gold-light: #FBF0B9;
-  --kta-dark-bg: #0D1117;
-  --kta-dark-surface: #141A23;
-  --kta-green-deep: #0B3314;
-  --kta-green-glow: rgba(46, 125, 50, 0.35);
-  --kta-border-radius: 18px;
+  --kta-bg-base: #FFFFFF;
+  --kta-bg-subtle: #F8FAFC;
+  --kta-black-primary: #0F172A;
+  --kta-black-deep: #000000;
+  --kta-black-soft: #1E293B;
+  --kta-red-primary: #DC2626;
+  --kta-red-dark: #991B1B;
+  --kta-red-light: #FEF2F2;
+  --kta-green-primary: #15803D;
+  --kta-green-emerald: #16A34A;
+  --kta-green-light: #ECFDF5;
+  --kta-border-card: #0F172A;
+  --kta-border-subtle: #E2E8F0;
+  --kta-text-dark: #0F172A;
+  --kta-text-muted: #64748B;
+  --kta-border-radius: 16px;
+  
+  --kta-brand-stripe: linear-gradient(90deg, #DC2626 0%, #0F172A 50%, #16A34A 100%);
 }
 
 /* Container & 3D Stage */
@@ -50,39 +61,34 @@
   -webkit-backface-visibility: hidden;
   overflow: hidden;
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(212, 175, 55, 0.4),
-    0 0 25px rgba(212, 175, 55, 0.2);
-  background-color: var(--kta-dark-bg);
+    0 20px 45px -12px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(15, 23, 42, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: #FFFFFF;
   background-image: 
-    radial-gradient(ellipse at 85% 15%, rgba(46, 125, 50, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse at 15% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 12%, rgba(22, 163, 74, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 12% 88%, rgba(220, 38, 38, 0.04) 0%, transparent 55%),
     url('/static/img/guilloche_bg.svg');
   background-size: cover, cover, 100% 100%;
-  color: #FFFFFF;
+  color: var(--kta-text-dark);
   box-sizing: border-box;
 }
 
-/* Luxury Multi-layer Gold Border */
+/* Sharp Card Framing (ID-1 Inner Border) */
 .kta-card-face::before {
   content: '';
   position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  bottom: 8px;
-  border-radius: calc(var(--kta-border-radius) - 6px);
-  border: 2px solid transparent;
-  background: var(--kta-gold-gradient) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  border-radius: calc(var(--kta-border-radius) - 4px);
+  border: 1.5px solid rgba(15, 23, 42, 0.85);
   pointer-events: none;
   z-index: 5;
 }
 
-/* Subtle Hologram Sheen on Hover */
+/* Subtle Security Sheen on Hover */
 .kta-card-face::after {
   content: '';
   position: absolute;
@@ -92,14 +98,15 @@
   height: 200%;
   background: linear-gradient(
     60deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.08) 45%,
-    rgba(212, 175, 55, 0.15) 50%,
-    rgba(255, 255, 255, 0.08) 55%,
-    transparent 65%
+    transparent 38%,
+    rgba(255, 255, 255, 0.45) 48%,
+    rgba(22, 163, 74, 0.12) 50%,
+    rgba(220, 38, 38, 0.10) 52%,
+    rgba(255, 255, 255, 0.45) 54%,
+    transparent 64%
   );
   transform: rotate(25deg) translateY(-100%);
-  transition: transform 1.2s ease;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   z-index: 6;
 }
@@ -108,28 +115,17 @@
   transform: rotate(25deg) translateY(100%);
 }
 
-/* Ornate Corner Accents */
-.kta-corner {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--kta-gold-solid);
-  z-index: 7;
-  pointer-events: none;
-}
-.kta-corner.top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-.kta-corner.top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-.kta-corner.bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-.kta-corner.bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
 
 /* -------------------------------------------------------------
    FRONT SIDE (SISI DEPAN)
    ------------------------------------------------------------- */
 .kta-front {
-  padding: 18px 22px;
+  padding: 16px 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: #FFFFFF;
 }
 
 /* Header */
@@ -137,8 +133,9 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  padding-bottom: 9px;
+  border-bottom: 2px solid transparent;
+  border-image: var(--kta-brand-stripe) 1;
   position: relative;
   z-index: 2;
 }
@@ -146,7 +143,7 @@
 .kta-header-logo {
   width: 52px;
   height: 52px;
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
   flex-shrink: 0;
 }
 
@@ -156,52 +153,37 @@
 
 .kta-org-supertitle {
   font-size: 8.5px;
-  letter-spacing: 2px;
-  color: var(--kta-gold-light);
+  letter-spacing: 1.8px;
+  color: var(--kta-green-primary);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
 }
 
 .kta-org-title {
-  font-family: 'Cinzel', 'Georgia', serif;
+  font-family: 'Cinzel', 'Montserrat', 'Inter', serif;
   font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
   margin: 1px 0;
-  background: var(--kta-gold-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  color: var(--kta-black-primary);
 }
 
 .kta-org-subtitle {
-  font-size: 9px;
+  font-size: 8.5px;
   letter-spacing: 1.5px;
-  color: #B0BEC5;
+  color: var(--kta-red-primary);
   text-transform: uppercase;
+  font-weight: 700;
   margin: 0;
 }
 
-.kta-header-badge {
-  background: rgba(46, 125, 50, 0.25);
-  border: 1px solid var(--kta-gold-solid);
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--kta-gold-light);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-}
+
 
 /* Card Main Body */
 .kta-body {
   display: grid;
-  grid-template-columns: 110px 1fr 105px;
+  grid-template-columns: 104px 1fr 100px;
   gap: 16px;
   align-items: center;
   position: relative;
@@ -222,17 +204,18 @@
   width: 95px;
   height: 120px;
   border-radius: 8px;
-  padding: 3px;
-  background: var(--kta-gold-gradient);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.3);
+  padding: 2.5px;
+  background: #FFFFFF;
+  border: 2px solid var(--kta-black-primary);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
 }
 
 .kta-photo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 6px;
-  background-color: #0E1318;
+  border-radius: 5px;
+  background-color: #F8FAFC;
   display: block;
 }
 
@@ -242,7 +225,7 @@
   right: -6px;
   width: 32px;
   height: 32px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .kta-chip-row {
@@ -254,9 +237,9 @@
 
 .kta-chip-img {
   width: 42px;
-  height: 32px;
+  height: 30px;
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 /* Center Column: Member Details */
@@ -264,77 +247,86 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  text-align: left;
+  align-items: flex-start;
 }
 
 .kta-name-title {
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--kta-gold-solid);
-  font-weight: 600;
+  color: var(--kta-text-muted);
+  font-weight: 700;
   margin: 0;
 }
 
 .kta-name-val {
   font-family: 'Cinzel', 'Inter', sans-serif;
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--kta-black-primary);
   margin: 0 0 4px 0;
   letter-spacing: 0.5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .kta-id-pill {
   display: inline-flex;
   align-items: center;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  border-radius: 5px;
+  background: var(--kta-black-primary);
+  border: 1px solid var(--kta-red-primary);
+  border-radius: 6px;
   padding: 3px 10px;
   font-family: 'Courier New', monospace;
   font-size: 11px;
   font-weight: 700;
-  color: var(--kta-gold-light);
-  letter-spacing: 1px;
+  color: #FFFFFF;
+  letter-spacing: 1.2px;
   width: fit-content;
   margin-bottom: 6px;
-  box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.12);
 }
 
 .kta-meta-grid {
   display: grid;
   grid-template-columns: 85px 1fr;
   row-gap: 3px;
-  font-size: 10px;
+  font-size: 9.5px;
 }
 
 .kta-meta-label {
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 500;
+  color: var(--kta-text-muted);
+  font-weight: 600;
 }
 
 .kta-meta-val {
-  color: #FFFFFF;
+  color: var(--kta-black-primary);
   font-weight: 700;
 }
 
 .kta-belt-ribbon {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 2px 9px;
   border-radius: 4px;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
   width: fit-content;
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
 }
+
+.kta-belt-hijau { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+.kta-belt-biru { background: linear-gradient(135deg, #0d47a1, #1976d2); }
+.kta-belt-cokelat { background: linear-gradient(135deg, #3e2723, #6d4c41); }
+.kta-belt-hitam-cokelat { background: linear-gradient(135deg, #26160e, #5d4037); }
+.kta-belt-hitam-orange { background: linear-gradient(135deg, #212121, #e65100); }
+.kta-belt-guru { background: linear-gradient(135deg, #b8860b, #d4af37); }
+.kta-belt-guru-besar { background: linear-gradient(135deg, #7c5806, #d4af37, #ffe082); }
 
 /* Right Column: QR Code & Verification */
 .kta-qr-col {
@@ -348,10 +340,10 @@
 
 .kta-qr-frame {
   background: #FFFFFF;
-  padding: 5px;
+  padding: 4px;
   border-radius: 8px;
-  border: 2px solid var(--kta-gold-solid);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.35);
+  border: 1.5px solid var(--kta-black-primary);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -365,10 +357,10 @@
 
 .kta-qr-caption {
   font-size: 7.5px;
-  color: var(--kta-gold-light);
+  color: var(--kta-green-primary);
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 /* Footer */
@@ -376,18 +368,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 8px;
-  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  padding-top: 6px;
+  border-top: 1px solid var(--kta-border-subtle);
   font-size: 8px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--kta-text-muted);
   letter-spacing: 1px;
   position: relative;
   z-index: 2;
+  font-weight: 600;
 }
 
 .kta-footer-sec {
   font-family: 'Courier New', monospace;
-  color: var(--kta-gold-light);
+  color: var(--kta-black-primary);
+  font-weight: 700;
 }
 
 /* -------------------------------------------------------------
@@ -398,28 +392,28 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: #FFFFFF;
 }
 
-/* Magnetic Stripe Simulation */
+/* Magnetic Stripe */
 .kta-magstripe {
-  height: 48px;
-  background: linear-gradient(180deg, #1C150A 0%, #302410 40%, #171107 100%);
-  border-top: 1px solid rgba(212, 175, 55, 0.4);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.4);
-  margin-top: 20px;
+  height: 44px;
+  background: var(--kta-black-primary);
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  margin-top: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 25px;
-  color: var(--kta-gold-light);
+  color: #FFFFFF;
   font-family: 'Courier New', monospace;
-  font-size: 9px;
+  font-size: 8.5px;
   letter-spacing: 2px;
-  opacity: 0.95;
 }
 
 .kta-back-content {
-  padding: 10px 24px;
+  padding: 8px 24px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -427,60 +421,61 @@
 }
 
 .kta-rules-box h5 {
-  font-size: 9px;
-  color: var(--kta-gold-solid);
-  letter-spacing: 1.5px;
-  margin: 0 0 4px 0;
+  font-size: 8.5px;
+  color: var(--kta-red-dark);
+  letter-spacing: 1.2px;
+  margin: 0 0 3px 0;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .kta-rules-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 8.5px;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 8px;
+  line-height: 1.35;
+  color: #334155;
 }
 
 .kta-rules-list li {
   margin-bottom: 2px;
   position: relative;
-  padding-left: 12px;
+  padding-left: 11px;
 }
 
 .kta-rules-list li::before {
-  content: '◆';
+  content: '▪';
   position: absolute;
   left: 0;
-  color: var(--kta-gold-solid);
-  font-size: 7px;
+  color: var(--kta-red-primary);
+  font-size: 8px;
 }
 
 /* Ikrar Box */
 .kta-ikrar-box {
-  background: rgba(14, 61, 19, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: var(--kta-green-light);
+  border: 1px solid #BBF7D0;
+  border-left: 3.5px solid var(--kta-green-emerald);
   border-radius: 6px;
-  padding: 6px 12px;
-  margin: 4px 0;
+  padding: 5px 10px;
+  margin: 3px 0;
   font-size: 8px;
   text-align: center;
-  color: #E0E0E0;
+  color: var(--kta-green-primary);
   font-style: italic;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .kta-ikrar-box strong {
-  color: var(--kta-gold-light);
+  color: #166534;
   font-style: normal;
   display: block;
   margin-bottom: 2px;
   letter-spacing: 1px;
+  font-weight: 800;
 }
 
-/* Signatures & Golden Stamp */
+/* Signatures & Seal */
 .kta-signatures-row {
   display: flex;
   align-items: flex-end;
@@ -495,19 +490,19 @@
 }
 
 .kta-sign-role {
-  color: var(--kta-gold-light);
-  margin-bottom: 22px;
-  font-weight: 600;
+  color: var(--kta-black-primary);
+  margin-bottom: 20px;
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
 .kta-sign-line {
-  border-bottom: 1px solid var(--kta-gold-solid);
+  border-bottom: 1px solid var(--kta-black-primary);
   margin-bottom: 2px;
 }
 
 .kta-sign-title {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--kta-text-muted);
   font-size: 7.5px;
 }
 
@@ -518,19 +513,20 @@
 }
 
 .kta-seal-img {
-  width: 65px;
-  height: 65px;
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+  width: 58px;
+  height: 58px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 .kta-back-footer {
-  padding: 6px 24px 12px 24px;
+  padding: 5px 24px 10px 24px;
   display: flex;
   justify-content: space-between;
   font-size: 7.5px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--kta-text-muted);
   letter-spacing: 1px;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  border-top: 1px solid var(--kta-border-subtle);
+  font-weight: 600;
 }
 
 /* -------------------------------------------------------------
@@ -657,6 +653,8 @@
 
   .kta-actions-toolbar .btn,
   .kta-actions-toolbar .badge,
+  .kta-actions-toolbar .kta-dropdown-wrapper,
+  .kta-actions-toolbar .kta-dropdown-wrapper .btn,
   .kta-actions-toolbar form,
   .kta-actions-toolbar form button {
     width: 100%;
@@ -671,15 +669,57 @@
   }
 }
 
+/* Medal Styles for Achievements */
+.kta-medal-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  flex-shrink: 0;
+}
+.kta-medal-emas {
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+  border: 1.5px solid #FDE68A;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
+}
+.kta-medal-perak {
+  background: linear-gradient(135deg, #F8FAFC, #E2E8F0);
+  border: 1.5px solid #CBD5E1;
+  box-shadow: 0 2px 6px rgba(100, 116, 139, 0.12);
+}
+.kta-medal-perunggu {
+  background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+  border: 1.5px solid #FED7AA;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
+}
+.kta-medal-default {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+}
+
+
 /* -------------------------------------------------------------
    PRINT STYLING (ID-1 EXACT SIZE 85.60 mm x 53.98 mm)
    ------------------------------------------------------------- */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+  }
+
   body * {
     visibility: hidden;
   }
   
-  .sidebar, .topbar, .kta-actions-toolbar, .btn, nav {
+  .sidebar, .topbar, .kta-actions-toolbar, .btn, nav, .card:not(.kta-print-sheet-card) {
     display: none !important;
   }
 
@@ -693,12 +733,12 @@
     top: 0;
     width: 100%;
     margin: 0;
-    padding: 10mm;
-    background: transparent !important;
+    padding: 8mm;
+    background: #FFFFFF !important;
     display: flex !important;
     flex-direction: column;
     align-items: center;
-    gap: 15mm;
+    gap: 12mm;
   }
 
   /* Exact ID-1 standard dimensions */
@@ -710,6 +750,9 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     box-shadow: none !important;
-    border: 0.5pt solid #D4AF37 !important;
+    border: 1pt solid #0F172A !important;
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+    overflow: hidden !important;
   }
 }

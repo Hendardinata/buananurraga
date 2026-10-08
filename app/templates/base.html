@@ -77,8 +77,27 @@
                     </a>
                 </li>
                 {% endif %}
+                
+                {% if session.get('role') == 'super_admin' %}
+                <li>
+                    <a href="{{ url_for('user.index') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('user.') else '' }}">
+                        <span class="menu-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </span>
+                        <span>Manajemen Pengguna</span>
+                    </a>
+                </li>
+                {% endif %}
 
                 <div class="sidebar-menu-heading">Layanan Anggota</div>
+                <li>
+                    <a href="{{ url_for('achievement.pool') }}" class="{{ 'active' if request.endpoint == 'achievement.pool' else '' }}">
+                        <span class="menu-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        </span>
+                        <span>Bursa Atlet & Prestasi</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ url_for('kta.batch') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('kta.') else '' }}">
                         <span class="menu-icon">
@@ -186,7 +205,265 @@
                 }
             });
         });
+
+        // Global Page Loader Logic
+        function showGlobalLoader() {
+            const loader = document.getElementById('globalPageLoader');
+            if (loader) loader.classList.add('active');
+        }
+
+        function hideGlobalLoader() {
+            const loader = document.getElementById('globalPageLoader');
+            if (loader) loader.classList.remove('active');
+        }
+
+        // Modern Modal Animation Helpers
+        window.openModernModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.classList.remove('closing');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeModernModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.classList.add('closing');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.remove('closing');
+                const anyOpen = document.querySelector('.modal-overlay[style*="display: flex"]');
+                if (!anyOpen) {
+                    document.body.style.overflow = '';
+                }
+            }, 180);
+        };
+
+        // Universal Modern Dialog (Alert & Confirm) Logic
+        let _dialogResolver = null;
+
+        window.modernConfirm = function(options = {}) {
+            const {
+                title = 'Konfirmasi Tindakan',
+                message = 'Apakah Anda yakin ingin melanjutkan?',
+                type = 'primary',
+                confirmText = 'Lanjutkan',
+                cancelText = 'Batal'
+            } = options;
+
+            return new Promise((resolve) => {
+                _dialogResolver = resolve;
+                const iconPill = document.getElementById('dialogIconPill');
+                const titleEl = document.getElementById('dialogTitleText');
+                const msgEl = document.getElementById('dialogMessageText');
+                const confirmBtn = document.getElementById('dialogConfirmButton');
+                const cancelBtn = document.getElementById('dialogCancelButton');
+
+                if (titleEl) titleEl.textContent = title;
+                if (msgEl) msgEl.innerHTML = message;
+                if (cancelBtn) {
+                    cancelBtn.style.display = 'inline-flex';
+                    cancelBtn.textContent = cancelText;
+                }
+                if (confirmBtn) {
+                    confirmBtn.textContent = confirmText;
+                    confirmBtn.className = 'btn btn-' + (type === 'danger' ? 'danger' : (type === 'warning' ? 'warning' : 'primary'));
+                }
+
+                if (iconPill) {
+                    iconPill.className = 'dialog-icon-pill ' + type;
+                    if (type === 'danger') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+                    } else if (type === 'warning') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+                    } else if (type === 'success') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+                    } else {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+                    }
+                }
+
+                openModernModal('universalModernDialog');
+            });
+        };
+
+        window.modernAlert = function(options = {}) {
+            const {
+                title = 'Pemberitahuan',
+                message = '',
+                type = 'info',
+                confirmText = 'Mengerti'
+            } = options;
+
+            return new Promise((resolve) => {
+                _dialogResolver = resolve;
+                const iconPill = document.getElementById('dialogIconPill');
+                const titleEl = document.getElementById('dialogTitleText');
+                const msgEl = document.getElementById('dialogMessageText');
+                const confirmBtn = document.getElementById('dialogConfirmButton');
+                const cancelBtn = document.getElementById('dialogCancelButton');
+
+                if (titleEl) titleEl.textContent = title;
+                if (msgEl) msgEl.innerHTML = message;
+                if (cancelBtn) cancelBtn.style.display = 'none';
+                if (confirmBtn) {
+                    confirmBtn.textContent = confirmText;
+                    confirmBtn.className = 'btn btn-' + (type === 'danger' ? 'danger' : 'primary');
+                }
+
+                if (iconPill) {
+                    iconPill.className = 'dialog-icon-pill ' + type;
+                    if (type === 'danger') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+                    } else if (type === 'warning') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+                    } else if (type === 'success') {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+                    } else {
+                        iconPill.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+                    }
+                }
+
+                openModernModal('universalModernDialog');
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            hideGlobalLoader();
+
+            // Setup Universal Dialog Buttons
+            const confirmBtn = document.getElementById('dialogConfirmButton');
+            const cancelBtn = document.getElementById('dialogCancelButton');
+            const dialogModal = document.getElementById('universalModernDialog');
+
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    closeModernModal('universalModernDialog');
+                    if (_dialogResolver) {
+                        const cb = _dialogResolver;
+                        _dialogResolver = null;
+                        cb(true);
+                    }
+                });
+            }
+
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    closeModernModal('universalModernDialog');
+                    if (_dialogResolver) {
+                        const cb = _dialogResolver;
+                        _dialogResolver = null;
+                        cb(false);
+                    }
+                });
+            }
+
+            if (dialogModal) {
+                dialogModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeModernModal('universalModernDialog');
+                        if (_dialogResolver) {
+                            const cb = _dialogResolver;
+                            _dialogResolver = null;
+                            cb(false);
+                        }
+                    }
+                });
+            }
+
+            // Universal data-confirm event delegation
+            document.addEventListener('click', async function(e) {
+                const trigger = e.target.closest('[data-confirm]');
+                if (!trigger) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                const message = trigger.getAttribute('data-confirm');
+                const title = trigger.getAttribute('data-confirm-title') || 'Konfirmasi Tindakan';
+                const type = trigger.getAttribute('data-confirm-type') || 'danger';
+                const confirmText = trigger.getAttribute('data-confirm-btn') || 'Ya, Lanjutkan';
+                const cancelText = trigger.getAttribute('data-confirm-cancel') || 'Batal';
+
+                const confirmed = await modernConfirm({
+                    title,
+                    message,
+                    type,
+                    confirmText,
+                    cancelText
+                });
+
+                if (confirmed) {
+                    if (trigger.form) {
+                        trigger.form.submit();
+                    } else if (trigger.tagName === 'A' && trigger.href) {
+                        window.location.href = trigger.href;
+                    }
+                }
+            });
+
+            // Global ESC key listener to close active modals
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const openModals = document.querySelectorAll('.modal-overlay');
+                    openModals.forEach(m => {
+                        if (m.style.display === 'flex' && m.id !== 'globalPageLoader') {
+                            closeModernModal(m.id);
+                        }
+                    });
+                }
+            });
+
+            // Show loader on form submissions for instant feedback (skip if form already has confirm pending)
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (this.target === '_blank' || !this.checkValidity()) return;
+                    showGlobalLoader();
+                });
+            });
+        });
+
+        // Show loader when navigating away (unless flagged to skip, e.g. for downloads)
+        window.addEventListener('beforeunload', function() {
+            if (!window.skipLoader) {
+                showGlobalLoader();
+            }
+            window.skipLoader = false;
+        });
+
+        // Hide loader when coming back via bfcache
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                hideGlobalLoader();
+            }
+        });
     </script>
+
+    <!-- Global Page Loader -->
+    <div id="globalPageLoader" class="global-page-loader">
+        <div class="loader-content">
+            <div class="modern-spinner"></div>
+            <p class="loader-text">Memuat data...</p>
+        </div>
+    </div>
+
+    <!-- Universal Modern Dialog Modal (Confirm & Alert) -->
+    <div id="universalModernDialog" class="modal-overlay" style="z-index: 1200;">
+        <div class="modal-window dialog-window" style="max-width: 440px;">
+            <div class="dialog-body">
+                <div id="dialogIconPill" class="dialog-icon-pill danger"></div>
+                <h3 id="dialogTitleText" class="dialog-title">Konfirmasi Aksi</h3>
+                <p id="dialogMessageText" class="dialog-message">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; gap: 12px; padding: 16px 24px;">
+                <button type="button" id="dialogCancelButton" class="btn btn-secondary" style="min-width: 100px;">Batal</button>
+                <button type="button" id="dialogConfirmButton" class="btn btn-primary" style="min-width: 120px;">Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

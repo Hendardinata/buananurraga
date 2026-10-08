@@ -122,111 +122,197 @@ class KtaService:
     def generate_server_png(cls, member: dict, host_url: str, side: str = 'front') -> io.BytesIO:
         """
         Server-side high-resolution PNG image generation (1012x638 px, ID-1 300 DPI standard).
+        Clean White Base, with Red, Black, and Green accents matching Perguruan Silat Buana Nurraga logo.
         """
         payload = cls.prepare_kta_payload(member, host_url)
         width, height = 1012, 638
-        img = Image.new("RGB", (width, height), color=(14, 18, 24))
+        # Clean Pure White Card Base
+        img = Image.new("RGB", (width, height), color=(255, 255, 255))
         draw = ImageDraw.Draw(img)
 
-        # Try to load standard fonts, fallback to default
-        try:
-            font_title = ImageFont.truetype("arialbd.ttf", 26)
-            font_subtitle = ImageFont.truetype("arial.ttf", 16)
-            font_name = ImageFont.truetype("arialbd.ttf", 32)
-            font_id = ImageFont.truetype("courbd.ttf", 24)
-            font_label = ImageFont.truetype("arial.ttf", 14)
-            font_val = ImageFont.truetype("arialbd.ttf", 16)
-            font_belt = ImageFont.truetype("arialbd.ttf", 18)
-            font_micro = ImageFont.truetype("arial.ttf", 11)
-        except Exception:
-            font_title = ImageFont.load_default()
-            font_subtitle = font_title
-            font_name = font_title
-            font_id = font_title
-            font_label = font_title
-            font_val = font_title
-            font_belt = font_title
-            font_micro = font_title
+        # Helper font loader with multiple fallbacks
+        def load_font(font_names, size):
+            for fname in font_names:
+                try:
+                    return ImageFont.truetype(fname, size)
+                except Exception:
+                    continue
+            return ImageFont.load_default()
 
-        gold_primary = (212, 175, 55)
-        gold_light = (245, 215, 127)
-        green_dark = (14, 61, 19)
-        white = (255, 255, 255)
-        text_dim = (180, 180, 180)
+        font_super = load_font(["arialbd.ttf", "segoeuib.ttf"], 13)
+        font_title = load_font(["georgiab.ttf", "arialbd.ttf", "segoeuib.ttf"], 25)
+        font_subtitle = load_font(["arialbd.ttf", "segoeuib.ttf"], 14)
+        font_name = load_font(["arialbd.ttf", "segoeuib.ttf"], 28)
+        font_id = load_font(["courbd.ttf", "arialbd.ttf"], 21)
+        font_label = load_font(["arial.ttf", "segoeui.ttf"], 13)
+        font_val = load_font(["arialbd.ttf", "segoeuib.ttf"], 16)
+        font_belt = load_font(["arialbd.ttf", "segoeuib.ttf"], 15)
+        font_micro = load_font(["arial.ttf", "segoeui.ttf"], 12)
+        font_badge = load_font(["arialbd.ttf", "segoeuib.ttf"], 13)
+
+        # Brand Color Palette (Harmonized with Logo)
+        c_black = (15, 23, 42)           # Slate-900: Deep Black
+        c_black_deep = (0, 0, 0)
+        c_red = (220, 38, 38)            # Crimson Red
+        c_red_dark = (153, 27, 27)       # Deep Red
+        c_green = (21, 128, 61)          # Forest Green
+        c_green_emerald = (22, 163, 74)  # Emerald Green
+        c_slate = (71, 85, 105)          # Slate-600
+        c_muted = (100, 116, 139)        # Slate-500
+        c_border_light = (226, 232, 240) # Slate-200
+        c_white = (255, 255, 255)
+
+        # Draw subtle anti-counterfeit guilloche wave lines across card
+        for y_wave in range(30, height - 30, 28):
+            draw.line([(30, y_wave), (width - 30, y_wave)], fill=(244, 247, 250), width=1)
+        for x_wave in range(30, width - 30, 32):
+            draw.line([(x_wave, 30), (x_wave, height - 30)], fill=(248, 250, 252), width=1)
 
         if side == 'front':
-            # Background Luxury Gradient Lines / Accents
-            for y in range(0, height, 4):
-                alpha = int(14 + (y / height) * 10)
-                draw.line([(0, y), (width, y)], fill=(alpha, alpha + 4, alpha + 8))
+            # Outer Sharp Black Border (Standard ID-1 Outer Frame)
+            draw.rounded_rectangle([(14, 14), (width - 14, height - 14)], radius=24, outline=c_black, width=3)
+            # Inner Subtle Security Border
+            draw.rounded_rectangle([(20, 20), (width - 20, height - 20)], radius=18, outline=c_border_light, width=1)
 
-            # Gold Ornate Outer Border (Double Line)
-            draw.rounded_rectangle([(14, 14), (width - 14, height - 14)], radius=24, outline=gold_primary, width=3)
-            draw.rounded_rectangle([(22, 22), (width - 22, height - 22)], radius=18, outline=(140, 100, 20), width=1)
 
-            # Top Header Bar (Deep Green Banner)
-            draw.rounded_rectangle([(26, 26), (width - 26, 96)], radius=14, fill=green_dark, outline=gold_primary, width=1)
 
-            # Header Titles
-            draw.text((45, 34), "PERGURUAN SILAT BUANA NURRAGA", fill=gold_light, font=font_title)
-            draw.text((45, 68), "KARTU TANDA ANGGOTA RESMI  •  OFFICIAL NATIONAL CREDENTIAL", fill=white, font=font_subtitle)
+            # Paste Official Logo
+            logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'img', 'logo.png')
+            if os.path.exists(logo_path):
+                try:
+                    logo_img = Image.open(logo_path).convert("RGBA")
+                    logo_img = logo_img.resize((76, 76), Image.Resampling.LANCZOS)
+                    img.paste(logo_img, (40, 25), mask=logo_img)
+                except Exception:
+                    pass
+
+            # Header Brand Text
+            def draw_centered_text(cx, y, txt, font_obj, color):
+                if hasattr(font_obj, 'getbbox'):
+                    w = font_obj.getbbox(txt)[2] - font_obj.getbbox(txt)[0]
+                elif hasattr(font_obj, 'getsize'):
+                    w = font_obj.getsize(txt)[0]
+                else:
+                    w = font_obj.getlength(txt) if hasattr(font_obj, 'getlength') else len(txt) * 8
+                draw.text((cx - (w / 2), y), txt, fill=color, font=font_obj)
+
+            header_cx = (130 + (width - 40)) // 2
+            draw_centered_text(header_cx, 26, "DEWAN PIMPINAN PUSAT • NUSA TENGGARA BARAT", font_super, c_green)
+            draw_centered_text(header_cx, 46, "PERGURUAN SILAT BUANA NURRAGA", font_title, c_black)
+            draw_centered_text(header_cx, 78, "KARTU TANDA ANGGOTA RESMI • OFFICIAL NATIONAL CREDENTIAL", font_subtitle, c_red)
+
+
+
+            # Tricolor Brand Stripe below Header (Red - Black - Green)
+            stripe_y = 104
+            draw.line([(130, stripe_y), (370, stripe_y)], fill=c_red, width=2)
+            draw.line([(370, stripe_y), (670, stripe_y)], fill=c_black, width=2)
+            draw.line([(670, stripe_y), (width - 40, stripe_y)], fill=c_green_emerald, width=2)
 
             # Photo Container on Left
-            photo_rect = [(45, 120), (250, 385)]
-            draw.rounded_rectangle(photo_rect, radius=12, fill=(24, 30, 40), outline=gold_primary, width=3)
-            draw.text((95, 230), "[ FOTO ]", fill=gold_light, font=font_val)
+            photo_rect = [(42, 120), (245, 375)]
+            draw.rounded_rectangle(photo_rect, radius=10, fill=(248, 250, 252), outline=c_black, width=2)
+            draw.rounded_rectangle([(46, 124), (241, 371)], radius=8, outline=c_red, width=1)
 
-            # Belt Ribbon below Photo
-            draw.rounded_rectangle([(45, 395), (250, 435)], radius=8, fill=(46, 125, 50), outline=gold_light, width=1)
-            draw.text((60, 403), payload['belt_info']['label'], fill=white, font=font_belt)
+            # Try to load real member photo, otherwise draw clean avatar silhouette
+            photo_loaded = False
+            raw_photo_url = payload.get('photo_url', '')
+            if raw_photo_url and not raw_photo_url.endswith('.svg'):
+                if raw_photo_url.startswith('/static/'):
+                    local_p = os.path.join(os.path.dirname(__file__), '..', raw_photo_url.lstrip('/'))
+                    if os.path.exists(local_p):
+                        try:
+                            m_photo = Image.open(local_p).convert("RGB")
+                            m_photo = m_photo.resize((195, 247), Image.Resampling.LANCZOS)
+                            img.paste(m_photo, (46, 124))
+                            photo_loaded = True
+                        except Exception:
+                            pass
+
+            if not photo_loaded:
+                # Dignified clean placeholder portrait with Martial Arts collar
+                draw.ellipse([(108, 160), (178, 230)], fill=(226, 232, 240), outline=c_slate, width=2)
+                draw.polygon([(75, 335), (143, 260), (211, 335)], fill=(226, 232, 240), outline=c_slate)
+                draw.text((105, 342), "FOTO RESMI", fill=c_muted, font=font_micro)
+
+            # Smart Chip Graphic below Photo
+            chip_box = [(42, 388), (115, 436)]
+            draw.rounded_rectangle(chip_box, radius=6, fill=(245, 158, 11), outline=(180, 83, 9), width=1)
+            # Chip internal contact pads
+            draw.rectangle([(55, 396), (102, 428)], outline=(180, 83, 9), width=1)
+            draw.line([(78, 396), (78, 428)], fill=(180, 83, 9), width=1)
+            draw.line([(55, 412), (102, 412)], fill=(180, 83, 9), width=1)
+
+            # Overlapping Red Official Stamp on photo corner
+            stamp_cx, stamp_cy = 238, 362
+            draw.circle((stamp_cx, stamp_cy), 22, fill=(255, 255, 255), outline=c_red, width=2)
+            draw.circle((stamp_cx, stamp_cy), 18, outline=c_red, width=1)
+            draw.text((stamp_cx - 10, stamp_cy - 8), "BN", fill=c_red_dark, font=font_micro)
 
             # Anggota Identity Block (Center)
-            draw.text((285, 120), "NAMA LENGKAP:", fill=gold_light, font=font_label)
-            draw.text((285, 142), payload['nama_lengkap'], fill=white, font=font_name)
+            draw.text((275, 122), "NAMA LENGKAP ANGGOTA", fill=c_muted, font=font_label)
+            draw.text((275, 142), payload['nama_lengkap'], fill=c_black, font=font_name)
 
-            # Nomor Induk Box
-            draw.rounded_rectangle([(285, 190), (680, 235)], radius=8, fill=(28, 20, 10), outline=gold_primary, width=2)
-            draw.text((300, 198), f"NO. INDUK : {payload['nomor_induk']}", fill=gold_light, font=font_id)
+            # Nomor Induk Box (Black Luxury Pill)
+            draw.rounded_rectangle([(275, 186), (680, 232)], radius=8, fill=c_black, outline=c_red, width=1)
+            draw.text((295, 196), f"NO. INDUK : {payload['nomor_induk']}", fill=c_white, font=font_id)
 
             # Data Grid
-            draw.text((285, 255), "TINGKATAN :", fill=gold_primary, font=font_label)
-            draw.text((400, 255), payload['belt_info']['level_name'], fill=white, font=font_val)
+            draw.text((275, 252), "TINGKATAN", fill=c_muted, font=font_label)
+            # Belt Ribbon Box
+            belt_label = payload['belt_info']['label']
+            belt_bg = c_green
+            if 'BIRU' in belt_label:
+                belt_bg = (13, 71, 161)
+            elif 'COKELAT' in belt_label and 'HITAM' not in belt_label:
+                belt_bg = (93, 64, 55)
+            elif 'ORANGE' in belt_label:
+                belt_bg = (230, 81, 0)
+            elif 'GURU' in belt_label:
+                belt_bg = (180, 83, 9)
 
-            draw.text((285, 290), "CABANG :", fill=gold_primary, font=font_label)
-            draw.text((400, 290), payload['cabang'], fill=white, font=font_val)
+            draw.rounded_rectangle([(390, 246), (660, 276)], radius=6, fill=belt_bg, outline=c_border_light, width=1)
+            draw.text((404, 252), belt_label, fill=c_white, font=font_belt)
 
-            draw.text((285, 325), "TANGGAL SAH :", fill=gold_primary, font=font_label)
-            draw.text((400, 325), payload['tanggal_sah'], fill=white, font=font_val)
+            draw.text((275, 290), "CABANG", fill=c_muted, font=font_label)
+            draw.text((390, 290), payload['cabang'], fill=c_black, font=font_val)
 
-            draw.text((285, 360), "STATUS :", fill=gold_primary, font=font_label)
-            draw.text((400, 360), "ANGGOTA RESMI & AKTIF", fill=(76, 175, 80), font=font_val)
+            draw.text((275, 325), "TANGGAL SAH", fill=c_muted, font=font_label)
+            draw.text((390, 325), payload['tanggal_sah'], fill=c_slate, font=font_val)
 
-            # Right Side: QR Code Frame
-            qr_frame = [(735, 120), (965, 350)]
-            draw.rounded_rectangle(qr_frame, radius=12, fill=(255, 255, 255), outline=gold_primary, width=3)
+            draw.text((275, 360), "MASA BERLAKU", fill=c_muted, font=font_label)
+            draw.text((390, 360), "SEUMUR HIDUP / AKTIF", fill=c_green, font=font_val)
+
+            # Right Side: QR Code Frame (Shrunk and aligned right)
+            qr_frame = [(785, 120), (965, 300)]
+            draw.rounded_rectangle(qr_frame, radius=10, fill=c_white, outline=c_black, width=2)
             
-            # Draw real QR image
+            # Draw real QR image inside frame
             try:
                 qr_pil = QRGenerator.generate_pil_image(payload['verification_url'], box_size=5, border=1)
-                qr_pil = qr_pil.resize((210, 210))
-                img.paste(qr_pil, (745, 130))
+                qr_pil = qr_pil.resize((160, 160))
+                img.paste(qr_pil, (795, 130))
             except Exception:
                 pass
 
-            draw.text((755, 360), "PINDAI UNTUK VERIFIKASI", fill=gold_light, font=font_micro)
+            draw_centered_text(875, 310, "PINDAI UNTUK VERIFIKASI", font_micro, c_green)
 
             # Footer Security Bar
-            draw.rounded_rectangle([(26, height - 60), (width - 26, height - 26)], radius=10, fill=(18, 22, 28), outline=(100, 80, 20), width=1)
-            draw.text((45, height - 48), "DEWAN PIMPINAN PUSAT BUANA NURRAGA  •  NUSA TENGGARA BARAT  •  DOKUMEN KEANGGOTAAN SAH", fill=text_dim, font=font_micro)
+            draw.line([(40, height - 58), (width - 40, height - 58)], fill=c_border_light, width=1)
+            draw.text((45, height - 46), "BUANA NURRAGA INDONESIA • KEABSAHAN TERCATAT PUSAT", fill=c_muted, font=font_micro)
+            draw.text((width - 250, height - 46), f"SEC-ID: {payload['nomor_induk']}", fill=c_black, font=font_micro)
 
         else: # Sisi Belakang (Back)
-            draw.rounded_rectangle([(14, 14), (width - 14, height - 14)], radius=24, outline=gold_primary, width=3)
-            # Gold Magnetic Stripe
-            draw.rectangle([(22, 40), (width - 22, 120)], fill=(35, 28, 15), outline=gold_primary, width=1)
-            draw.text((45, 68), "BUANA NURRAGA SECURITY STRIPE  ••••  ENCRYPTED CREDENTIAL ARCHIVE", fill=gold_light, font=font_subtitle)
+            # Outer Sharp Black Border
+            draw.rounded_rectangle([(14, 14), (width - 14, height - 14)], radius=24, outline=c_black, width=3)
+            draw.rounded_rectangle([(20, 20), (width - 20, height - 20)], radius=18, outline=c_border_light, width=1)
+
+            # Deep Black Magnetic Stripe with Security Text
+            draw.rectangle([(20, 32), (width - 20, 108)], fill=(15, 23, 42))
+            draw.text((45, 60), f"BN-CREDENTIAL-SECURITY-BAND  ••••  {payload['nomor_induk']}  ••••  ENCRYPTED ARCHIVE", fill=c_white, font=font_subtitle)
 
             # Rules / Ketentuan KTA
-            draw.text((50, 145), "KETENTUAN KARTU TANDA ANGGOTA (KTA):", fill=gold_primary, font=font_val)
+            draw.text((50, 136), "KETENTUAN PEMEGANG KARTU TANDA ANGGOTA (KTA):", fill=c_red_dark, font=font_val)
             rules = [
                 "1. Kartu ini merupakan bukti keanggotaan sah Perguruan Silat Buana Nurraga.",
                 "2. Wajib dibawa saat latihan resmi, ujian kenaikan tingkat (khataman), dan perhelatan perguruan.",
@@ -234,28 +320,42 @@ class KtaService:
                 "4. Kartu ini tidak dapat dipindahtangankan kepada pihak manapun.",
                 "5. Apabila menemukan kartu ini, harap hubungi Sekretariat Cabang terdekat atau scan QR Code di sisi depan."
             ]
-            y_rule = 180
+            y_rule = 168
             for r in rules:
-                draw.text((50, y_rule), r, fill=white, font=font_label)
-                y_rule += 26
+                draw.text((50, y_rule), r, fill=(30, 41, 59), font=font_label)
+                y_rule += 24
 
-            # Sumpah Pendekar
-            draw.rounded_rectangle([(50, 325), (width - 50, 410)], radius=10, fill=(20, 30, 22), outline=gold_primary, width=1)
-            draw.text((65, 335), "IKRAR PENDEKAR BUANA NURRAGA:", fill=gold_light, font=font_val)
-            draw.text((65, 360), "\"Bertaqwa kepada Tuhan Yang Maha Esa, Berbakti kepada Orang Tua dan Guru,", fill=white, font=font_label)
-            draw.text((65, 382), "Berbudi Pekerti Luhur, Serta Mengamalkan Ilmu untuk Membela Kebenaran dan Keadilan.\"", fill=white, font=font_label)
+            # Sumpah / Ikrar Pendekar Box
+            ikrar_rect = [(50, 305), (width - 50, 395)]
+            draw.rounded_rectangle(ikrar_rect, radius=8, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+            # Left Green Accent Border
+            draw.line([(50, 305), (50, 395)], fill=c_green_emerald, width=5)
+            draw.text((68, 316), "IKRAR PENDEKAR BUANA NURRAGA:", fill=c_green, font=font_val)
+            draw.text((68, 342), "\"Bertaqwa kepada Tuhan Yang Maha Esa, Berbakti kepada Orang Tua dan Guru,", fill=c_black, font=font_label)
+            draw.text((68, 364), "Berbudi Pekerti Luhur, Serta Mengamalkan Ilmu untuk Membela Kebenaran dan Keadilan.\"", fill=c_black, font=font_label)
 
             # Signature Blocks
-            draw.text((120, 445), "Ketua Umum", fill=gold_light, font=font_label)
-            draw.line([(80, 520), (240, 520)], fill=gold_primary, width=1)
-            draw.text((85, 528), "( Pengurus Pusat )", fill=text_dim, font=font_micro)
+            draw.text((130, 428), "Ketua Umum", fill=c_black, font=font_val)
+            draw.line([(70, 502), (250, 502)], fill=c_black, width=1)
+            draw.text((95, 510), "( Pengurus Besar Pusat )", fill=c_muted, font=font_micro)
 
-            draw.text((width - 260, 445), "Guru Besar / Dewan Guru", fill=gold_light, font=font_label)
-            draw.line([(width - 300, 520), (width - 140, 520)], fill=gold_primary, width=1)
-            draw.text((width - 280, 528), "( Dewan Pendekar )", fill=text_dim, font=font_micro)
+            draw.text((width - 280, 428), "Guru Besar / Dewan Guru", fill=c_black, font=font_val)
+            draw.line([(width - 320, 502), (width - 120, 502)], fill=c_black, width=1)
+            draw.text((width - 280, 510), "( Pimpinan Keilmuan )", fill=c_muted, font=font_micro)
 
-            # Bottom Center
-            draw.text((width // 2 - 130, height - 45), "SEKRETARIAT PUSAT: NUSA TENGGARA BARAT", fill=text_dim, font=font_micro)
+            # Center Seal Simulation (Carmine Red Stamp matching seal_official)
+            seal_cx, seal_cy = width // 2, 465
+            draw.circle((seal_cx, seal_cy), 44, fill=(255, 255, 255), outline=c_red, width=2)
+            draw.circle((seal_cx, seal_cy), 40, outline=c_red, width=1)
+            draw.circle((seal_cx, seal_cy), 28, outline=c_red, width=1)
+            draw.text((seal_cx - 28, seal_cy - 18), "CAP RESMI", fill=c_red, font=font_micro)
+            draw.text((seal_cx - 12, seal_cy - 7), "BN", fill=c_red_dark, font=font_val)
+            draw.text((seal_cx - 18, seal_cy + 8), "PUSAT", fill=c_red, font=font_micro)
+
+            # Bottom Center Footer
+            draw.line([(40, height - 52), (width - 40, height - 52)], fill=c_border_light, width=1)
+            draw.text((50, height - 42), "SEKRETARIAT PUSAT: NUSA TENGGARA BARAT", fill=c_muted, font=font_micro)
+            draw.text((width - 250, height - 42), "PORTAL: BUANANURRAGA.ORG", fill=c_muted, font=font_micro)
 
         buffer = io.BytesIO()
         img.save(buffer, format="PNG")

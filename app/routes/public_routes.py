@@ -44,10 +44,14 @@ def verify(nomor_induk):
         'photo_url': member.get('FOTO_URL') or '/static/img/avatar_placeholder.svg',
     }
 
+    from app.services.achievement_service import AchievementService
+    achievements = AchievementService.get_achievements_by_nomor_induk(nomor_induk)
+
     return render_template(
         'public/verify.html',
         is_valid=True,
         member_data=member_data,
         nomor_induk=nomor_induk,
-        checked_at=now_str
+        checked_at=now_str,
+        achievements=achievements
     )

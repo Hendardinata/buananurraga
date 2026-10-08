@@ -1,40 +1,48 @@
-<div style="padding: 24px;">
-    <!-- Modal Header -->
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 16px;">
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--color-primary-soft); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700;">
-                {{ member.get('NAMA LENGKAP', 'U')[0] | upper }}
-            </div>
-            <div>
-                <h2 style="color: var(--color-text-primary); margin: 0 0 4px 0; font-size: 1.25rem; font-weight: 700;">{{ member.get('NAMA LENGKAP') }}</h2>
-                <span style="color: var(--color-primary); font-family: monospace; font-size: 0.95rem; font-weight: 600;">{{ member.get('NOMOR INDUK') }}</span>
-                <span style="color: var(--color-text-muted); margin: 0 6px;">&bull;</span>
-                <span style="color: var(--color-text-secondary); font-size: 0.85rem; font-weight: 500;">Cabang {{ member.get('CABANG') }}</span>
+<!-- Modal Header -->
+<div class="modal-header">
+    <div class="modal-title-wrap">
+        <div style="width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(135deg, var(--color-primary-soft), #BAE6FD); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; border: 1px solid var(--color-primary-border); box-shadow: var(--shadow-xs);">
+            {{ member.get('NAMA LENGKAP', 'U')[0] | upper }}
+        </div>
+        <div>
+            <h3 class="modal-title" style="font-size: 1.2rem;">{{ member.get('NAMA LENGKAP') }}</h3>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 3px; flex-wrap: wrap;">
+                <span style="font-family: monospace; font-size: 0.85rem; font-weight: 700; color: var(--color-primary); background: var(--color-primary-soft); padding: 2px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-primary-border);">
+                    {{ member.get('NOMOR INDUK') }}
+                </span>
+                <span style="color: var(--color-text-secondary); font-size: 0.8rem; font-weight: 500;">
+                    Cabang {{ member.get('CABANG') }}
+                </span>
             </div>
         </div>
-        <button onclick="closeModal()" style="background: none; border: none; color: var(--color-text-muted); font-size: 1.5rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; line-height: 1;">&times;</button>
     </div>
+    <button type="button" class="modal-close-btn" onclick="closeModal()" aria-label="Tutup">&times;</button>
+</div>
 
-    <!-- Modal Body -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 24px;">
+<!-- Modal Body -->
+<div class="modal-body">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
         <!-- Left: Data Pribadi -->
-        <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px;">
-            <h4 style="color: var(--color-text-primary); margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Data Pribadi & Kontak
-            </h4>
-            <table style="width: 100%; font-size: 0.85rem; border-collapse: separate; border-spacing: 0 6px;">
+        <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border);">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: var(--color-primary-soft); color: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h4 style="margin: 0; font-size: 0.925rem; font-weight: 700; color: var(--color-text-primary);">Data Pribadi & Kontak</h4>
+            </div>
+            
+            <table style="width: 100%; font-size: 0.85rem; border-collapse: separate; border-spacing: 0 8px;">
                 <tr>
                     <td style="color: var(--color-text-secondary); width: 38%; font-weight: 500;">TTL</td>
-                    <td style="color: var(--color-text-primary); font-weight: 600;">: {{ member.get('TEMPAT TANGGAL LAHIR') }}</td>
+                    <td style="color: var(--color-text-primary); font-weight: 600;">: {{ member.get('TEMPAT TANGGAL LAHIR') or '-' }}</td>
                 </tr>
                 <tr>
                     <td style="color: var(--color-text-secondary); font-weight: 500;">Jenis Kelamin</td>
-                    <td style="color: var(--color-text-primary);">: {{ member.get('JENIS KELAMIN') }}</td>
+                    <td style="color: var(--color-text-primary);">: {{ member.get('JENIS KELAMIN') or '-' }}</td>
                 </tr>
                 <tr>
                     <td style="color: var(--color-text-secondary); font-weight: 500; vertical-align: top;">Alamat</td>
-                    <td style="color: var(--color-text-primary); line-height: 1.4;">: {{ member.get('DUSUN/LINGKUNGAN') }}, {{ member.get('DESA/KELURAHAN') }}, {{ member.get('KECAMATAN') }}, {{ member.get('KABUPATEN/KOTA') }}</td>
+                    <td style="color: var(--color-text-primary); line-height: 1.4;">: {{ member.get('DUSUN/LINGKUNGAN') or '' }}, {{ member.get('DESA/KELURAHAN') or '' }}, {{ member.get('KECAMATAN') or '' }}, {{ member.get('KABUPATEN/KOTA') or '' }}</td>
                 </tr>
                 <tr>
                     <td style="color: var(--color-text-secondary); font-weight: 500;">WhatsApp</td>
@@ -48,45 +56,48 @@
         </div>
         
         <!-- Right: Riwayat Sabuk -->
-        <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px;">
-            <h4 style="color: var(--color-text-primary); margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                Riwayat Pengesahan Sabuk
-            </h4>
-            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #ECFDF5;">
+        <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border);">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                </div>
+                <h4 style="margin: 0; font-size: 0.925rem; font-weight: 700; color: var(--color-text-primary);">Riwayat Pengesahan Sabuk</h4>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 7px; font-size: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #ECFDF5; border: 1px solid #A7F3D0;">
                     <span style="font-weight: 700; color: #047857;">HIJAU</span>
-                    <span style="color: #065F46; font-size: 0.8rem;">{{ member.get('HIJAU') or '-' }}</span>
+                    <span style="color: #065F46; font-size: 0.8rem; font-weight: 500;">{{ member.get('HIJAU') or '-' }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #E0F2FE;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #E0F2FE; border: 1px solid #BAE6FD;">
                     <span style="font-weight: 700; color: #0284C7;">BIRU</span>
-                    <span style="color: #0369A1; font-size: 0.8rem;">{{ member.get('BIRU') or '-' }}</span>
+                    <span style="color: #0369A1; font-size: 0.8rem; font-weight: 500;">{{ member.get('BIRU') or '-' }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #FEF3C7;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #FEF3C7; border: 1px solid #FDE68A;">
                     <span style="font-weight: 700; color: #92400E;">COKELAT</span>
-                    <span style="color: #78350F; font-size: 0.8rem;">{{ member.get('COKELAT') or '-' }}</span>
+                    <span style="color: #78350F; font-size: 0.8rem; font-weight: 500;">{{ member.get('COKELAT') or '-' }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #F5EBE1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #F5EBE1; border: 1px solid #E7D5C5;">
                     <span style="font-weight: 700; color: #573014;">HITAM COKELAT</span>
-                    <span style="color: #451A03; font-size: 0.8rem;">{{ member.get('HITAM COKELAT') or '-' }}</span>
+                    <span style="color: #451A03; font-size: 0.8rem; font-weight: 500;">{{ member.get('HITAM COKELAT') or '-' }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #FFEDD5;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #FFEDD5; border: 1px solid #FED7AA;">
                     <span style="font-weight: 700; color: #C2410C;">HITAM ORANGE</span>
-                    <span style="color: #9A3412; font-size: 0.8rem;">{{ member.get('HITAM ORANGE') or '-' }}</span>
+                    <span style="color: #9A3412; font-size: 0.8rem; font-weight: 500;">{{ member.get('HITAM ORANGE') or '-' }}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 6px; background-color: #FFFBEB;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); background-color: #FFFBEB; border: 1px solid #FDE68A;">
                     <span style="font-weight: 700; color: #B45309;">GURU / DEWAN GURU</span>
-                    <span style="color: #92400E; font-size: 0.8rem;">{{ member.get('GURU BESAR') or member.get('GURU') or '-' }}</span>
+                    <span style="color: #92400E; font-size: 0.8rem; font-weight: 500;">{{ member.get('GURU BESAR') or member.get('GURU') or '-' }}</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Footer -->
-    <div style="display: flex; gap: 10px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--color-border);">
-        <a href="{{ url_for('kta.view', nomor_induk=member.get('NOMOR INDUK')) }}" class="btn btn-secondary">
-            🪪 Buka KTA Digital
-        </a>
-        <button class="btn btn-primary" onclick="closeModal()">Tutup</button>
-    </div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+    <a href="{{ url_for('kta.view', nomor_induk=member.get('NOMOR INDUK')) }}" class="btn btn-secondary">
+        🪪 Buka KTA Digital
+    </a>
+    <button type="button" class="btn btn-primary" onclick="closeModal()">Tutup</button>
 </div>

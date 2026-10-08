@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import session, request, redirect, url_for, abort
-from app.repositories.in_memory.users_repo import users_repo
+from app.models.user import User
 
 def login_required(f):
     @wraps(f)
@@ -21,14 +21,14 @@ def role_required(allowed_roles):
             if 'user_id' not in session:
                 return redirect(url_for('auth.login', next=request.url))
                 
-            user = users_repo.get_user_by_username(session['user_id'])
-            if not user:
+            user = User.query.filter_by(username=session['user_id']).first()
+            if not user or not user.is_active:
                 session.clear()
                 return redirect(url_for('auth.login'))
                 
             roles = allowed_roles if isinstance(allowed_roles, list) else [allowed_roles]
             
-            if user['role'] not in roles:
+            if user.role not in roles:
                 abort(403) # Forbidden
                 
             return f(*args, **kwargs)
@@ -37,7 +37,9 @@ def role_required(allowed_roles):
 
 def get_current_user():
     if 'user_id' in session:
-        return users_repo.get_user_by_username(session['user_id'])
+        user = User.query.filter_by(username=session['user_id']).first()
+        if user and user.is_active:
+            return user.to_dict()
     return None
 
 def has_branch_access(branch_code):

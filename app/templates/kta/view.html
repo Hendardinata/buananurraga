@@ -16,8 +16,441 @@
         flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
+        align-items: center;
         margin-top: 24px;
         margin-bottom: 24px;
+        position: relative;
+    }
+
+    /* Dropdown Toggle Container */
+    .kta-dropdown-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .kta-dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+    }
+
+    .kta-dropdown-trigger .chevron-icon {
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .kta-dropdown-wrapper.open .kta-dropdown-trigger .chevron-icon {
+        transform: rotate(180deg);
+    }
+
+    .kta-dropdown-wrapper.open .kta-dropdown-trigger {
+        background-color: var(--color-surface-hover);
+        border-color: #CBD5E1;
+        color: var(--color-text-primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* Floating Dropdown Menu */
+    .kta-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 290px;
+        width: max-content;
+        max-width: 330px;
+        background: #FFFFFF;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.15), 0 4px 10px -2px rgba(15, 23, 42, 0.06);
+        padding: 8px;
+        z-index: 100;
+        text-align: left;
+    }
+
+    .kta-dropdown-wrapper.open .kta-dropdown-menu {
+        display: block;
+        animation: ktaDropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes ktaDropdownFade {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -8px) scale(0.97);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+    }
+
+    .kta-dropdown-header {
+        padding: 6px 12px 4px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .kta-dropdown-divider {
+        height: 1px;
+        background-color: var(--color-border);
+        margin: 6px 0;
+    }
+
+    .kta-dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 12px;
+        border-radius: var(--radius-md);
+        color: var(--color-text-primary);
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        font-family: inherit;
+        text-align: left;
+        box-sizing: border-box;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .kta-dropdown-item:hover {
+        background-color: var(--color-surface-hover);
+        color: var(--color-primary);
+    }
+
+    .kta-dropdown-item:hover .kta-dropdown-icon-box {
+        transform: scale(1.08);
+    }
+
+    .kta-dropdown-icon-box {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: transform var(--transition-fast);
+    }
+
+    .kta-dropdown-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex-grow: 1;
+    }
+
+    .kta-dropdown-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .kta-dropdown-desc {
+        font-size: 0.74rem;
+        color: var(--color-text-secondary);
+        line-height: 1.25;
+        margin-top: 2px;
+    }
+
+    .kta-dropdown-status-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 12px;
+        background-color: rgba(16, 185, 129, 0.08);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        border-radius: var(--radius-md);
+    }
+
+    @media (max-width: 540px) {
+        .kta-dropdown-menu {
+            left: 0;
+            transform: none;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .kta-dropdown-wrapper.open .kta-dropdown-menu {
+            animation: ktaDropdownMobileFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes ktaDropdownMobileFade {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    /* --- Modern Achievement Modal Styling --- */
+    .modal-athlete-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        background: #F8FAFC;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        margin-bottom: 2px;
+    }
+
+    .modal-athlete-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--color-primary-soft);
+        color: var(--color-primary);
+        font-weight: 700;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        border: 1px solid var(--color-primary-border);
+    }
+
+    .modal-athlete-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-athlete-meta {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-athlete-name {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.25;
+    }
+
+    .modal-athlete-sub {
+        font-size: 0.775rem;
+        color: var(--color-text-secondary);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin-top: 3px;
+    }
+
+    .modal-athlete-sub .dot {
+        color: var(--color-text-muted);
+    }
+
+    .modal-athlete-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 9px;
+        background: var(--color-primary-soft);
+        color: var(--color-primary);
+        font-size: 0.72rem;
+        font-weight: 700;
+        border-radius: var(--radius-full);
+        flex-shrink: 0;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .form-label-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.83rem;
+        font-weight: 600;
+        color: var(--color-text-secondary);
+        margin-bottom: 6px;
+    }
+
+    .form-label-with-icon .req {
+        color: var(--color-danger);
+    }
+
+    .form-label-with-icon svg {
+        color: var(--color-primary);
+        flex-shrink: 0;
+    }
+
+    .input-with-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon-prefix {
+        position: absolute;
+        left: 12px;
+        color: var(--color-text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        transition: color var(--transition-fast);
+        z-index: 1;
+    }
+
+    .input-with-icon .form-control {
+        padding-left: 38px;
+    }
+
+    .input-with-icon:focus-within .input-icon-prefix {
+        color: var(--color-primary);
+    }
+
+    /* Medal Selector Grid */
+    .medal-selector-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .medal-card-option {
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        margin: 0;
+        display: block;
+    }
+
+    .medal-card-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+
+    .medal-card-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 12px 6px;
+        background: var(--color-surface);
+        border: 1.5px solid var(--color-border);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .medal-card-box:hover {
+        border-color: #CBD5E1;
+        background: #F8FAFC;
+        transform: translateY(-1px);
+    }
+
+    .medal-card-box .medal-emoji {
+        font-size: 1.7rem;
+        line-height: 1;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+    }
+
+    .medal-card-box .medal-name {
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        line-height: 1.2;
+    }
+
+    .medal-card-box .medal-rank {
+        font-size: 0.72rem;
+        color: var(--color-text-muted);
+        margin-top: 2px;
+    }
+
+    .medal-card-box .medal-check {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all var(--transition-fast);
+        transform: scale(0.6);
+    }
+
+    /* Gold checked */
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.gold {
+        border-color: #F59E0B;
+        background: linear-gradient(180deg, #FFFDF5 0%, #FEF3C7 100%);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.22);
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.gold .medal-name {
+        color: #B45309;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.gold .medal-rank {
+        color: #D97706;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.gold .medal-check {
+        opacity: 1;
+        transform: scale(1);
+        background: #D97706;
+        color: #FFFFFF;
+    }
+
+    /* Silver checked */
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.silver {
+        border-color: #94A3B8;
+        background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%);
+        box-shadow: 0 4px 12px rgba(100, 116, 139, 0.18);
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.silver .medal-name {
+        color: #334155;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.silver .medal-rank {
+        color: #64748B;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.silver .medal-check {
+        opacity: 1;
+        transform: scale(1);
+        background: #64748B;
+        color: #FFFFFF;
+    }
+
+    /* Bronze checked */
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.bronze {
+        border-color: #D97706;
+        background: linear-gradient(180deg, #FFF7ED 0%, #FFEDD5 100%);
+        box-shadow: 0 4px 12px rgba(217, 119, 6, 0.22);
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.bronze .medal-name {
+        color: #9A3412;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.bronze .medal-rank {
+        color: #C2410C;
+    }
+    .medal-card-option input[type="radio"]:checked + .medal-card-box.bronze .medal-check {
+        opacity: 1;
+        transform: scale(1);
+        background: #C2410C;
+        color: #FFFFFF;
     }
 </style>
 {% endblock %}
@@ -52,11 +485,7 @@
                 
                 <!-- ================= FRONT SIDE ================= -->
                 <div class="kta-card-face kta-front" id="ktaFrontFace">
-                    <!-- Corner Ornaments -->
-                    <div class="kta-corner top-left"></div>
-                    <div class="kta-corner top-right"></div>
-                    <div class="kta-corner bottom-left"></div>
-                    <div class="kta-corner bottom-right"></div>
+                    <!-- Corner Ornaments (Dihapus sesuai permintaan) -->
 
                     <!-- Header -->
                     <div class="kta-header">
@@ -66,9 +495,7 @@
                             <h2 class="kta-org-title">PERGURUAN SILAT BUANA NURRAGA</h2>
                             <p class="kta-org-subtitle">KARTU TANDA ANGGOTA RESMI • OFFICIAL CREDENTIAL</p>
                         </div>
-                        <div class="kta-header-badge">
-                            <span>🛡️</span> RESMI
-                        </div>
+
                     </div>
 
                     <!-- Main Body -->
@@ -77,7 +504,7 @@
                         <div class="kta-photo-col">
                             <div class="kta-photo-frame">
                                 <img src="{{ kta.photo_url }}" alt="Foto Anggota" class="kta-photo-img" onerror="this.src='/static/img/avatar_placeholder.svg'">
-                                <img src="{{ url_for('static', filename='img/seal_gold.svg') }}" alt="Seal" class="kta-photo-stamp">
+                                <img src="{{ url_for('static', filename='img/seal_official.svg') }}" alt="Seal" class="kta-photo-stamp">
                             </div>
                             <div class="kta-chip-row">
                                 <img src="{{ url_for('static', filename='img/chip_gold.svg') }}" alt="Smart Chip" class="kta-chip-img">
@@ -96,7 +523,7 @@
                             <div class="kta-meta-grid">
                                 <span class="kta-meta-label">TINGKATAN</span>
                                 <span class="kta-meta-val">
-                                    <span class="kta-belt-ribbon" style="background: {{ kta.belt_info.bg_gradient }};">
+                                    <span class="kta-belt-ribbon kta-belt-{{ (kta.sabuk or '') | lower | replace(' ', '-') }}" data-bg="{{ kta.belt_info.bg_gradient }}">
                                         {{ kta.belt_info.label }}
                                     </span>
                                 </span>
@@ -108,7 +535,7 @@
                                 <span class="kta-meta-val">{{ kta.tanggal_sah }}</span>
 
                                 <span class="kta-meta-label">MASA BERLAKU</span>
-                                <span class="kta-meta-val" style="color: var(--color-green-light);">SEUMUR HIDUP / AKTIF</span>
+                                <span class="kta-meta-val" style="color: var(--kta-green-primary); font-weight: 700;">SEUMUR HIDUP / AKTIF</span>
                             </div>
                         </div>
 
@@ -130,11 +557,7 @@
 
                 <!-- ================= BACK SIDE ================= -->
                 <div class="kta-card-face kta-back" id="ktaBackFace">
-                    <!-- Corner Ornaments -->
-                    <div class="kta-corner top-left"></div>
-                    <div class="kta-corner top-right"></div>
-                    <div class="kta-corner bottom-left"></div>
-                    <div class="kta-corner bottom-right"></div>
+                    <!-- Corner Ornaments (Dihapus sesuai permintaan) -->
 
                     <!-- Gold Magnetic Stripe -->
                     <div class="kta-magstripe">
@@ -170,7 +593,7 @@
                             </div>
 
                             <div class="kta-seal-col">
-                                <img src="{{ url_for('static', filename='img/seal_gold.svg') }}" alt="Stempel Emas Resmi" class="kta-seal-img">
+                                <img src="{{ url_for('static', filename='img/seal_official.svg') }}" alt="Stempel Resmi" class="kta-seal-img">
                             </div>
 
                             <div class="kta-sign-col">
@@ -196,50 +619,108 @@
         </p>
     </div>
 
-    <!-- Action Toolbar (Selaras dengan Tombol Modern) -->
+    <!-- Action Toolbar (Hybrid Action Bar) -->
     <div class="kta-actions-toolbar">
         <!-- Download Front Image -->
-        <a href="{{ url_for('kta.download_png', nomor_induk=kta.nomor_induk, side='front') }}" class="btn btn-primary">
+        <a href="{{ url_for('kta.download_png', nomor_induk=kta.nomor_induk, side='front') }}" class="btn btn-primary" onclick="window.skipLoader = true;" title="Unduh gambar PNG sisi depan (resolusi tinggi)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Unduh PNG Sisi Depan
         </a>
 
         <!-- Download Back Image -->
-        <a href="{{ url_for('kta.download_png', nomor_induk=kta.nomor_induk, side='back') }}" class="btn btn-primary">
+        <a href="{{ url_for('kta.download_png', nomor_induk=kta.nomor_induk, side='back') }}" class="btn btn-primary" onclick="window.skipLoader = true;" title="Unduh gambar PNG sisi belakang (resolusi tinggi)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Unduh PNG Sisi Belakang
         </a>
 
         <!-- Print / PDF Ready -->
-        <button class="btn btn-secondary" onclick="window.print()">
+        <button type="button" class="btn btn-secondary" onclick="window.print()" title="Cetak standar kartu ID-1 atau simpan sebagai PDF">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             Cetak ID-1 (Print / PDF)
         </button>
 
-        <!-- Send via WhatsApp -->
-        <a href="{{ url_for('whatsapp.dispatch', nomor_induk=kta.nomor_induk) }}" target="_blank" class="btn btn-success">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-            Kirim KTA via WhatsApp
-        </a>
-
-        <!-- Test Verification URL -->
-        <a href="{{ url_for('public.verify', nomor_induk=kta.nomor_induk) }}" target="_blank" class="btn btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            Uji Scan Verifikasi Publik
-        </a>
-
-        <!-- Mark Physical KTA Status -->
-        {% if kta.is_physical_printed %}
-        <span class="badge badge-success" style="padding: 10px 16px; font-size: 0.85rem;">
-            ✓ KTA Fisik: Terbit (PUNYA)
-        </span>
-        {% else %}
-        <form method="POST" action="{{ url_for('kta.mark_physical', nomor_induk=kta.nomor_induk) }}" style="display: inline;">
-            <button type="submit" class="btn btn-secondary" style="border-color: var(--color-primary-border); color: var(--color-primary);" onclick="return confirm('Tandai KTA fisik anggota ini sudah dicetak/dimiliki (PUNYA)? Data akan disinkronkan ke DATA PUSAT.')">
-                🏷️ Tandai KTA Fisik Diterima
+        <!-- Dropdown Toggle Menu untuk Aksi Lainnya -->
+        <div class="kta-dropdown-wrapper" id="ktaActionDropdown">
+            <button type="button" class="btn btn-secondary kta-dropdown-trigger" id="ktaDropdownToggleBtn" onclick="toggleKtaDropdown(event)" aria-haspopup="true" aria-expanded="false" title="Pilihan aksi lainnya">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
+                <span>Aksi Lainnya</span>
+                <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-        </form>
-        {% endif %}
+
+            <!-- Floating Dropdown Menu -->
+            <div class="kta-dropdown-menu" id="ktaDropdownMenu" role="menu">
+                <div class="kta-dropdown-header">Distribusi & Publik</div>
+
+                <!-- Send via WhatsApp -->
+                <a href="{{ url_for('whatsapp.dispatch', nomor_induk=kta.nomor_induk) }}" target="_blank" class="kta-dropdown-item" role="menuitem">
+                    <div class="kta-dropdown-icon-box" style="background: rgba(16, 185, 129, 0.12); color: #059669;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <div class="kta-dropdown-text">
+                        <span class="kta-dropdown-title">Kirim via WhatsApp</span>
+                        <span class="kta-dropdown-desc">Kirim kartu resmi langsung ke kontak anggota</span>
+                    </div>
+                </a>
+
+                <!-- Test Verification URL -->
+                <a href="{{ url_for('public.verify', nomor_induk=kta.nomor_induk) }}" target="_blank" class="kta-dropdown-item" role="menuitem">
+                    <div class="kta-dropdown-icon-box" style="background: rgba(2, 132, 199, 0.12); color: #0284C7;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <div class="kta-dropdown-text">
+                        <span class="kta-dropdown-title">Uji Scan Verifikasi Publik</span>
+                        <span class="kta-dropdown-desc">Simulasi pemindaian QR Code validitas KTA</span>
+                    </div>
+                </a>
+
+                <!-- Copy Verification Link -->
+                <button type="button" class="kta-dropdown-item" onclick="copyKtaVerificationLink('{{ kta.verification_url }}', this)" role="menuitem">
+                    <div class="kta-dropdown-icon-box" style="background: rgba(100, 116, 139, 0.12); color: #475569;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </div>
+                    <div class="kta-dropdown-text">
+                        <span class="kta-dropdown-title">Salin Tautan Verifikasi</span>
+                        <span class="kta-dropdown-desc" id="copyLinkSubtext">Salin tautan online ke papan klip</span>
+                    </div>
+                </button>
+
+                <div class="kta-dropdown-divider"></div>
+                <div class="kta-dropdown-header">Manajemen Prestasi</div>
+
+                <button type="button" class="kta-dropdown-item" onclick="openModernModal('addAchievementModal')" role="menuitem">
+                    <div class="kta-dropdown-icon-box" style="background: rgba(234, 179, 8, 0.12); color: #CA8A04;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                    </div>
+                    <div class="kta-dropdown-text">
+                        <span class="kta-dropdown-title">Tambah Prestasi Atlet</span>
+                        <span class="kta-dropdown-desc">Catat riwayat kejuaraan dan medali</span>
+                    </div>
+                </button>
+
+                {% if not kta.is_physical_printed %}
+                <div class="kta-dropdown-divider"></div>
+                <div class="kta-dropdown-header">Status KTA Fisik</div>
+                <form method="POST" action="{{ url_for('kta.mark_physical', nomor_induk=kta.nomor_induk) }}" style="margin: 0; width: 100%;">
+                    <button type="button" class="kta-dropdown-item" 
+                            data-confirm="Tandai KTA fisik anggota ini sudah dicetak/dimiliki (PUNYA)? Data status akan langsung disinkronkan ke DATA PUSAT."
+                            data-confirm-title="Konfirmasi Terbit KTA Fisik"
+                            data-confirm-type="primary"
+                            data-confirm-btn="Ya, Tandai PUNYA"
+                            role="menuitem">
+                        <div class="kta-dropdown-icon-box" style="background: rgba(217, 119, 6, 0.12); color: #D97706;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                        </div>
+                        <div class="kta-dropdown-text">
+                            <span class="kta-dropdown-title" style="color: var(--color-primary);">Tandai KTA Fisik Diterima</span>
+                            <span class="kta-dropdown-desc">Ubah status menjadi PUNYA di server pusat</span>
+                        </div>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Status Badge in Toolbar if Already Printed -->
     </div>
 
     <!-- Member Summary Card (Clean White & Slate) -->
@@ -300,68 +781,159 @@
             </div>
         </div>
     </div>
+
+    <!-- Trophy Room Card -->
+    {% if achievements %}
+    <div class="card" style="margin-top: 14px;">
+        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.12); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="card-title" style="margin: 0; font-size: 1.05rem;">Riwayat Prestasi & Kejuaraan</h3>
+                    <div style="font-size: 0.78rem; color: var(--color-text-secondary); margin-top: 2px;">
+                        Tercatat <strong>{{ achievements|length }}</strong> raihan medali kejuaraan resmi
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openModernModal('addAchievementModal')" style="display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Tambah Prestasi
+            </button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 6px;">
+            {% for ach in achievements %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); transition: all var(--transition-fast);">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                    {% set medal_class = "kta-medal-default" %}
+                    {% if ach.medali == 'Emas' %}
+                        {% set medal_class = "kta-medal-emas" %}
+                    {% elif ach.medali == 'Perak' %}
+                        {% set medal_class = "kta-medal-perak" %}
+                    {% elif ach.medali == 'Perunggu' %}
+                        {% set medal_class = "kta-medal-perunggu" %}
+                    {% endif %}
+                    <div class="kta-medal-icon {{ medal_class }}">
+                        {% if ach.medali == 'Emas' %}🥇{% elif ach.medali == 'Perak' %}🥈{% elif ach.medali == 'Perunggu' %}🥉{% else %}🏆{% endif %}
+                    </div>
+                    <div style="min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary);">{{ ach.nama_kejuaraan }}</h4>
+                            <span style="font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-full); background: #E2E8F0; color: #334155;">{{ ach.tahun }}</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: var(--color-text-secondary); margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                            <span>Kategori: <strong>{{ ach.kategori }}</strong></span>
+                            <span style="color: var(--color-text-muted);">&bull;</span>
+                            <span>Tingkat: <strong style="color: var(--color-primary);">{{ ach.tingkat }}</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: 12px;">
+                    {% if ach.medali == 'Emas' %}
+                    <span class="badge" style="background: rgba(234, 179, 8, 0.15); color: #B45309; border: 1px solid rgba(234, 179, 8, 0.3); font-size: 0.82rem; font-weight: 700; padding: 5px 12px;">🥇 Emas</span>
+                    {% elif ach.medali == 'Perak' %}
+                    <span class="badge" style="background: rgba(156, 163, 175, 0.18); color: #334155; border: 1px solid rgba(156, 163, 175, 0.35); font-size: 0.82rem; font-weight: 700; padding: 5px 12px;">🥈 Perak</span>
+                    {% elif ach.medali == 'Perunggu' %}
+                    <span class="badge" style="background: rgba(180, 83, 9, 0.15); color: #78350F; border: 1px solid rgba(180, 83, 9, 0.3); font-size: 0.82rem; font-weight: 700; padding: 5px 12px;">🥉 Perunggu</span>
+                    {% else %}
+                    <span class="badge" style="font-size: 0.82rem; padding: 5px 12px;">{{ ach.medali }}</span>
+                    {% endif %}
+
+                    {% if session.get('role') in ['super_admin', 'admin_pusat'] or session.get('branch_code') == kta.cabang %}
+                    <form method="POST" action="{{ url_for('achievement.delete', ach_id=ach.id) }}" style="margin:0;">
+                        <input type="hidden" name="nomor_induk" value="{{ kta.nomor_induk }}">
+                        <button type="button" class="btn btn-danger btn-sm" style="padding: 6px; height: 32px; width: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;" data-confirm="Hapus data prestasi ini?" data-confirm-type="danger" title="Hapus Prestasi">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 
-<!-- Hidden Print Layout Sheet for exact ID-1 Standard -->
+<!-- Hidden Print Layout Sheet for exact ID-1 Standard (Print / PDF) -->
 <div class="kta-print-sheet" style="display: none;">
-    <div class="kta-card-face kta-front kta-print-card" style="position: relative;">
-        <!-- Same front structure sized to 85.6mm x 53.98mm -->
-        <div class="kta-header" style="padding-bottom: 4px;">
-            <img src="{{ url_for('static', filename='img/logo.png') }}" style="width: 34px; height: 34px;">
+    <!-- Print Front Side -->
+    <div class="kta-card-face kta-front kta-print-card" style="position: relative; background: #FFFFFF; color: #0F172A; border: 1pt solid #0F172A;">
+        <div class="kta-header" style="padding-bottom: 3px; border: none;">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" style="width: 36px; height: 36px; flex-shrink: 0;">
             <div class="kta-header-text">
-                <p style="font-size: 5.5pt; margin: 0; color: #D4AF37;">DEWAN PIMPINAN PUSAT • NUSA TENGGARA BARAT</p>
-                <h4 style="font-size: 9.5pt; margin: 0; color: #FFFFFF; font-family: 'Cinzel', serif;">PERGURUAN SILAT BUANA NURRAGA</h4>
-                <p style="font-size: 5.5pt; margin: 0; color: #B0BEC5;">KARTU TANDA ANGGOTA RESMI</p>
+                <p style="font-size: 5.2pt; margin: 0; color: #15803D; font-weight: 700; letter-spacing: 1pt;">DEWAN PIMPINAN PUSAT • NUSA TENGGARA BARAT</p>
+                <h4 style="font-size: 9.5pt; margin: 1px 0; color: #0F172A; font-family: 'Cinzel', serif; font-weight: 900; letter-spacing: 0.8pt;">PERGURUAN SILAT BUANA NURRAGA</h4>
+                <p style="font-size: 5.2pt; margin: 0; color: #DC2626; font-weight: 700; letter-spacing: 0.8pt;">KARTU TANDA ANGGOTA RESMI • OFFICIAL CREDENTIAL</p>
             </div>
+
         </div>
-        <div style="display: flex; gap: 8px; align-items: center; margin: 4px 0;">
-            <img src="{{ kta.photo_url }}" style="width: 58px; height: 74px; object-fit: cover; border-radius: 4px; border: 1.5pt solid #D4AF37;">
-            <div style="flex-grow: 1; font-size: 6.5pt; line-height: 1.3;">
-                <div style="font-size: 8pt; font-weight: bold; color: #FFFFFF;">{{ kta.nama_lengkap }}</div>
-                <div style="font-family: monospace; font-size: 6.5pt; color: #D4AF37; margin-bottom: 2px;">NO: {{ kta.nomor_induk }}</div>
-                <div>TINGKATAN: <strong>{{ kta.belt_info.label }}</strong></div>
-                <div>CABANG: <strong>{{ kta.cabang }}</strong></div>
+        <div style="height: 1.5pt; background: linear-gradient(90deg, #DC2626 0%, #0F172A 50%, #16A34A 100%); margin: 2pt 0 4pt;"></div>
+        
+        <div style="display: flex; gap: 8px; align-items: center; margin: 2px 0;">
+            <div style="width: 58px; height: 74px; border-radius: 3pt; border: 1.5pt solid #0F172A; padding: 1pt; background: #FFFFFF; flex-shrink: 0; box-shadow: 0 1pt 3pt rgba(0,0,0,0.1);">
+                <img src="{{ kta.photo_url }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 2pt;" onerror="this.src='/static/img/avatar_placeholder.svg'">
+            </div>
+            <div style="flex-grow: 1; font-size: 6pt; line-height: 1.28; color: #0F172A;">
+                <div style="font-size: 8pt; font-weight: 900; color: #0F172A; letter-spacing: 0.3pt;">{{ kta.nama_lengkap }}</div>
+                <div style="background: #0F172A; color: #FFFFFF; font-family: monospace; font-size: 6.2pt; font-weight: 700; padding: 1pt 5pt; border-radius: 2pt; width: fit-content; margin: 2pt 0; letter-spacing: 0.8pt;">
+                    NO: {{ kta.nomor_induk }}
+                </div>
+                <div>TINGKATAN: <strong style="color: #0F172A;">{{ kta.belt_info.label }}</strong></div>
+                <div>CABANG: <strong style="color: #0F172A;">{{ kta.cabang }}</strong></div>
                 <div>PENGESAHAN: <strong>{{ kta.tanggal_sah }}</strong></div>
+                <div>MASA BERLAKU: <strong style="color: #15803D;">SEUMUR HIDUP / AKTIF</strong></div>
             </div>
-            <img src="{{ kta.qr_code_base64 }}" style="width: 58px; height: 58px; border: 1pt solid #D4AF37; padding: 2px; background: #fff;">
+            <div style="width: 58px; height: 58px; border: 1.2pt solid #0F172A; padding: 2px; background: #FFFFFF; border-radius: 3pt; flex-shrink: 0; text-align: center;">
+                <img src="{{ kta.qr_code_base64 }}" style="width: 100%; height: 100%; display: block;">
+            </div>
         </div>
-        <div style="font-size: 5pt; border-top: 0.5pt solid #D4AF37; padding-top: 2px; display: flex; justify-content: space-between;">
-            <span>BUANA NURRAGA INDONESIA</span>
-            <span>SEC-ID: {{ kta.nomor_induk }}</span>
+
+        <div style="font-size: 4.8pt; border-top: 0.5pt solid #E2E8F0; padding-top: 2px; display: flex; justify-content: space-between; color: #64748B; font-weight: 600;">
+            <span>BUANA NURRAGA INDONESIA • KEABSAHAN TERCATAT PUSAT</span>
+            <span style="color: #0F172A; font-weight: 700;">SEC-ID: {{ kta.nomor_induk }}</span>
         </div>
     </div>
 
     <!-- Print Back Side -->
-    <div class="kta-card-face kta-back kta-print-card" style="position: relative; transform: none;">
-        <div class="kta-magstripe" style="height: 24px; margin-top: 4px; font-size: 5pt;">
+    <div class="kta-card-face kta-back kta-print-card" style="position: relative; transform: none; background: #FFFFFF; color: #0F172A; border: 1pt solid #0F172A;">
+        <div class="kta-magstripe" style="height: 22px; margin-top: 3px; font-size: 5pt; background: #0F172A; color: #FFFFFF; padding: 0 10px; display: flex; align-items: center; justify-content: space-between;">
             <span>BN-CREDENTIAL-SECURITY-BAND</span>
             <span>•••• {{ kta.nomor_induk }} ••••</span>
         </div>
-        <div style="padding: 4px 8px; font-size: 5.5pt; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="padding: 4px 8px; font-size: 5.2pt; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; color: #0F172A;">
             <div>
-                <b style="color: #D4AF37;">KETENTUAN KTA:</b>
-                <div style="font-size: 5pt; line-height: 1.2;">
+                <b style="color: #DC2626; font-size: 5.5pt; letter-spacing: 0.5pt;">KETENTUAN PEMEGANG KTA:</b>
+                <div style="font-size: 4.8pt; line-height: 1.25; color: #334155; margin-top: 1pt;">
                     1. Bukti keanggotaan sah Perguruan Silat Buana Nurraga.<br>
-                    2. Wajib dibawa saat latihan, ujian kenaikan tingkat & kegiatan resmi.<br>
-                    3. Keabsahan dapat diverifikasi melalui QR Code sisi depan.
+                    2. Wajib dibawa saat latihan, ujian kenaikan tingkat & kegiatan resmi perguruan.<br>
+                    3. Keabsahan identitas dapat diverifikasi secara daring melalui QR Code sisi depan.
                 </div>
             </div>
-            <div style="font-size: 4.8pt; font-style: italic; background: rgba(0,0,0,0.3); padding: 2px 4px; border: 0.5pt solid #D4AF37; border-radius: 2px; text-align: center;">
+            <div style="font-size: 4.6pt; font-style: italic; background: #ECFDF5; padding: 2.5pt 5pt; border: 0.5pt solid #A7F3D0; border-left: 2.5pt solid #16A34A; border-radius: 2pt; text-align: center; color: #15803D;">
                 "Bertaqwa kepada Tuhan YME, Berbakti kepada Orang Tua dan Guru, Berbudi Pekerti Luhur, Serta Membela Kebenaran dan Keadilan."
             </div>
             <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px;">
-                <div style="text-align: center; font-size: 4.5pt;">
+                <div style="text-align: center; font-size: 4.5pt; color: #0F172A;">
                     Ketua Umum
-                    <div style="border-bottom: 0.5pt solid #D4AF37; width: 60px; margin: 12px auto 2px;"></div>
-                    ( Pengurus Pusat )
+                    <div style="border-bottom: 0.5pt solid #0F172A; width: 55px; margin: 9px auto 1px;"></div>
+                    ( Pengurus Besar Pusat )
                 </div>
-                <img src="{{ url_for('static', filename='img/seal_gold.svg') }}" style="width: 28px; height: 28px;">
-                <div style="text-align: center; font-size: 4.5pt;">
+                <img src="{{ url_for('static', filename='img/seal_official.svg') }}" style="width: 24px; height: 24px;">
+                <div style="text-align: center; font-size: 4.5pt; color: #0F172A;">
                     Guru Besar
-                    <div style="border-bottom: 0.5pt solid #D4AF37; width: 60px; margin: 12px auto 2px;"></div>
-                    ( Dewan Pendekar )
+                    <div style="border-bottom: 0.5pt solid #0F172A; width: 55px; margin: 9px auto 1px;"></div>
+                    ( Pimpinan Keilmuan )
                 </div>
             </div>
+        </div>
+        <div style="padding: 2px 8px; font-size: 4.2pt; border-top: 0.5pt solid #E2E8F0; display: flex; justify-content: space-between; color: #64748B;">
+            <span>SEKRETARIAT PUSAT: NTB</span>
+            <span>PORTAL: BUANANURRAGA.ORG</span>
         </div>
     </div>
 </div>
@@ -405,5 +977,304 @@
             cardWrapper.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(180deg)';
         }
     });
+
+    // Dynamic belt ribbon fallback
+    const ribbon = document.querySelector('.kta-belt-ribbon');
+    if (ribbon && ribbon.getAttribute('data-bg')) {
+        ribbon.style.background = ribbon.getAttribute('data-bg');
+    }
+
+    // ==========================================
+    // Dropdown Toggle Logic & Interactivity
+    // ==========================================
+    const dropdownWrapper = document.getElementById('ktaActionDropdown');
+    const dropdownToggleBtn = document.getElementById('ktaDropdownToggleBtn');
+
+    function toggleKtaDropdown(e) {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        if (!dropdownWrapper) return;
+        const isOpen = dropdownWrapper.classList.contains('open');
+        if (isOpen) {
+            closeKtaDropdown();
+        } else {
+            openKtaDropdown();
+        }
+    }
+
+    function openKtaDropdown() {
+        if (!dropdownWrapper) return;
+        dropdownWrapper.classList.add('open');
+        if (dropdownToggleBtn) dropdownToggleBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeKtaDropdown() {
+        if (!dropdownWrapper) return;
+        dropdownWrapper.classList.remove('open');
+        if (dropdownToggleBtn) dropdownToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Close on click outside
+    document.addEventListener('click', function(e) {
+        if (dropdownWrapper && !dropdownWrapper.contains(e.target)) {
+            closeKtaDropdown();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && dropdownWrapper && dropdownWrapper.classList.contains('open')) {
+            closeKtaDropdown();
+        }
+    });
+
+    // Copy verification URL function with visual feedback & toast
+    function copyKtaVerificationLink(url, btnElement) {
+        const subtext = document.getElementById('copyLinkSubtext');
+        const originalText = subtext ? subtext.textContent : '';
+
+        function onSuccess() {
+            if (subtext) {
+                subtext.textContent = '✓ Tautan berhasil disalin ke clipboard!';
+                subtext.style.color = 'var(--color-success)';
+                setTimeout(() => {
+                    subtext.textContent = originalText;
+                    subtext.style.color = '';
+                }, 2800);
+            }
+            showFloatingToast('Tautan verifikasi KTA berhasil disalin!');
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(onSuccess).catch(function() {
+                fallbackCopyText(url, onSuccess);
+            });
+        } else {
+            fallbackCopyText(url, onSuccess);
+        }
+    }
+
+    function fallbackCopyText(text, callback) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            if (callback) callback();
+        } catch (err) {
+            console.error('Gagal menyalin:', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    // Floating Notification Toast
+    function showFloatingToast(message) {
+        let toast = document.getElementById('ktaFloatingToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'ktaFloatingToast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                background: #0F172A;
+                color: #FFFFFF;
+                padding: 12px 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+                font-size: 0.875rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 99999;
+                transform: translateY(20px);
+                opacity: 0;
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                pointer-events: none;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>${message}</span>`;
+        
+        requestAnimationFrame(() => {
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+        });
+
+        clearTimeout(toast._hideTimeout);
+        toast._hideTimeout = setTimeout(() => {
+            toast.style.transform = 'translateY(20px)';
+            toast.style.opacity = '0';
+        }, 2800);
+    }
 </script>
+
+<!-- Add Achievement Modal -->
+<div id="addAchievementModal" class="modal-overlay">
+    <div class="modal-window" style="max-width: 520px;">
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <div class="modal-icon-badge" style="background: rgba(245, 158, 11, 0.12); color: #D97706; border-color: rgba(245, 158, 11, 0.25);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="modal-title">Tambah Prestasi Atlet</h3>
+                    <div class="modal-subtitle">Catat riwayat kejuaraan dan medali yang diraih anggota</div>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeModernModal('addAchievementModal')" aria-label="Tutup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ url_for('achievement.add', nomor_induk=kta.nomor_induk) }}" style="margin: 0;">
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Athlete Mini Banner -->
+                <div class="modal-athlete-banner">
+                    <div class="modal-athlete-avatar">
+                        {% if kta.photo_url %}
+                        <img src="{{ kta.photo_url }}" alt="{{ kta.nama_lengkap }}">
+                        {% else %}
+                        <span>{{ kta.nama_lengkap[:2]|upper }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="modal-athlete-meta">
+                        <div class="modal-athlete-name">{{ kta.nama_lengkap }}</div>
+                        <div class="modal-athlete-sub">
+                            <span>NO: <strong>{{ kta.nomor_induk }}</strong></span>
+                            <span class="dot">&bull;</span>
+                            <span>{{ kta.cabang or 'Buana Nurraga' }}</span>
+                            {% if kta.belt_info %}
+                            <span class="dot">&bull;</span>
+                            <span style="color: var(--color-primary); font-weight: 600;">{{ kta.belt_info.label }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="modal-athlete-tag">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        Atlet
+                    </span>
+                </div>
+
+                <!-- Nama Kejuaraan -->
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label-with-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 4h12v5a6 6 0 0 1-12 0V4z"></path></svg>
+                        Nama Kejuaraan / Turnamen <span class="req">*</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <span class="input-icon-prefix">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        </span>
+                        <input type="text" name="nama_kejuaraan" class="form-control" required placeholder="Contoh: Kejurda Silat NTB Open 2025" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Kategori / Kelas Tanding -->
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label-with-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        Kategori / Kelas Tanding <span class="req">*</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <span class="input-icon-prefix">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        </span>
+                        <input type="text" name="kategori" class="form-control" required placeholder="Contoh: Tanding Dewasa Kelas C Putra (55-60 kg)" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Tingkat & Tahun -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label-with-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            Tingkat <span class="req">*</span>
+                        </label>
+                        <select name="tingkat" class="form-control" required style="cursor: pointer;">
+                            <option value="" disabled selected>Pilih Tingkat...</option>
+                            <option value="Kabupaten">Kabupaten / Kota</option>
+                            <option value="Provinsi">Provinsi</option>
+                            <option value="Nasional">Nasional</option>
+                            <option value="Internasional">Internasional</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label-with-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            Tahun <span class="req">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <span class="input-icon-prefix">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </span>
+                            <input type="number" name="tahun" class="form-control" required min="2000" max="2100" value="2025">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Perolehan Medali -->
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label-with-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        Perolehan Medali <span class="req">*</span>
+                    </label>
+                    <div class="medal-selector-grid">
+                        <label class="medal-card-option">
+                            <input type="radio" name="medali" value="Emas" checked required>
+                            <div class="medal-card-box gold">
+                                <span class="medal-emoji">🥇</span>
+                                <span class="medal-name">Emas</span>
+                                <span class="medal-rank">Juara 1</span>
+                                <span class="medal-check">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </span>
+                            </div>
+                        </label>
+                        <label class="medal-card-option">
+                            <input type="radio" name="medali" value="Perak" required>
+                            <div class="medal-card-box silver">
+                                <span class="medal-emoji">🥈</span>
+                                <span class="medal-name">Perak</span>
+                                <span class="medal-rank">Juara 2</span>
+                                <span class="medal-check">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </span>
+                            </div>
+                        </label>
+                        <label class="medal-card-option">
+                            <input type="radio" name="medali" value="Perunggu" required>
+                            <div class="medal-card-box bronze">
+                                <span class="medal-emoji">🥉</span>
+                                <span class="medal-name">Perunggu</span>
+                                <span class="medal-rank">Juara 3</span>
+                                <span class="medal-check">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModernModal('addAchievementModal')">
+                    Batal
+                </button>
+                <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Simpan Prestasi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

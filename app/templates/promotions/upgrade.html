@@ -110,7 +110,11 @@
         
         // Check if already added
         if (document.getElementById('row-' + nomorInduk)) {
-            alert('Anggota ini sudah ada di daftar.');
+            modernAlert({
+                title: 'Sudah Ditambahkan',
+                message: 'Anggota ini sudah ada di dalam daftar kenaikan.',
+                type: 'warning'
+            });
             return;
         }
 
@@ -168,14 +172,24 @@
         }
     }
 
-    function submitForm() {
+    async function submitForm() {
         const container = document.getElementById('selectedMembersContainer');
         if (container.children.length === 0) {
-            alert('Tambahkan setidaknya satu anggota ke daftar sebelum memproses.');
+            modernAlert({
+                title: 'Daftar Masih Kosong',
+                message: 'Tambahkan setidaknya satu anggota ke daftar sebelum memproses kenaikan tingkat.',
+                type: 'warning'
+            });
             return;
         }
         
-        if (confirm('Apakah Anda yakin ingin menaikkan tingkat anggota yang ada di daftar? Data di DATA PUSAT dan ARSIP akan diupdate.')) {
+        const confirmed = await modernConfirm({
+            title: 'Konfirmasi Kenaikan Tingkat',
+            message: 'Apakah Anda yakin ingin menaikkan tingkat anggota yang ada di daftar? Data di DATA PUSAT dan ARSIP akan diperbarui.',
+            type: 'primary',
+            confirmText: 'Ya, Naikkan Tingkat'
+        });
+        if (confirmed) {
             document.getElementById('upgradeForm').submit();
         }
     }

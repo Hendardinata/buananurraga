@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 24px;">
+    <div>
+        <h1 class="page-title" style="display: flex; align-items: center; gap: 10px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-warning);"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            Bursa Atlet & Prestasi
+        </h1>
+        <p class="page-subtitle">Daftar anggota yang memiliki riwayat prestasi dalam kejuaraan.</p>
+    </div>
+</div>
+
+<div class="card" style="padding: 0;">
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--color-border); background: rgba(0,0,0,0.02);">
+                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">ANGGOTA</th>
+                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">CABANG</th>
+                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">KEJUARAAN</th>
+                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem;">MEDALI</th>
+                    <th style="padding: 16px; font-weight: 600; color: var(--color-text-secondary); font-size: 0.85rem; text-align: right;">AKSI</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ach in achievements %}
+                <tr style="border-bottom: 1px solid var(--color-border-light);">
+                    <td style="padding: 16px;">
+                        <div style="font-weight: 600; color: var(--color-text-primary);">{{ ach.nama_lengkap }}</div>
+                        <div style="font-size: 0.8rem; color: var(--color-text-muted); font-family: monospace;">{{ ach.nomor_induk }}</div>
+                    </td>
+                    <td style="padding: 16px; font-size: 0.9rem;">
+                        {{ ach.cabang }}
+                    </td>
+                    <td style="padding: 16px;">
+                        <div style="font-weight: 500; font-size: 0.95rem;">{{ ach.nama_kejuaraan }} ({{ ach.tahun }})</div>
+                        <div style="font-size: 0.8rem; color: var(--color-text-secondary);">{{ ach.kategori }} - {{ ach.tingkat }}</div>
+                    </td>
+                    <td style="padding: 16px;">
+                        {% if ach.medali == 'Emas' %}
+                        <span class="badge" style="background: rgba(234, 179, 8, 0.15); color: #B45309; border: 1px solid rgba(234, 179, 8, 0.3);">🥇 Emas</span>
+                        {% elif ach.medali == 'Perak' %}
+                        <span class="badge" style="background: rgba(156, 163, 175, 0.15); color: #4B5563; border: 1px solid rgba(156, 163, 175, 0.3);">🥈 Perak</span>
+                        {% elif ach.medali == 'Perunggu' %}
+                        <span class="badge" style="background: rgba(180, 83, 9, 0.15); color: #78350F; border: 1px solid rgba(180, 83, 9, 0.3);">🥉 Perunggu</span>
+                        {% else %}
+                        <span class="badge">{{ ach.medali }}</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 16px; text-align: right;">
+                        <a href="{{ url_for('kta.view', nomor_induk=ach.nomor_induk) }}" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 6px 12px;">Lihat Profil</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="padding: 48px; text-align: center; color: var(--color-text-muted);">
+                        Belum ada data prestasi yang dicatat.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
