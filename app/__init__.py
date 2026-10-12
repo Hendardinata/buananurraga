@@ -48,6 +48,9 @@ def create_app(config_class='app.config.Config'):
     from app.routes.achievement_routes import achievement_bp
     app.register_blueprint(achievement_bp)
 
+    from app.routes.event_routes import event_bp
+    app.register_blueprint(event_bp)
+
     from app.routes.api_public_routes import api_public_bp
     app.register_blueprint(api_public_bp)
 

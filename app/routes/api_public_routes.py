@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request
 from app.services.member_service import MemberService
 from app.services.achievement_service import AchievementService
 from app.services.kta_service import KtaService
+from app.services.event_service import EventService
 from app.repositories.in_memory.branches_repo import branches_repo
 
 api_public_bp = Blueprint('api_public', __name__, url_prefix='/api/public')
@@ -31,7 +32,8 @@ def api_index():
             'stats': '/api/public/stats',
             'verify': '/api/public/verify/<nomor_induk>',
             'achievements': '/api/public/achievements',
-            'branches': '/api/public/branches'
+            'branches': '/api/public/branches',
+            'events': '/api/public/events'
         }
     })
 
@@ -239,6 +241,43 @@ def get_branches():
             'status': 'success',
             'total': len(result),
             'data': result
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+@api_public_bp.route('/events', methods=['GET', 'OPTIONS'])
+def get_events():
+    """
+    Public upcoming and active events list for landing page.
+    """
+    if request.method == 'OPTIONS':
+        return '', 204
+
+    try:
+        events = EventService.get_active_events()
+        category_filter = request.args.get('category', '').strip().lower()
+        search_query = request.args.get('search', '').strip().lower()
+
+        data = [e.to_dict() for e in events]
+
+        if category_filter:
+            data = [e for e in data if str(e.get('category', '')).strip().lower() == category_filter]
+
+        if search_query:
+            data = [
+                e for e in data 
+                if search_query in str(e.get('title', '')).lower() 
+                or search_query in str(e.get('location', '')).lower()
+                or search_query in str(e.get('description', '')).lower()
+            ]
+
+        return jsonify({
+            'status': 'success',
+            'total': len(data),
+            'data': data
         })
     except Exception as e:
         return jsonify({
