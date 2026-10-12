@@ -8,6 +8,12 @@ def create_app(config_class='app.config.Config'):
     from app.extensions import db
     db.init_app(app)
 
+    try:
+        from flask_cors import CORS
+        CORS(app, resources={r"/api/*": {"origins": "*"}})
+    except ImportError:
+        pass
+
     # Register blueprints here
     from app.routes.auth_routes import auth_bp
     app.register_blueprint(auth_bp)
@@ -42,13 +48,25 @@ def create_app(config_class='app.config.Config'):
     from app.routes.achievement_routes import achievement_bp
     app.register_blueprint(achievement_bp)
 
+    from app.routes.api_public_routes import api_public_bp
+    app.register_blueprint(api_public_bp)
+
     from flask import session, request, flash, redirect, url_for
     from datetime import datetime
     
     @app.before_request
     def check_session():
+        # Allow preflight CORS options requests
+        if request.method == 'OPTIONS':
+            return
+
         # Allow static files, auth, and public routes to be accessed without active session
-        if request.endpoint and (request.endpoint.startswith('static') or request.endpoint.startswith('auth.') or request.endpoint.startswith('public.')):
+        if request.endpoint and (
+            request.endpoint.startswith('static') or 
+            request.endpoint.startswith('auth.') or 
+            request.endpoint.startswith('public.') or
+            request.endpoint.startswith('api_public.')
+        ):
             return
             
         if 'user_id' in session:
