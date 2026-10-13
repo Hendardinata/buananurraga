@@ -8,6 +8,11 @@ def create_app(config_class='app.config.Config'):
     from app.extensions import db
     db.init_app(app)
 
+    # Auto-create missing database tables (e.g. events) on startup/reload
+    with app.app_context():
+        from app.models import Event, Achievement, User
+        db.create_all()
+
     try:
         from flask_cors import CORS
         CORS(app, resources={r"/api/*": {"origins": "*"}})
