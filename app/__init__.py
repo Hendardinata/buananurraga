@@ -10,7 +10,7 @@ def create_app(config_class='app.config.Config'):
 
     # Auto-create missing database tables (e.g. events) on startup/reload
     with app.app_context():
-        from app.models import Event, Achievement, User
+        from app.models import Event, Achievement, User, GalleryPost
         db.create_all()
 
     try:
@@ -55,6 +55,9 @@ def create_app(config_class='app.config.Config'):
 
     from app.routes.event_routes import event_bp
     app.register_blueprint(event_bp)
+
+    from app.routes.gallery_routes import gallery_bp
+    app.register_blueprint(gallery_bp)
 
     from app.routes.api_public_routes import api_public_bp
     app.register_blueprint(api_public_bp)

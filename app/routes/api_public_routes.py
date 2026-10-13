@@ -284,3 +284,40 @@ def get_events():
             'status': 'error',
             'message': str(e)
         }), 500
+
+@api_public_bp.route('/instagram-feed', methods=['GET', 'OPTIONS'])
+def get_instagram_feed():
+    """
+    Public Instagram curated feed & documentation for landing page.
+    """
+    if request.method == 'OPTIONS':
+        return '', 204
+
+    try:
+        from app.services.gallery_service import GalleryService
+        posts = GalleryService.get_active_posts()
+        category_filter = request.args.get('category', '').strip().lower()
+        limit = request.args.get('limit', type=int)
+
+        data = [p.to_dict() for p in posts]
+
+        if category_filter:
+            data = [
+                p for p in data 
+                if category_filter in str(p.get('category_slug', '')).lower() 
+                or category_filter in str(p.get('category', '')).lower()
+            ]
+
+        if limit and limit > 0:
+            data = data[:limit]
+
+        return jsonify({
+            'status': 'success',
+            'total': len(data),
+            'data': data
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
