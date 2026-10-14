@@ -655,11 +655,17 @@
                 <div class="achievements-list">
                     {% for a in achievements %}
                     <div class="achievement-card">
+                        {% if a.photo_url %}
+                        <a href="{{ a.photo_url }}" target="_blank" title="Foto Dokumentasi Kejuaraan" style="flex-shrink: 0; display: block;">
+                            <img src="{{ a.photo_url }}" alt="{{ a.nama_kejuaraan }}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                        </a>
+                        {% else %}
                         <div class="achievement-icon">
                             {% if (a.medali or '') | lower == 'emas' %}🥇
                             {% elif (a.medali or '') | lower == 'perak' %}🥈
                             {% else %}🥉{% endif %}
                         </div>
+                        {% endif %}
                         <div>
                             <div class="achievement-title">Juara {{ (a.medali or '') | capitalize }} - {{ a.nama_kejuaraan }}</div>
                             <div class="achievement-desc">{{ a.kategori }} • Tingkat {{ a.tingkat }} • Tahun {{ a.tahun }}</div>

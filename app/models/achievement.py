@@ -11,10 +11,11 @@ class Achievement(db.Model):
     tingkat = db.Column(db.String(64), nullable=False) # e.g., Kabupaten, Provinsi, Nasional, Internasional
     medali = db.Column(db.String(32), nullable=False) # e.g., Emas, Perak, Perunggu
     tahun = db.Column(db.Integer, nullable=False)
+    photo_url = db.Column(db.String(512), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     created_by = db.Column(db.String(64), nullable=True) # Username who created this record
 
-    def __init__(self, nomor_induk, nama_kejuaraan, kategori, tingkat, medali, tahun, created_by=None, **kwargs):
+    def __init__(self, nomor_induk, nama_kejuaraan, kategori, tingkat, medali, tahun, photo_url=None, created_by=None, **kwargs):
         super(Achievement, self).__init__(**kwargs)
         self.nomor_induk = nomor_induk
         self.nama_kejuaraan = nama_kejuaraan
@@ -22,6 +23,7 @@ class Achievement(db.Model):
         self.tingkat = tingkat
         self.medali = medali
         self.tahun = tahun
+        self.photo_url = photo_url
         self.created_by = created_by
 
     def to_dict(self):
@@ -33,6 +35,7 @@ class Achievement(db.Model):
             'tingkat': self.tingkat,
             'medali': self.medali,
             'tahun': self.tahun,
+            'photo_url': self.photo_url,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S') if self.created_at else None,
             'created_by': self.created_by
         }

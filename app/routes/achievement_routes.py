@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+﻿from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from app.services.achievement_service import AchievementService
 from app.services.member_service import MemberService
 from app.core.auth import get_current_user, login_required
@@ -10,7 +10,7 @@ achievement_bp = Blueprint('achievement', __name__, url_prefix='/achievement')
 def add(nomor_induk):
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-        
+
     data = {
         'nama_kejuaraan': request.form.get('nama_kejuaraan'),
         'kategori': request.form.get('kategori'),
@@ -18,30 +18,54 @@ def add(nomor_induk):
         'medali': request.form.get('medali'),
         'tahun': request.form.get('tahun')
     }
-    
-    if all(data.values()):
-        AchievementService.add_achievement(nomor_induk, data, session.get('user_id'))
-        flash('Prestasi berhasil ditambahkan!', 'success')
+
+    photo_file = request.files.get('photo')
+
+    if data['nama_kejuaraan'] and data['kategori'] and data['tingkat'] and data['medali'] and data['tahun']:
+        AchievementService.add_achievement(nomor_induk, data, session.get('user_id'), photo_file=photo_file)
+        flash('Prestasi atlet dan foto dokumentasi berhasil ditambahkan!', 'success')
     else:
-        flash('Semua field harus diisi!', 'error')
-        
-    return redirect(url_for('kta.view', nomor_induk=nomor_induk))
+        flash('Semua field wajib harus diisi!', 'error')
+
+    return redirect(request.referrer or url_for('kta.view', nomor_induk=nomor_induk))
+
+@achievement_bp.route('/edit/<int:ach_id>', methods=['POST'])
+def edit(ach_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    photo_file = request.files.get('photo')
+    data = {
+        'nama_kejuaraan': request.form.get('nama_kejuaraan'),
+        'kategori': request.form.get('kategori'),
+        'tingkat': request.form.get('tingkat'),
+        'medali': request.form.get('medali'),
+        'tahun': request.form.get('tahun')
+    }
+
+    updated = AchievementService.update_achievement(ach_id, data, photo_file=photo_file)
+    if updated:
+        flash('Data prestasi dan foto berhasil diperbarui!', 'success')
+    else:
+        flash('Gagal memperbarui data prestasi.', 'error')
+
+    return redirect(request.referrer or url_for('achievement.pool'))
 
 @achievement_bp.route('/delete/<int:ach_id>', methods=['POST'])
 def delete(ach_id):
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-        
+
     nomor_induk = request.form.get('nomor_induk')
-    
+
     if AchievementService.delete_achievement(ach_id):
         flash('Prestasi berhasil dihapus.', 'success')
     else:
         flash('Gagal menghapus prestasi.', 'error')
-        
+
     if nomor_induk:
         return redirect(url_for('kta.view', nomor_induk=nomor_induk))
-    return redirect(url_for('dashboard.index'))
+    return redirect(request.referrer or url_for('dashboard.index'))
 
 @achievement_bp.route('/pool')
 @login_required
@@ -51,15 +75,16 @@ def pool():
     members = MemberService.get_all_members()
     member_map = {str(m.get('NOMOR INDUK', '')).strip(): m for m in members}
     branches = branches_repo.get_all_branches()
-    
+
     enriched_achievements = []
     for ach in achievements:
         member = member_map.get(ach['nomor_induk'], {})
         ach['nama_lengkap'] = member.get('NAMA LENGKAP', 'Tidak diketahui')
         ach['cabang'] = member.get('CABANG', '-')
         ach['sabuk'] = member.get('SABUK', '-')
+        ach['athlete_photo'] = member.get('FOTO_URL') or '/static/img/avatar_placeholder.svg'
         enriched_achievements.append(ach)
-        
+
     # 1. Hitung Statistik Ringkasan (Akumulasi Medali & Atlet)
     total_achievements = len(enriched_achievements)
     unique_athletes = len(set(ach['nomor_induk'] for ach in enriched_achievements if ach.get('nomor_induk')))
@@ -79,7 +104,6 @@ def pool():
     if user and user.get('role') == 'admin_cabang':
         user_branch = branches_repo.get_branch(user.get('branch_code'))
         user_branch_name = user_branch['branch_name'].upper() if user_branch else (user.get('branch_code') or '').upper()
-        # Biarkan admin cabang melihat cabang sendiri secara default, atau jika memilih filter
         if not branch_filter:
             branch_filter = user_branch_name
 

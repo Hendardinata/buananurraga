@@ -170,6 +170,9 @@ def get_achievements():
             item['nama_lengkap'] = member.get('NAMA LENGKAP', 'Atlet Buana Nurraga')
             item['cabang'] = member.get('CABANG', '-')
             item['sabuk'] = member.get('SABUK', '-')
+            item['athlete_photo'] = member.get('FOTO_URL') or '/static/img/avatar_placeholder.svg'
+            if not item.get('photo_url'):
+                item['photo_url'] = member.get('FOTO_URL') or None
             # Strip internal user metadata
             item.pop('created_by', None)
             enriched_achievements.append(item)
