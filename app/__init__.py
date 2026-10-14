@@ -13,6 +13,19 @@ def create_app(config_class='app.config.Config'):
         from app.models import Event, Achievement, User, GalleryPost
         db.create_all()
 
+        # Auto-migrate schema updates for existing tables
+        try:
+            from sqlalchemy import inspect, text
+            inspector = inspect(db.engine)
+            if 'achievements' in inspector.get_table_names():
+                ach_cols = [c['name'] for c in inspector.get_columns('achievements')]
+                if 'photo_url' not in ach_cols:
+                    with db.engine.connect() as conn:
+                        conn.execute(text("ALTER TABLE achievements ADD COLUMN photo_url VARCHAR(512);"))
+                        conn.commit()
+        except Exception:
+            pass
+
     try:
         from flask_cors import CORS
         CORS(app, resources={r"/api/*": {"origins": "*"}})
